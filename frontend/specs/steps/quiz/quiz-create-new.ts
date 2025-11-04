@@ -12,6 +12,11 @@ When('I enter quiz name {string}', async function (title: string) {
     await this.quizCreatePage.enterQuizName(title)
 })
 
+When('I enter number of randomized questions in quiz {int}', async function (finalCount: string) {
+    await this.quizCreatePage.enterQuizFinalCount(finalCount)
+})
+
+
 When('I see empty quiz title', async function () {
     await this.quizCreatePage.getQuizTitleValue().then(value => expect(value).toBe(''))
 })
@@ -48,6 +53,10 @@ When('I enter quiz description {string}', async function (title: string) {
 
 When('I select question {string}', async function (question: string) {
     await this.quizCreatePage.selectQuestion(question)
+})
+
+When('I check randomized function', async function (isChecked: boolean) {
+    await this.quizCreatePage.selectRandomizedFunction(isChecked)
 })
 
 When('I submit the quiz', async function () {

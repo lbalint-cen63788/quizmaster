@@ -21,6 +21,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
     const [description, setDescription] = useState<string>('')
     const [selectedIds, toggleSelectedId] = useStateSet<number>()
     const [timeLimit, setTimeLimit] = useState<number>(600)
+    const [finalCount, setFinalCount] = useState<number>(0)
     const [passScore, setPassScore] = useState<number>(80)
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [filter, setFilter] = useState<string>('')
@@ -33,7 +34,12 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
         mode: 'EXAM' as const,
         passScore,
         timeLimit,
+<<<<<<< Updated upstream
         workspaceGuid: searchParams.get('workspaceguid') || '',
+=======
+        finalCount,
+        questionList: searchParams.get('listguid') || '',
+>>>>>>> Stashed changes
     })
 
     const quizTitleError = !title ? 'titleRequired' : undefined
@@ -68,6 +74,11 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
                 <TextInput id="question-filter" value={filter} onChange={setFilter} />
             </Field>
             <QuestionSelect questions={questions} onSelect={toggleSelectedId} />
+
+            <div className="label">Ramdomize questions</div>
+            <input type="checkbox" id="isRandomized"/>
+            <NumberInput id="quiz-finalCount" value={finalCount} onChange={setFinalCount} />
+
             {atLeastOneQuestionError && <FormFieldError errorCode="atLeastOneQuestionRequired" />}
             <SubmitButton />
         </form>

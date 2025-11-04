@@ -30,18 +30,26 @@ Feature: Create Quiz from Workspace
     And I see quiz question "3 * 3 = ?"
     And I see quiz question "4 / 2 = ?"
 
+<<<<<<< Updated upstream
   Scenario: Create quiz with 3 questions
+=======
+Scenario: Create quiz with 4 questions
+>>>>>>> Stashed changes
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"
     * I enter quiz description "Very hard math quiz"
     * I select question "2 + 2 = ?"
     * I select question "4 / 2 = ?"
+    * I select question "4 * 2 = ?"
+    * I select question "4 - 2 = ?"
+    * I check randomized function
+    * I enter number of randomized questions in quiz 3
     * I submit the quiz
     * I take quiz "Math Quiz"
     Then I see the welcome page
     * I see quiz name "Math Quiz"
     * I see quiz description "Very hard math quiz"
-    * I see question count 2
+    * I see question count 3
 
   @skip
   Scenario: Quiz form with only default values

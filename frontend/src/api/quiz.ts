@@ -9,7 +9,12 @@ export interface QuizCreateRequest {
     readonly passScore: number
     readonly timeLimit: number
     readonly size?: number
+<<<<<<< Updated upstream
     readonly workspaceGuid: string
+=======
+    readonly questionList: string
+    readonly finalCount?: number
+>>>>>>> Stashed changes
 }
 
 export const fetchQuiz = async (quizId: string) => await fetchJson<Quiz>(`/api/quiz/${quizId}`)

@@ -35,3 +35,5 @@ Feature: Take a quiz
     * I answer "Strawberry"
     * I proceed to the score page
     Then I see the result 3 correct out of 3, 100%, passed, required passScore 100%
+
+  
