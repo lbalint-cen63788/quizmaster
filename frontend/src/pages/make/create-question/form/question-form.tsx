@@ -7,14 +7,19 @@ import {
     QuestionExplanationEdit,
     EasyModeChoiceEdit,
     type QuestionFormData,
+    toQuestionApiData,
+    toQuestionFormData,
+    emptyQuestionFormData,
 } from 'pages/make/create-question/form'
 import { useState } from 'react'
 import { type ErrorCodes, ErrorMessages } from './error-message.tsx'
 import { validateQuestionFormData } from '../validators.ts'
+import type { QuestionApiData } from 'api/question.ts'
+import type { Question } from 'model/question.ts'
 
 interface QuestionEditProps {
-    readonly initialQuestionData: QuestionFormData
-    readonly onSubmit: (questionData: QuestionFormData) => void
+    readonly question?: Question
+    readonly onSubmit: (questionData: QuestionApiData) => void
 }
 
 function setMultipleChoiceInQuestionData(isMultipleChoice: boolean, questionData: QuestionFormData): QuestionFormData {
@@ -37,8 +42,8 @@ function setEasyModeChoiceInQuestionData(isEasyModeChoice: boolean, questionData
     }
 }
 
-export const QuestionEditForm = ({ initialQuestionData, onSubmit }: QuestionEditProps) => {
-    const [questionData, setQuestionData] = useState(initialQuestionData)
+export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
+    const [questionData, setQuestionData] = useState(question ? toQuestionFormData(question) : emptyQuestionFormData())
     const [errors, setErrors] = useState<ErrorCodes>(new Set())
 
     const setQuestion = (question: string) => setQuestionData({ ...questionData, question })
@@ -54,7 +59,7 @@ export const QuestionEditForm = ({ initialQuestionData, onSubmit }: QuestionEdit
         const errors = validateQuestionFormData(questionData)
         setErrors(errors)
 
-        if (errors.size === 0) onSubmit(questionData)
+        if (errors.size === 0) onSubmit(toQuestionApiData(questionData))
     }
 
     return (
