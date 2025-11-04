@@ -7,7 +7,7 @@ export class QuizCreatePage {
     questionsInList = () => this.page.locator('.create-quiz > .question-item')
     getQuestion = (question: string) => this.page.locator('label', { hasText: question })
     selectQuestion = (question: string) => this.page.locator('label', { hasText: question }).click()
-    selectRandomizedFunction = (isChecked: boolean) => this.page.locator('#isRandomized').check()
+    selectRandomizedFunction = () => this.page.locator('#isRandomized').check()
     private submitLocator = () => this.page.locator('button[type="submit"]')
     submit = () => this.submitLocator().click()
 
