@@ -55,8 +55,8 @@ When('I select question {string}', async function (question: string) {
     await this.quizCreatePage.selectQuestion(question)
 })
 
-When('I check randomized function', async function (isChecked: boolean) {
-    await this.quizCreatePage.selectRandomizedFunction(isChecked)
+When('I check randomized function', async function () {
+    await this.quizCreatePage.selectRandomizedFunction()
 })
 
 When('I submit the quiz', async function () {
