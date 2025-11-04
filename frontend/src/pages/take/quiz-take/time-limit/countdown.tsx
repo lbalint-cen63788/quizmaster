@@ -34,6 +34,6 @@ export const Countdown = ({ onTimeLimit, timeLimit }: CountdownProps) => {
     const seconds = Math.floor((timeLeft % 60000) / 1000)
 
     return (
-        <div data-testId="timerID">{`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</div>
+        <div data-testid="timerID">{`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</div>
     )
 }

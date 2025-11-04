@@ -8,7 +8,7 @@ export const QuestionEdit = ({ question, setQuestion }: QuestionEditProps) => (
         <label htmlFor="question-text">Enter your question:</label>
         <div className="row">
             <textarea
-                data-testId="creation-textarea"
+                data-testid="creation-textarea"
                 id="question-text"
                 value={question}
                 onChange={e => setQuestion(e.target.value)}
