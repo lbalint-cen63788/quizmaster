@@ -23,6 +23,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
     const [timeLimit, setTimeLimit] = useState<number>(600)
     const [passScore, setPassScore] = useState<number>(80)
     const [isSubmitted, setIsSubmitted] = useState(false)
+    const [filter, setFilter] = useState<string>('')
     const [searchParams] = useSearchParams()
 
     const toFormData = (): QuizCreateFormData => ({
@@ -40,6 +41,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
     const timeLimitError = timeLimit < 0 ? 'negativeTimeLimit' : timeLimit > 21600 ? 'timeLimitAboveMax' : undefined
     const passScoreError = passScore > 100 ? 'scoreAboveMax' : undefined
     const atLeastOneQuestionError = isSubmitted && selectedIds.size === 0 ? 'atLeastOneQuestionRequired' : undefined
+
 
     return (
         <form
@@ -63,6 +65,9 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
             </Field>
 
             <div className="label">Select quiz questions</div>
+            <Field label="Filter" isSubmitted={isSubmitted}>
+                <TextInput id="question-filter" value={filter} onChange={setFilter} />
+            </Field>
             <QuestionSelect questions={questions} onSelect={toggleSelectedId} />
             {atLeastOneQuestionError && <FormFieldError errorCode="atLeastOneQuestionRequired" />}
             <SubmitButton />

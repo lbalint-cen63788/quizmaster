@@ -66,6 +66,10 @@ When('I enter time limit {string}', async function (limit: string) {
     await this.quizCreatePage.timeLimitInput().fill(limit)
 })
 
+When('I filter questions by {string}', async function (s: string) {
+    await this.quizCreatePage.enterFilterString(s);
+})
+
 Then('I display the quiz statistics', async function () {
     await this.quizCreatePage.showQuizStatistics()
 })
@@ -92,10 +96,6 @@ Then('I see error messages in quiz form', async function (table: DataTable) {
 
 Then('I see no error messages in quiz form', async function () {
     await this.quizCreatePage.hasAnyError().then(result => expect(result).toBe(false))
-})
-
-When('I filter questions by {string}', (_s: string) => {
-    fail('Not implemented yet')
 })
 
 Then("I don't see questions in quiz creation form", () => {
