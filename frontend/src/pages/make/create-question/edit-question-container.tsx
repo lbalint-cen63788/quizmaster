@@ -1,14 +1,13 @@
-import './create-question.scss'
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useApi } from 'api/hooks'
 import { useNavigate } from 'react-router-dom'
 import { type QuestionApiData, fetchQuestionByEditId, updateQuestion, deleteQuestion } from 'api/question.ts'
 
-import { emptyQuestionFormData, toQuestionApiData, toQuestionFormData } from './form'
-import { CreateQuestionForm } from './create-question'
+import { emptyQuestionFormData, QuestionEditForm, toQuestionApiData, toQuestionFormData } from './form'
 import { validateQuestionFormData } from './validators'
-import type { ErrorCodes } from './form/error-message'
+import { ErrorMessages, type ErrorCodes } from './form/error-message'
+import { LoadedIndicator, QuestionEditLink, QuestionLink } from './components.tsx'
 
 export function EditQuestionContainer() {
     const params = useParams()
@@ -58,17 +57,19 @@ export function EditQuestionContainer() {
     return (
         <>
             <h1 data-testid="edit-question-title">Edit Question</h1>
-            <CreateQuestionForm
-                errors={errors}
-                handleSubmit={handleSubmit}
-                isLoaded={isLoaded}
-                linkToEditQuestion={linkToEditQuestion}
-                linkToQuestion={linkToQuestion}
-                questionData={questionData}
-                setQuestionData={setQuestionData}
-                isEdit={true}
-                handleQuestionDelete={handleQuestionDelete}
-            />
+            <div className="question-page">
+                <QuestionEditForm
+                    questionData={questionData}
+                    setQuestionData={setQuestionData}
+                    onSubmit={handleSubmit}
+                    isEdit={true}
+                    handleQuestionDelete={handleQuestionDelete}
+                />
+                <ErrorMessages errorCodes={errors} />
+                <QuestionLink url={linkToQuestion} />
+                <QuestionEditLink editUrl={linkToEditQuestion} />
+                <LoadedIndicator isLoaded={isLoaded} />
+            </div>
         </>
     )
 }

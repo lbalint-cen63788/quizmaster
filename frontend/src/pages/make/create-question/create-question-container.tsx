@@ -3,10 +3,10 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { type QuestionApiData, saveQuestion } from 'api/question.ts'
 
-import { emptyQuestionFormData, toQuestionApiData } from './form'
-import { CreateQuestionForm } from './create-question'
-import type { ErrorCodes } from './form/error-message'
+import { emptyQuestionFormData, QuestionEditForm, toQuestionApiData } from './form'
+import { ErrorMessages, type ErrorCodes } from './form/error-message'
 import { validateQuestionFormData } from './validators'
+import { LoadedIndicator, QuestionEditLink, QuestionLink } from './components.tsx'
 
 export function CreateQuestionContainer() {
     const [searchParams] = useSearchParams()
@@ -57,17 +57,19 @@ export function CreateQuestionContainer() {
     return (
         <>
             <h1>Create Question</h1>
-            <CreateQuestionForm
-                errors={errors}
-                handleSubmit={handleSubmit}
-                isLoaded={true}
-                linkToEditQuestion={linkToEditQuestion}
-                linkToQuestion={linkToQuestion}
-                questionData={questionData}
-                setQuestionData={setQuestionData}
-                isEdit={false}
-                handleQuestionDelete={handleQuestionDelete}
-            />
+            <div className="question-page">
+                <QuestionEditForm
+                    questionData={questionData}
+                    setQuestionData={setQuestionData}
+                    onSubmit={handleSubmit}
+                    isEdit={false}
+                    handleQuestionDelete={handleQuestionDelete}
+                />
+                <ErrorMessages errorCodes={errors} />
+                <QuestionLink url={linkToQuestion} />
+                <QuestionEditLink editUrl={linkToEditQuestion} />
+                <LoadedIndicator isLoaded={true} />
+            </div>
         </>
     )
 }
