@@ -1,9 +1,9 @@
 .field {
-    display: block;
-    margin-bottom: 1rem;
-}
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 
-.label {
-    font-weight: bold;
-    margin-bottom: .5rem;
+    .label {
+        font-weight: bold;
+    }
 }

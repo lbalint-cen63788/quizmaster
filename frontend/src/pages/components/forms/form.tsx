@@ -1,3 +1,4 @@
+import './form.scss'
 import { preventDefault } from 'helpers.ts'
 
 interface FormProps {
