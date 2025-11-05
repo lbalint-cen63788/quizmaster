@@ -5,5 +5,9 @@
 
     .label {
         font-weight: bold;
+
+        .required {
+            color: red;
+        }
     }
 }

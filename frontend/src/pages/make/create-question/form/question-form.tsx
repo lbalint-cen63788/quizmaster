@@ -25,7 +25,7 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
 
     return (
         <Form id="question-create-form" onSubmit={handleSubmit}>
-            <Field label="Question">
+            <Field label="Question" required>
                 <TextArea id="question-text" value={state.questionText} onChange={state.setQuestionText} />
             </Field>
             <div className="questiion-options">

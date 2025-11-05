@@ -4,13 +4,16 @@ import { FormFieldError, type FormFieldErrorCode } from './form-field-error'
 interface FieldProps {
     readonly label: string
     readonly children: React.ReactNode
+    readonly required?: boolean
     readonly isSubmitted?: boolean
     readonly errorCode?: FormFieldErrorCode
 }
 
-export const Field = ({ label, children, errorCode, isSubmitted = false }: FieldProps) => (
+const Required = () => <span className="required">*</span>
+
+export const Field = ({ label, children, required = false, errorCode, isSubmitted = false }: FieldProps) => (
     <label className="field">
-        <div className="label">{label}</div>
+        <div className="label">{label} {required && <Required/>}</div>
         {children}
         {isSubmitted && errorCode && <FormFieldError errorCode={errorCode} />}
     </label>

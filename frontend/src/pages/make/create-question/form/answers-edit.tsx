@@ -28,7 +28,7 @@ interface AnswersProps {
 
 export const AnswersEdit = ({ answerStates, isMultipleChoice, addAnswer }: AnswersProps) => {
     return (
-        <Field label="Enter your answers">
+        <Field label="Enter your answers" required>
             {answerStates.map(state => (
                 <AnswerRow state={state} isMultipleChoice={isMultipleChoice} />
             ))}
