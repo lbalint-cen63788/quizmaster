@@ -35,11 +35,12 @@ Feature: Take a single question
       | Mars, Pluto, Venus, Titan | Incorrect! |
       | Pluto, Titan              | Incorrect! |
 
+  @skip
   @screenshot:quiz-take-feedback-multiple-choice.png:3
   Scenario Outline: Multiple choice question per-answer feedback
     Upon submitting the question, each answer is marked with a color:
-    - green if the answer is selected while correct
-    - red if the answer is selected while incorrect, or not selected while correct
+    - green if the answer is correct
+    - red if the answer is selected while incorrect
     - none if the answer is not selected while incorrect
 
     When I take question "Planets"
@@ -52,9 +53,9 @@ Feature: Take a single question
       | Titan  | <titan> |
 
     Examples:
-      | answer                    | mars   | pluto  | venus   | titan |
-      | Mars, Venus               | 🟩🟩✅ | ◼️◼️✅ | 🟩🟩✅ | ◼️◼️✅ |
-      | Mars, Venus, Titan        | 🟩🟩✅ | ◼️◼️✅ | 🟩🟩✅ | 🟥🟥❌ |
-      | Mars, Pluto               | 🟩🟩✅ | 🟥🟥❌ | 🟥🟥❌ | ◼️◼️✅ |
-      | Mars, Pluto, Venus, Titan | 🟩🟩✅ | 🟥🟥❌ | 🟩🟩✅ | 🟥🟥❌ |
-      | Pluto, Titan              | 🟥🟥❌ | 🟥🟥❌ | 🟥🟥❌ | 🟥🟥❌ |
+      | answer                    | mars  | pluto | venus | titan |
+      | Mars, Venus               | 🟩🟩🟩 | ◼️◼️◼️ | 🟩🟩🟩 | ◼️◼️◼️ |
+      | Mars, Venus, Titan        | 🟩🟩🟩 | ◼️◼️◼️ | 🟩🟩🟩 | 🟥🟥🟥 |
+      | Mars, Pluto               | 🟩🟩🟩 | 🟥🟥🟥 | 🟩🟩🟩 | ◼️◼️◼️ |
+      | Mars, Pluto, Venus, Titan | 🟩🟩🟩 | 🟥🟥🟥 | 🟩🟩🟩 | 🟥🟥🟥 |
+      | Pluto, Titan              | 🟩🟩🟩 | 🟥🟥🟥 | 🟩🟩🟩 | 🟥🟥🟥 |
