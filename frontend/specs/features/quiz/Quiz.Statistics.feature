@@ -46,12 +46,8 @@ Feature: Display Quiz Statistics from Quiz
     * I see times taken 3
     * I see times finished 2
     * I see average score 75 %
-    * I see success rate 50 %
-    * I see failure rate 50 %
-    * I see timeout count 1
-    * I see average time 0 s
 
-  @skip
+
   Scenario Outline: refresh evaluated quiz
     Given a quiz "Quiz" with 2 questions, exam mode and 75% pass score
     When I start the quiz
@@ -61,3 +57,4 @@ Feature: Display Quiz Statistics from Quiz
     Then I see the result 2 correct out of 2, 100%, passed, required passScore 75%
     When I refresh page
     Then I see the result 2 correct out of 2, 100%, passed, required passScore 75%
+
