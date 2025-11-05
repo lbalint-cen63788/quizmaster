@@ -30,15 +30,14 @@ Feature: Create Quiz from Workspace
     And I see quiz question "3 * 3 = ?"
     And I see quiz question "4 / 2 = ?"
 
-  @skip
   Scenario: Create quiz with 4 questions
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"
     * I enter quiz description "Very hard math quiz"
     * I select question "2 + 2 = ?"
     * I select question "4 / 2 = ?"
-    * I select question "4 * 2 = ?"
-    * I select question "4 - 2 = ?"
+    * I select question "Jaký nábytek má Ikea?"
+    * I select question "Jaké nádobí má Ikea?"
     * I check randomized function
     * I enter number of randomized questions in quiz 3
     * I submit the quiz

@@ -14,7 +14,7 @@ export class QuizCreatePage {
     getQuizTitleValue = () => this.page.locator('#quiz-title').inputValue()
     getQuizDescriptionValue = () => this.page.locator('#quiz-description').inputValue()
     enterQuizName = (title: string) => this.page.locator('#quiz-title').fill(title)
-    enterQuizFinalCount = (finalCount: string) => this.page.locator('#quiz-finalCount').fill(finalCount)
+    enterQuizFinalCount = (finalCount: string) => this.page.locator('#quiz-finalCount').fill(finalCount.toString())
     enterDescription = (description: string) => this.page.locator('#quiz-description').fill(description)
     private quizUrlLocator = () => this.page.locator('.alert.success a')
     takeQuiz = () => this.quizUrlLocator().click()
