@@ -4,9 +4,10 @@ Feature: Take a quiz with partial score
     Given questions
       | bookmark | question                                              | answers                                      | explanation |
       | Planets  | Given a question "Which of the following are planets? | Mars (*), Pluto, Titan, Venus (*), Earth (*) | Planets     |
+      | Sky      | What is the standard colour of sky?                   | Red, Blue (*), Green, Black                  | Rayleigh    |
     Given quizes
-      | bookmark | title  | description   | questions | mode | pass score | time limit |
-      |       -1 | Quiz A | Description A | Planets   | exam |         50 |        120 |
+      | bookmark | title  | description   | questions    | mode | pass score | time limit |
+      | -1       | Quiz A | Description A | Planets, Sky | exam | 75         | 120        |
 
   Scenario Outline: Multiple choice question with score
     Question is scored as follows:
@@ -16,14 +17,15 @@ Feature: Take a quiz with partial score
 
     When I start the quiz
     And I answer "<answer>"
+    And I answer "Blue"
     And I click the evaluate button
-    Then I see the result <correct> correct out of 1, <percentage>%, <result>, required passScore 50%
+    Then I see the result <correct> correct out of 2, <percentage>%, <result>, required passScore 75%
 
     Examples:
       | answer                    | correct | percentage | result |
-      | Mars, Venus, Earth        |       1 |        100 | passed |
-      | Mars, Venus, Titan, Earth |     0.5 |         50 | passed |
-      | Mars, Venus               |     0.5 |         50 | passed |
-      | Mars, Pluto               |       0 |          0 | failed |
-      | Mars, Pluto, Venus, Titan |       0 |          0 | failed |
-      | Pluto, Titan              |       0 |          0 | failed |
+      | Mars, Venus, Earth        | 2       | 100        | passed |
+      | Mars, Venus, Titan, Earth | 1.5     | 75         | passed |
+      | Mars, Venus               | 1.5     | 75         | passed |
+      | Mars, Pluto               | 1       | 50         | failed |
+      | Mars, Pluto, Venus, Titan | 1       | 50         | failed |
+      | Pluto, Titan              | 1       | 50         | failed |
