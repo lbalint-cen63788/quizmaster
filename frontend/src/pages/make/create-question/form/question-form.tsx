@@ -1,9 +1,7 @@
-import { SubmitButton, Form } from 'pages/components'
+import { SubmitButton, Form, Field, TextArea } from 'pages/components'
 import {
     AnswersEdit,
     MultipleChoiceEdit,
-    QuestionEdit,
-    QuestionExplanationEdit,
     EasyModeChoiceEdit,
     stateToQuestionApiData,
 } from 'pages/make/create-question/form'
@@ -47,7 +45,9 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
 
     return (
         <Form id="question-create-form" onSubmit={handleSubmit}>
-            <QuestionEdit question={state.questionText} setQuestion={state.setQuestionText} />
+            <Field label="Question">
+                <TextArea id="question-text" value={state.questionText} onChange={state.setQuestionText} />
+            </Field>
             <div className="questiion-options">
                 <MultipleChoiceEdit
                     isMultipleChoice={state.isMultipleChoice}
@@ -67,10 +67,13 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
                 toggleCorrectAnswer={state.toggleCorrectAnswer}
                 addAnswer={state.addAnswer}
             />
-            <QuestionExplanationEdit
-                questionExplanation={state.questionExplanation}
-                setQuestionExplanation={state.setQuestionExplanation}
-            />
+            <Field label="Question explanation">
+                <TextArea
+                    id="question-explanation"
+                    value={state.questionExplanation}
+                    onChange={state.setQuestionExplanation}
+                />
+            </Field>
             <div className="flex-container">
                 <SubmitButton />
             </div>
