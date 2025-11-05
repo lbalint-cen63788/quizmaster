@@ -30,10 +30,13 @@ export const calculateScore = (
     correctAnswers: AnswerIdxs,
     isAnsweredCorrectly: boolean,
 ): QuestionFeedbackScore => {
-    const correctSelectedAnswers = selectedAnswerIdxs?.filter(item => correctAnswers.includes(item))
-    const wrongSelectedAnswers = selectedAnswerIdxs?.filter(item => !correctAnswers.includes(item))
-    const missingCorrectAnswers = correctAnswers?.length - correctSelectedAnswers?.length
-    const totalErrorCount = wrongSelectedAnswers?.length + missingCorrectAnswers
+    if (!selectedAnswerIdxs) {
+        return { score: 0, errorsCount: correctAnswers.length }
+    }
+    const correctSelectedAnswers = selectedAnswerIdxs.filter(item => correctAnswers.includes(item))
+    const wrongSelectedAnswers = selectedAnswerIdxs.filter(item => !correctAnswers.includes(item))
+    const missingCorrectAnswers = correctAnswers.length - correctSelectedAnswers.length
+    const totalErrorCount = wrongSelectedAnswers.length + missingCorrectAnswers
 
     if (isAnsweredCorrectly) {
         return { score: 1, errorsCount: totalErrorCount }
