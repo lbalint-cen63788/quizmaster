@@ -9,14 +9,15 @@ interface AnswerRowProps {
 
 export const AnswerRow = ({ state, isMultipleChoice }: AnswerRowProps) => (
     <div className="answer-row">
+
         <input
             type={isMultipleChoice ? 'checkbox' : 'radio'}
             checked={state.isCorrect}
             onChange={state.toggleCorrect}
         />
         <div>
-            <TextInput className="text" value={state.answer} onChange={state.setAnswer} />
-            <TextInput className="explanation" value={state.explanation} onChange={state.setExplanation} />
+            <TextInput placeholder='answer' className="text" value={state.answer} onChange={state.setAnswer} />
+            <TextInput placeholder='explanation' className="explanation" value={state.explanation} onChange={state.setExplanation} />
         </div>
     </div>
 )
