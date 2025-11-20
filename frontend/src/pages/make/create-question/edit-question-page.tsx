@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useApi } from 'api/hooks'
 import { fetchQuestionByEditId, type QuestionApiData, updateQuestion } from 'api/question.ts'
 
@@ -24,9 +24,12 @@ export function EditQuestionPage() {
         setLinkToEditQuestion(`${location.origin}/question/${questionEditId}/edit`)
         setIsLoaded(true)
     })
+    const navigate = useNavigate()
 
     const handleSubmit = (questionData: QuestionApiData) => {
-        updateQuestion(questionData, questionEditId)
+        updateQuestion(questionData, questionEditId).then(() => {
+            navigate(`/workspace/${questionData.workspaceGuid}`)
+        })
     }
 
     return (

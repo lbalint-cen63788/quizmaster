@@ -20,6 +20,7 @@ export interface QuestionFormState {
     readonly isMultipleChoice: boolean
     readonly easyMode: boolean
     readonly questionExplanation: string
+    readonly workspaceGuid: string
 }
 
 export const useQuestionFormState = (question?: Question) => {
@@ -32,6 +33,7 @@ export const useQuestionFormState = (question?: Question) => {
     const [correctAnswers, setCorrectAnswers] = useState<readonly number[]>(question?.correctAnswers || [])
 
     const [questionExplanation, setQuestionExplanation] = useState(question?.questionExplanation || '')
+    const [workspaceGuid, setWorkspaceGuid] = useState(question?.workspaceGuid || '')
 
     const toggleMultipleChoice = () => {
         if (isMultipleChoice && correctAnswers.length > 1) setCorrectAnswers([])
@@ -76,12 +78,14 @@ export const useQuestionFormState = (question?: Question) => {
         questionExplanation,
         isMultipleChoice,
         easyMode,
+        workspaceGuid,
 
         setQuestionText,
         addAnswer,
         setQuestionExplanation,
         toggleMultipleChoice,
         setEasyMode,
+        setWorkspaceGuid
     }
 }
 
@@ -89,7 +93,7 @@ export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiDat
     return {
         question: state.questionText,
         editId: '',
-        workspaceGuid: '',
+        workspaceGuid: state.workspaceGuid,
         answers: Array.from(state.answers),
         correctAnswers: Array.from(state.correctAnswers),
         explanations: Array.from(state.explanations),
