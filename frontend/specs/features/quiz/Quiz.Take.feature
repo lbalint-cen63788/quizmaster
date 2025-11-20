@@ -10,6 +10,35 @@ Feature: Take a quiz
       | bookmark | questions                | mode  | pass score | time limit |
       | Exam     | Planet, Australia, Fruit | exam  | 100        | 120        |
       | Learn    | Planet, Australia, Fruit | learn | 100        | 120        |
+    And a workspace with questions
+      | question                       | answers            |
+      | Jaký nábytek má Ikea?          | Stůl (*), Auto     |
+      | Jaké nádobí má Ikea?           | Talíř (*), Kolo    |
+
+  Scenario: Exam mode - UI
+    When I start creating a new quiz
+    And I enter quiz name "Math Quiz"
+    And I select feedback mode "EXAM"
+    And I select question "Jaký nábytek má Ikea?"
+    And I select question "Jaké nádobí má Ikea?"
+    And I submit the quiz
+    Then I see the quiz "Math Quiz" in the workspace
+    And I take quiz "Math Quiz"
+    And I click the start button
+    And I see question "Jaký nábytek má Ikea?"
+    And I see feedback mode "EXAM"
+
+   Scenario: Learn mode - UI
+    When I start creating a new quiz
+    And I enter quiz name "Math Quiz"
+    And I select feedback mode "LEARN"
+    And I select question "Jaký nábytek má Ikea?"
+    And I select question "Jaké nádobí má Ikea?"
+    And I submit the quiz
+    Then I see the quiz "Math Quiz" in the workspace
+    And I take quiz "Math Quiz"
+    And I see question "Jaký nábytek má Ikea?"
+    And I see feedback mode "LEARN"
 
   Scenario: Exam mode
     - Quiz in exam mode does not show feedback until the quiz is finished

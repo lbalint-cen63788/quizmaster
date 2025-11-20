@@ -1,13 +1,31 @@
 import type { Page } from '@playwright/test'
 
 export class QuizCreatePage {
-    constructor(private page: Page) {}
+    constructor(private page: Page) { }
     timeLimitInput = () => this.page.locator('#time-limit')
     passScoreInput = () => this.page.locator('#pass-score')
     questionsInList = () => this.page.locator('.create-quiz > .question-item')
     getQuestion = (question: string) => this.page.locator('label', { hasText: question })
     selectQuestion = (question: string) => this.page.locator('label', { hasText: question }).click()
     selectRandomizedFunction = () => this.page.locator('#isRandomized').check()
+    selectFeedbackMode = (mode: string) => {
+        let modeElementId: string | undefined;
+        if (mode === 'EXAM') {
+            modeElementId = '#exam-mode';
+        } else if (mode === 'LEARN') {
+            modeElementId = '#learn-mode';
+        }
+        if (modeElementId) {
+            const radio = this.page.locator(modeElementId);
+            radio.check();
+        } else {
+            throw new Error(`Invalid feedback mode: ${mode}`);
+        }
+    }
+
+    feedbackModeElement = () => {
+        return this.page.locator('#feedback-mode');
+    }
     private submitLocator = () => this.page.locator('button[type="submit"]')
     submit = () => this.submitLocator().click()
 

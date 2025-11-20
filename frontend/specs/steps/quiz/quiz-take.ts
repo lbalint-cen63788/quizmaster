@@ -1,5 +1,7 @@
-import { When } from '../fixture.ts'
+import { expect } from '@playwright/test'
+import { When, Then } from '../fixture.ts'
 import type { QuizmasterWorld } from '../world/world.ts'
+import { expectTextToBe } from '../common.ts'
 
 const answer = async (world: QuizmasterWorld, n: number) => {
     await world.takeQuestionPage.selectAnswerNth(n)
@@ -31,4 +33,11 @@ When('I answer {int} questions correctly', async function (correct: number) {
 
 When('I answer {int} questions incorrectly', async function (incorrect: number) {
     await nTimes(incorrect, answerIncorrectly(this))
+})
+
+Then('I see feedback mode {string}', async function (modeLabel: string) {
+    const feedbackModeElement = this.quizCreatePage.feedbackModeElement();
+    const feedbackModeElementLabel = feedbackModeElement.locator('xpath=..').locator('label');
+    await expect(feedbackModeElement).toBeVisible();
+    await expectTextToBe(feedbackModeElementLabel, modeLabel);
 })
