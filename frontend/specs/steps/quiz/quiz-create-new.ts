@@ -68,9 +68,9 @@ When('I check randomized function', async function () {
 
 When('I select feedback mode {string}', async function (mode: string) {
     if (mode === 'EXAM') {
-        await this.quizCreatePage.selectFeedbackMode("EXAM")
+        await this.quizCreatePage.selectFeedbackMode('EXAM')
     } else if (mode === 'LEARN') {
-        await this.quizCreatePage.selectFeedbackMode("LEARN")
+        await this.quizCreatePage.selectFeedbackMode('LEARN')
     } else {
         throw new Error(`Unknown feedback mode: ${mode}`)
     }
