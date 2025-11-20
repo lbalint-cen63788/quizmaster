@@ -17,7 +17,7 @@ export class QuizCreatePage {
         }
         if (modeElementId) {
             const radio = this.page.locator(modeElementId)
-            radio.click()
+            radio.check()
         } else {
             throw new Error(`Invalid feedback mode: ${mode}`)
         }
