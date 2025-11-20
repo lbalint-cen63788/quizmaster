@@ -12,6 +12,11 @@ export class QuestionEditPage {
     enterQuestion = (question: string) => this.questionLocator().fill(question)
     questionValue = () => this.questionLocator().inputValue()
 
+    private showAnswerExplanationLocator = () => this.page.locator('#show-answer-explanations')
+    answerExplanationsVisible = () => this.showAnswerExplanationLocator().isChecked()
+    showAnswerExplanations = () => this.showAnswerExplanationLocator().check()
+    hideAnswerExplanations = () => this.showAnswerExplanationLocator().uncheck()
+
     private multipleChoiceLocator = () => this.page.locator('#is-multiple-choice')
     isMultipleChoice = () => this.multipleChoiceLocator().isChecked()
     setMultipleChoice = () => this.multipleChoiceLocator().check()

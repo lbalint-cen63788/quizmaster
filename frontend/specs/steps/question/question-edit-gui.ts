@@ -46,6 +46,11 @@ Then('I see {string} in the question field', async function (question: string) {
     expect(questionValue).toBe(question)
 })
 
+Then(/I see add answer explanations is (unchecked|checked)/, async function (value: string) {
+    const answerExplanationsShown = await this.questionEditPage.answerExplanationsVisible()
+    expect(answerExplanationsShown).toBe(value === 'checked')
+})
+
 Then(/I see multiple choice is (unchecked|checked)/, async function (value: string) {
     const isMultipleChoice = await this.questionEditPage.isMultipleChoice()
     expect(isMultipleChoice).toBe(value === 'checked')
