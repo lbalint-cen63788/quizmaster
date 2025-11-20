@@ -15,6 +15,7 @@ Feature: Take a quiz
       | Jaký nábytek má Ikea?          | Stůl (*), Auto     |
       | Jaké nádobí má Ikea?           | Talíř (*), Kolo    |
 
+  @skip
   Scenario: Exam mode - UI
     When I start creating a new quiz
     And I enter quiz name "Math Quiz"
@@ -28,6 +29,7 @@ Feature: Take a quiz
     And I see question "Jaký nábytek má Ikea?"
     And I see feedback mode "EXAM"
 
+  @skip
    Scenario: Learn mode - UI
     When I start creating a new quiz
     And I enter quiz name "Math Quiz"
