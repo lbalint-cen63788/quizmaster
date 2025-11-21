@@ -68,7 +68,7 @@ When('I check randomized function', async function () {
 })
 
 When('I select feedback mode {string}', async function (inputMode: string) {
-    let mode = inputMode.toLowerCase() as QuizMode
+    const mode = inputMode.toLowerCase() as QuizMode
     if (mode === 'exam') {
         await this.quizCreatePage.selectFeedbackMode('exam')
     } else if (mode === 'learn') {
