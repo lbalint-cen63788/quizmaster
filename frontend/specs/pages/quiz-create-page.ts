@@ -6,21 +6,12 @@ export class QuizCreatePage {
     passScoreInput = () => this.page.locator('#pass-score')
     questionsInList = () => this.page.locator('.create-quiz > .question-item')
     getQuestion = (question: string) => this.page.locator('label', { hasText: question })
-    selectQuestion = (question: string) => this.page.locator('label', { hasText: question }).click()
+    selectQuestion = async (question: string) => this.page.locator('label', { hasText: question }).click()
     selectRandomizedFunction = () => this.page.locator('#isRandomized').check()
-    selectFeedbackMode = (mode: string) => {
-        let modeElementId: string | undefined
-        if (mode === 'EXAM') {
-            modeElementId = '#exam-mode'
-        } else if (mode === 'LEARN') {
-            modeElementId = '#learn-mode'
-        }
-        if (modeElementId) {
-            const radio = this.page.locator(modeElementId)
-            radio.check({ force: true })
-        } else {
-            throw new Error(`Invalid feedback mode: ${mode}`)
-        }
+    selectFeedbackMode = async (mode: string) => {
+        const modeElementId = mode === 'learn' ? '#learn-mode' : '#exam-mode'
+        const radio = this.page.locator(modeElementId)
+        await radio.check()
     }
 
     feedbackModeElement = () => {

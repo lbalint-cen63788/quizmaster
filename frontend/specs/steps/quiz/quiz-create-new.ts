@@ -3,6 +3,7 @@ import { expectedNumberOfChildrenToBe } from '../common.ts'
 import { Then, When } from '../fixture.ts'
 import type { DataTable } from '@cucumber/cucumber'
 import { fail } from 'node:assert'
+import { QuizMode } from '../world/quiz.ts'
 
 When('I start creating a new quiz', async function () {
     await this.workspacePage.createNewQuiz()
@@ -66,13 +67,12 @@ When('I check randomized function', async function () {
     await this.quizCreatePage.selectRandomizedFunction()
 })
 
-When('I select feedback mode {string}', async function (mode: string) {
-    if (mode === 'EXAM') {
-        await this.quizCreatePage.selectFeedbackMode('EXAM')
-    } else if (mode === 'LEARN') {
-        await this.quizCreatePage.selectFeedbackMode('LEARN')
-    } else {
-        throw new Error(`Unknown feedback mode: ${mode}`)
+When('I select feedback mode {string}', async function (inputMode: string) {
+    let mode = inputMode.toLowerCase() as QuizMode
+    if (mode === 'exam') {
+        await this.quizCreatePage.selectFeedbackMode('exam')
+    } else if (mode === 'learn') {
+        await this.quizCreatePage.selectFeedbackMode('learn')
     }
 })
 
