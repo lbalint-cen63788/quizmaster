@@ -4,6 +4,7 @@ import cz.scrumdojo.quizmaster.question.Question;
 import cz.scrumdojo.quizmaster.question.QuestionRepository;
 import cz.scrumdojo.quizmaster.quiz.Quiz;
 import cz.scrumdojo.quizmaster.quiz.QuizMode;
+import cz.scrumdojo.quizmaster.quiz.EasyMode;
 import cz.scrumdojo.quizmaster.quiz.QuizRepository;
 import cz.scrumdojo.quizmaster.workspace.Workspace;
 import cz.scrumdojo.quizmaster.workspace.WorkspaceRepository;
@@ -73,6 +74,7 @@ public class TestFixtures {
             .title("Test Quiz")
             .description("Test Description")
             .mode(QuizMode.LEARN)
+            .easyMode(EasyMode.PERQUESTION)
             .passScore(85)
             .questionIds(questionIds)
             .size(questions.length)
