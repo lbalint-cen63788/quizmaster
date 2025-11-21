@@ -35,10 +35,10 @@ public class Quiz {
 
     private int passScore;
     private Integer timeLimit; // time limit in seconds, null means no limit
-    
+
     @Column(nullable = true)
     private String workspaceGuid; // Workspace GUID
-    
+
     private Integer size;
 
     @Column(nullable = true)
