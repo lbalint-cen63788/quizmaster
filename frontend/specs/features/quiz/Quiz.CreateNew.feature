@@ -30,7 +30,6 @@ Feature: Create Quiz from Workspace
     And I see quiz question "3 * 3 = ?"
     And I see quiz question "4 / 2 = ?"
 
-  @skip
   Scenario: Create quiz with 4 questions
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"

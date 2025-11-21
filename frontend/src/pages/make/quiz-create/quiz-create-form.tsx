@@ -105,6 +105,23 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
             <QuestionSelect questions={filteredQuestions} onSelect={toggleSelectedId} />
             <ErrorMessage errorCode="few-questions" />
 
+            <div style={{ paddingLeft: '25px' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ fontWeight: 800 }} id="selected-question-count-for-quiz">
+                        {selectedIds.size}
+                    </div>
+                    selected question(s)
+                </span>
+            </div>
+            <div style={{ paddingLeft: '25px' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ fontWeight: 800 }} id="total-question-count-for-quiz">
+                        {questions.length}
+                    </div>
+                    total questions available
+                </span>
+            </div>
+
             <Field label="Randomize questions">
                 <input
                     type="checkbox"
