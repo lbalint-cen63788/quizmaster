@@ -32,7 +32,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
     const [feedbackMode, setFeedbackMode] = useState<QuizMode>('EXAM')
 
     const validator = createValidator(
-        () => validateQuizForm({ title, description, timeLimit, passScore, selectedIds }),
+        () => validateQuizForm({ title, description, timeLimit, passScore, selectedIds, finalCount }),
         errorMessage,
     )
 
@@ -131,7 +131,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
                 />
                 {checkRandomize && <NumberInput id="quiz-finalCount" value={finalCount} onChange={setFinalCount} />}
             </Field>
-
+            <ErrorMessage errorCode="too-many-randomized-questions"/>
             <SubmitButton />
         </Form>
     )

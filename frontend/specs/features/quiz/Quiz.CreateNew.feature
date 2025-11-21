@@ -49,7 +49,6 @@ Feature: Create Quiz from Workspace
     * I see quiz description "Very hard math quiz"
     * I see question count 3
 
-  @skip
   Scenario: Create quiz with more questions in randomized than available
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"
