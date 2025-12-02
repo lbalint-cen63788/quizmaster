@@ -153,7 +153,7 @@ Scenario: Submit button is visible as inactive when no answer is checked
     When I uncheck answer "Elephant"
     Then I see the submit button as inactive
 
-@skip
+
   Scenario: When I click next button answer is submitted
     Given questions
       | bookmark | question                            | answers                                            |
@@ -167,3 +167,4 @@ Scenario: Submit button is visible as inactive when no answer is checked
     Then I see question "France"
     When I click the back button
     Then I see answer "Elephant" checked
+
