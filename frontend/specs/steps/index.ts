@@ -16,3 +16,5 @@ import './quiz/quiz-score.ts'
 import './quiz/quiz-take.ts'
 import './quiz/quiz-welcome.ts'
 import './quiz/quiz.ts'
+
+import './quiz/quiz-stats.ts'

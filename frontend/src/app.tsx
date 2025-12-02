@@ -10,6 +10,7 @@ import { CreateQuestionPage } from 'pages/make/create-question/create-question-p
 import { EditQuestionPage } from 'pages/make/create-question/edit-question-page'
 import { WorkspaceContainer } from 'pages/make/workspace/workspace-container'
 import { QuizCreatePage } from 'pages/make/quiz-create/quiz-create-page.tsx'
+import { QuizStatsPage } from 'pages/make/quiz-stats/quiz-stats-page'
 
 export const App = () => (
     <BrowserRouter>
@@ -23,6 +24,7 @@ export const App = () => (
             <Route path="/question/:id/edit" element={<EditQuestionPage />} />
             <Route path="/question/:id" element={<QuestionTakePage />} />
             <Route path="/" element={<HomePage />} />
+            <Route path="/quiz/:id/stats" element={<QuizStatsPage />} />'
         </Routes>
     </BrowserRouter>
 )
