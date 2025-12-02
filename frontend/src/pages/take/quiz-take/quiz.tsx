@@ -75,7 +75,9 @@ export const QuestionForm = (props: QuestionProps) => {
 
             // Pokud po odeslání budou zodpovězeny všechny otázky, přejdeme na vyhodnocení,
             // jinak pokračujeme na další otázku
-            const allAnswered = props.quiz.questions.every((_, idx) => updatedQuizAnswers.finalAnswers[idx] !== undefined)
+            const allAnswered = props.quiz.questions.every(
+                (_, idx) => updatedQuizAnswers.finalAnswers[idx] !== undefined,
+            )
 
             if (allAnswered) {
                 props.onEvaluate(updatedQuizAnswers)
