@@ -6,12 +6,15 @@ import cz.scrumdojo.quizmaster.quiz.Quiz;
 import cz.scrumdojo.quizmaster.quiz.QuizMode;
 import cz.scrumdojo.quizmaster.quiz.EasyMode;
 import cz.scrumdojo.quizmaster.quiz.QuizRepository;
+import cz.scrumdojo.quizmaster.stats.Stats;
 import cz.scrumdojo.quizmaster.workspace.Workspace;
 import cz.scrumdojo.quizmaster.workspace.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Component
 public class TestFixtures {
@@ -42,6 +45,11 @@ public class TestFixtures {
             .correctAnswers(new int[]{1})
             .explanations(new String[]{"No", "Correct!", "No", "No"})
             .isEasyMode(false);
+    }
+    public Stats.StatsBuilder stats() {
+        return Stats.builder()
+            .id(1)
+            .startedAt(LocalDate.now());
     }
 
     public Question.QuestionBuilder questionIn(Workspace workspace) {
