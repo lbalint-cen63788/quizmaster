@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { BookmarkList } from './components/bookmark-list.tsx'
 import { TimeLimit } from './time-limit/with-time-limit.tsx'
 import { useQuizAnswersState, type QuizAnswers } from './quiz-answers-state.ts'
-import { updated } from 'helpers'
 import { useQuizNavigationState } from './quiz-navigation-state.ts'
 import { useQuizBookmarkState } from './quiz-bookmark-state.ts'
 
@@ -51,9 +50,12 @@ export const QuestionForm = (props: QuestionProps) => {
     }
 
     const currentQuestion = props.quiz.questions[nav.currentQuestionIdx]
-    const currentAnswers = quizAnswers.finalAnswers[nav.currentQuestionIdx]
-    const isAnswered = currentAnswers !== undefined
     const hasSelectedAnswer = selectedAnswers !== undefined && selectedAnswers.length > 0
+    // Zohledníme i právě vybranou odpověď (ještě neuloženou) při rozhodování, zda jsou všechny otázky odpovězené
+    const allAnsweredNow = props.quiz.questions.every(
+        (_, idx) =>
+            quizAnswers.finalAnswers[idx] !== undefined || (idx === nav.currentQuestionIdx && hasSelectedAnswer),
+    )
 
     // Funkce pro Next button - dělá skip/submit/next/evaluate
     const handleNextButton = () => {
@@ -67,23 +69,8 @@ export const QuestionForm = (props: QuestionProps) => {
         } else {
             // Pokud je zodpovězeno, submitni odpověď
             answer(selectedAnswers)
-            // Sestavíme aktualizovaný objekt QuizAnswers (react state update je asynchronní)
-            const updatedQuizAnswers: QuizAnswers = {
-                firstAnswers: quizAnswers.firstAnswers,
-                finalAnswers: updated(quizAnswers.finalAnswers, nav.currentQuestionIdx, selectedAnswers),
-            }
-
-            // Pokud po odeslání budou zodpovězeny všechny otázky, přejdeme na vyhodnocení,
-            // jinak pokračujeme na další otázku
-            const allAnswered = props.quiz.questions.every(
-                (_, idx) => updatedQuizAnswers.finalAnswers[idx] !== undefined,
-            )
-
-            if (allAnswered) {
-                props.onEvaluate(updatedQuizAnswers)
-            } else {
-                nav.next()
-            }
+            // Po odeslání odpovědi vždy pokračujeme dál — evaluaci spouští pouze Evaluate button.
+            nav.next()
         }
     }
 
@@ -94,6 +81,14 @@ export const QuestionForm = (props: QuestionProps) => {
         } else {
             answerAndNext(answers)
         }
+    }
+
+    // Funkce pro Back button - také submitne aktuální výběr před návratem
+    const handleBackButton = () => {
+        if (hasSelectedAnswer) {
+            answer(selectedAnswers)
+        }
+        nav.back()
     }
 
     return (
@@ -121,9 +116,9 @@ export const QuestionForm = (props: QuestionProps) => {
             <div
                 style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '10px', marginBottom: '20px' }}
             >
-                {nav.canBack && <BackButton onClick={nav.back} />}
+                {nav.canBack && <BackButton onClick={handleBackButton} />}
                 {nav.canNext && <NextButton onClick={handleNextButton} />}
-                {isAnswered && !nav.canNext && <EvaluateButton onClick={evaluate} />}
+                {allAnsweredNow && nav.isLastQuestion && <EvaluateButton onClick={evaluate} />}
                 <BookmarkButton isBookmarked={bookmarks.has(nav.currentQuestionIdx)} onClick={bookmark} />
             </div>
 
