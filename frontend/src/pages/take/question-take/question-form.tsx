@@ -10,6 +10,7 @@ import {
 } from 'pages/take/question-take'
 import { QuestionScore } from './components/question-score'
 import type { QuizMode, EasyMode } from 'model/quiz.ts'
+import { Form } from 'pages/components'
 
 export interface QuestionFormProps {
     readonly question: Question
@@ -31,6 +32,15 @@ export const QuestionForm = (props: QuestionFormProps) => {
         props.onAnswerSelected?.(state.selectedAnswerIdxs)
     }, [state.selectedAnswerIdxs, props])
 
+    const handleSubmit = () => {
+        if (state.selectedAnswerIdxs.length > 0) {
+            state.submit()
+            props.onSubmitted?.(state.selectedAnswerIdxs)
+        }
+    }
+
+    const isAnswerChecked = state.selectedAnswerIdxs.length > 0
+
     const correctAnswersCount = correctAnswers.length
 
     // Determine if easy mode should be displayed based on quiz easy mode setting
@@ -43,7 +53,7 @@ export const QuestionForm = (props: QuestionFormProps) => {
         : easyMode // No quiz context - use question's easy mode (standalone question)
 
     return (
-        <div id="question-form">
+        <Form onSubmit={handleSubmit} id="question-form">
             <fieldset className="question-fieldset" name={`question-${props.question.id}`}>
                 <legend>
                     <h1 id="question">{props.question.question}</h1>
@@ -72,6 +82,10 @@ export const QuestionForm = (props: QuestionFormProps) => {
                         />
                     ))}
                 </ul>
+
+                {!state.submitted && (
+                    <input type="submit" value="Submit" className="submit-btn" disabled={!isAnswerChecked} />
+                )}
                 {state.submitted && props.mode === 'LEARN' && (
                     <>
                         <QuestionCorrectness
@@ -84,6 +98,6 @@ export const QuestionForm = (props: QuestionFormProps) => {
                     </>
                 )}
             </fieldset>
-        </div>
+        </Form>
     )
 }

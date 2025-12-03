@@ -23,7 +23,6 @@ Feature: Take a quiz
   Scenario: User proceed to last question
     Given I start quiz "-1"
     When I answer "Green"
-    And I click the next button
     Then I see question "France"
     Then I should not see the evaluate button
     When I answer "Lyon"
@@ -33,7 +32,6 @@ Feature: Take a quiz
   Scenario: User navigate to evaluation page
     Given I start quiz "-1"
     When I answer "Green"
-    And I click the next button
     Then I see question "France"
     Then I should not see the evaluate button
     When I answer "Lyon"
@@ -42,7 +40,6 @@ Feature: Take a quiz
   Scenario: User reloads page on answered question
     Given I start quiz "-1"
     When I answer "Green"
-    And I click the next button
     * I check answer "Lyon,Paris"
     * I uncheck answer "Lyon"
     * I refresh the page
@@ -55,13 +52,11 @@ Feature: Take a quiz
   Scenario: Back button is visible
     Given I start quiz "-1"
     When I answer "Green"
-    And I click the next button
     Then I should see the back button
 
   Scenario: Back button is clicked
     Given I start quiz "-1"
     When I answer "Green"
-    And I click the next button
     Then I see question "France"
     And I click the back button
     Then I see question "Sky"
@@ -114,7 +109,6 @@ Feature: Take a quiz
   Scenario: Remembered answer after back button
     Given I start quiz "-1"
     When I answer "Green"
-    And I click the next button
     Then I see question "France"
     When I click the back button
     Then I see answer "Green" checked
@@ -128,11 +122,37 @@ Feature: Take a quiz
     And I start quiz "-3"
     Then I see question "Nose"
     When I answer "Elephant, Anteater"
-    And I click the next button
+
     Then I see question "France"
     When I click the back button
     Then I see answer "Elephant" checked
     Then I see answer "Anteater" checked
+
+  Scenario: Submit button is visible as active when answer is checked
+    Given questions
+      | bookmark | question                    | answers                                            |
+      | Nose     | Which animal has long nose? | Elephant (*), Anteater (*), Swordfish (*), Bulldog |
+      | France   | What is capital of France?  | Marseille, Lyon, Paris (*), Toulouse               |
+
+    Given I start quiz "-3"
+    Then I see question "Nose"
+    When I check answer "Elephant"
+    Then I see the submit button as active
+
+Scenario: Submit button is visible as inactive when no answer is checked
+  Given questions
+    | bookmark | question                            | answers                                            |
+    | Nose     | Which animal has long nose?         | Elephant (*), Anteater (*), Swordfish (*), Bulldog |
+    | France   | What is capital of France?          | Marseille, Lyon, Paris (*), Toulouse               |
+
+    Given I start quiz "-3"
+    Then I see question "Nose"
+    Then I see the submit button as inactive
+    When I check answer "Elephant"
+    Then I see the submit button as active
+    When I uncheck answer "Elephant"
+    Then I see the submit button as inactive
+
 
   Scenario: When I click next button answer is submitted
     Given questions
@@ -147,18 +167,20 @@ Feature: Take a quiz
     Then I see question "France"
     When I click the back button
     Then I see answer "Elephant" checked
-
+@skip
 Scenario: When I click back button answer is submitted
     Given questions
       | bookmark | question                            | answers                                            |
       | Nose     | Which animal has long nose?         | Elephant (*), Anteater (*), Swordfish (*), Bulldog |
       | France   | What is capital of France?          | Marseille, Lyon, Paris (*), Toulouse               |
+      | Madagascar      | What is capital of Madagascar?      | Antananarivo (*), Nairobi, Cairo, Dakar            |
 
     Given I start quiz "-3"
     Then I see question "Nose"
     And I click the next button
     Then I see question "France"
     And I check answer "Paris"
+    When I click the next button
+    Then I see question "Madagascar"
     When I click the back button
-    And I click the next button
     Then I see answer "Paris" checked

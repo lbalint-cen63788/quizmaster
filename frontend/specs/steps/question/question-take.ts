@@ -32,6 +32,7 @@ When('I answer {string}', async function (answerList: string) {
     for (const answer of answers) {
         await this.takeQuestionPage.selectAnswer(answer)
     }
+    await this.takeQuestionPage.submit()
 })
 
 When('I uncheck answer {string}', async function (answerList: string) {
