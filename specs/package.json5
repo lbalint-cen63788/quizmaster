@@ -22,7 +22,7 @@
         "coverage:test:e2e": "pnpm coverage:clean && c8 --experimental-monocart cross-env ENABLE_COVERAGE=1 pnpm test:e2e",
         "coverage:report": "node src/coverage/report.js",
 
-        "ci:install:fe": "cd ../frontend && pnpm ci:install",
+        "ci:install:fe": "cd ../frontend && pnpm install",
         "ci:install:specs": "pnpm install && playwright install --with-deps",
         "ci:install": "pnpm ci:install:fe && pnpm ci:install:specs",
 
