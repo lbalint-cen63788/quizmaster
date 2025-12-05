@@ -14,8 +14,8 @@ Feature: Quiz Difficulty
       | Easy     | true  | Food?              | Pork (*), Fish (*), Shoe        |
       | Hard     | false | Animal?            | Dog (*), Cat (*), Bird (*), Car |
     And quizes
-      | bookmark | title | description | questions          | difficulty   | mode | pass score | time limit |
-      | Quiz     | Quiz  | Description | Single, Easy, Hard | <difficulty> | exam |         40 |        120 |
+      | bookmark | questions          | difficulty   |
+      | Quiz     | Single, Easy, Hard | <difficulty> |
     When I start quiz "Quiz"
     And I progress through the questions
     Then I see the correct answers count

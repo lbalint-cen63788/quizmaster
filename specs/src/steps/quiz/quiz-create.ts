@@ -35,14 +35,13 @@ const postQuiz = async (world: QuizmasterWorld, bookmark: string, quiz: Quiz) =>
 
 const validateQuizRow = (questionBookmarks: Record<string, Question>, row: Record<string, string>) => {
     const hasBookmark = row.bookmark !== ''
-    const hasMode = row.mode === 'exam' || row.mode === 'learn'
-    const hasPassScore = row['pass score'] !== ''
+    const hasValidMode = !row.mode || row.mode === 'exam' || row.mode === 'learn'
 
     const hasValidQuestions =
         !Number.isNaN(Number.parseInt(row.questions)) ||
         parseKey(row.questions).every(bookmark => questionBookmarks[bookmark] !== undefined)
 
-    return hasBookmark && hasMode && hasPassScore && hasValidQuestions
+    return hasBookmark && hasValidMode && hasValidQuestions
 }
 
 const createDummyQuestion = async (world: QuizmasterWorld, bookmark: string) => {
@@ -89,9 +88,9 @@ const toQuiz = async (world: QuizmasterWorld, row: Record<string, string>): Prom
         questionIds: questionBookmarks
             .map(bookmark => world.questionBookmarks[bookmark])
             .map(question => Number.parseInt(question.url.split('/').pop() || '0')),
-        mode: row.mode as QuizMode,
-        passScore: Number.parseInt(row['pass score']),
-        timeLimit: Number.parseInt(row['time limit']),
+        mode: (row.mode || 'exam') as QuizMode,
+        passScore: Number.parseInt(row['pass score']) || 50,
+        timeLimit: Number.parseInt(row['time limit']) || 120,
         size: Number.parseInt(row.size) || undefined,
         easyMode: difficultyToEasyMode(row.difficulty),
     }
