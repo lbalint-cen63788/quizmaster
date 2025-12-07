@@ -1,9 +1,10 @@
-import { expect } from '@playwright/test'
-import { expectedNumberOfChildrenToBe } from '../common.ts'
-import { Then, When } from '../fixture.ts'
-import type { DataTable } from '@cucumber/cucumber'
 import { fail } from 'node:assert'
-import type { QuizMode, Difficulty } from '../world/quiz.ts'
+import type { DataTable } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
+
+import { expectedNumberOfChildrenToBe } from 'steps/common.ts'
+import { Then, When } from 'steps/fixture.ts'
+import type { QuizMode, Difficulty } from 'steps/world/quiz.ts'
 
 When('I start creating a new quiz', async function () {
     await this.workspacePage.createNewQuiz()

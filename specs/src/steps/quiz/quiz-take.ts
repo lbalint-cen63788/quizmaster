@@ -1,7 +1,8 @@
 import type { DataTable } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
-import { When, Then } from '../fixture.ts'
-import type { QuizmasterWorld } from '../world/world.ts'
+
+import { When, Then } from 'steps/fixture.ts'
+import type { QuizmasterWorld } from 'steps/world/world.ts'
 
 const answer = async (world: QuizmasterWorld, n: number) => {
     await world.takeQuestionPage.selectAnswerNth(n)

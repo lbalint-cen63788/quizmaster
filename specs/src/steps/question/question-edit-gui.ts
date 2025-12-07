@@ -1,8 +1,8 @@
 import type { DataTable } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 
-import { Given, Then, When } from '../fixture.ts'
-import type { QuizmasterWorld } from '../world/index.ts'
+import type { TableOf } from 'steps/common.ts'
+import { Given, Then, When } from 'steps/fixture.ts'
 import {
     addAnswers,
     type AnswerRaw,
@@ -17,8 +17,8 @@ import {
     openEditPage,
     saveQuestion,
     submitQuestion,
-} from './ops.ts'
-import type { TableOf } from '../common.ts'
+} from 'steps/question/ops.ts'
+import type { QuizmasterWorld } from 'steps/world'
 
 Given('I start creating a question', async function () {
     await openCreatePage(this)

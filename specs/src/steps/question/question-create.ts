@@ -1,9 +1,16 @@
 import type { DataTable } from '@cucumber/cucumber'
-
-import type { TableOf } from '../common.ts'
-import { Given, When, Then } from '../fixture.ts'
-import { addAnswers, createQuestion, enterQuestion, openCreatePage, saveQuestion, type AnswerRaw } from './ops.ts'
 import { expect } from '@playwright/test'
+
+import type { TableOf } from 'steps/common.ts'
+import { Given, When, Then } from 'steps/fixture.ts'
+import {
+    addAnswers,
+    createQuestion,
+    enterQuestion,
+    openCreatePage,
+    saveQuestion,
+    type AnswerRaw,
+} from 'steps/question/ops.ts'
 
 Given('a question {string}', async function (question: string) {
     await openCreatePage(this)

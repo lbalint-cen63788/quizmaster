@@ -1,4 +1,4 @@
-import { When } from './fixture'
+import { When } from 'steps/fixture.ts'
 
 When('I refresh the page', async function () {
     await this.page.reload({ waitUntil: 'networkidle' })

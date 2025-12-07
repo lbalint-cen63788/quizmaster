@@ -1,9 +1,10 @@
-import { Given, Then } from '../fixture.ts'
-import { expectTextToBe, type TableOf } from '../common.ts'
 import type { DataTable } from '@cucumber/cucumber'
-import { createQuestionInList, createWorkspace } from '../workspace/ops.ts'
-import type { AnswerRaw } from '../question/ops.ts'
 import { expect } from '@playwright/test'
+
+import { expectTextToBe, type TableOf } from 'steps/common.ts'
+import { Given, Then } from 'steps/fixture.ts'
+import type { AnswerRaw } from 'steps/question/ops.ts'
+import { createQuestionInList, createWorkspace } from 'steps/workspace/ops.ts'
 
 Given(/a quiz "(.+?)" with questions?/, async function (quizName: string, data: DataTable) {
     await createWorkspace(this, 'My List')

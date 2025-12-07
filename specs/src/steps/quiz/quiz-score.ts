@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test'
-import { Given, Then } from '../fixture.ts'
+
+import { Given, Then } from 'steps/fixture.ts'
 
 Given('I finish the quiz', async function () {
     await this.page.goto('quiz/score')

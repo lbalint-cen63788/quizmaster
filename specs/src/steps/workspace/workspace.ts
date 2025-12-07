@@ -1,7 +1,8 @@
 import { expect } from '@playwright/test'
-import { expectTextToContain } from '../common.ts'
-import { Given, Then, When } from '../fixture.ts'
-import type { QuizmasterWorld } from '../world/index.ts'
+
+import { expectTextToContain } from 'steps/common.ts'
+import { Given, Then, When } from 'steps/fixture.ts'
+import type { QuizmasterWorld } from 'steps/world'
 
 const createWorkspace = async (world: QuizmasterWorld, title: string) => {
     await world.workspaceCreatePage.gotoNew()

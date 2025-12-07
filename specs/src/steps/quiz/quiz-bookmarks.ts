@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test'
-import { When, Then } from '../fixture.ts'
+
+import { When, Then } from 'steps/fixture.ts'
 
 Then('I see bookmarked question {string}', async function () {
     expect(await this.questionPage.isCurrentQuestionBookmarked()).toBe(true)

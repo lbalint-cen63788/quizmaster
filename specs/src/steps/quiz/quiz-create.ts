@@ -1,15 +1,9 @@
 import type { DataTable } from '@cucumber/cucumber'
-import { Given, Then } from '../fixture.ts'
-import {
-    type QuizmasterWorld,
-    type Quiz,
-    type QuizMode,
-    type Difficulty,
-    type Question,
-    parseKey,
-} from '../world/index.ts'
-import { createQuestion } from '../question/ops.ts'
 import { expect } from '@playwright/test'
+
+import { Given, Then } from 'steps/fixture.ts'
+import { type QuizmasterWorld, type Quiz, type QuizMode, type Difficulty, type Question, parseKey } from 'steps/world'
+import { createQuestion } from 'steps/question/ops.ts'
 
 const postQuiz = async (world: QuizmasterWorld, bookmark: string, quiz: Quiz) => {
     const questionIds = quiz.questionIds

@@ -1,6 +1,6 @@
-import type { TableOf } from '../common'
-import { addAnswers, type AnswerRaw, enterQuestion } from '../question/ops'
-import { emptyQuestion, type QuizmasterWorld } from '../world'
+import type { TableOf } from 'steps/common.ts'
+import { addAnswers, type AnswerRaw, enterQuestion } from 'steps/question/ops.ts'
+import { emptyQuestion, type QuizmasterWorld } from 'steps/world'
 
 export const openCreateWorkspacePage = async (world: QuizmasterWorld) => {
     world.workspaceCreatePage.gotoNew()

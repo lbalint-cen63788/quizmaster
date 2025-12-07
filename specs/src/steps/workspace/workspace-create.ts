@@ -1,9 +1,10 @@
-import { expect } from '@playwright/test'
-import { Given, When, Then } from '../fixture.ts'
-import { createQuestionInList, createWorkspace, openCreateWorkspacePage } from './ops.ts'
-import type { AnswerRaw } from '../question/ops.ts'
-import type { TableOf } from '../common.ts'
 import type { DataTable } from '@cucumber/cucumber'
+import { expect } from '@playwright/test'
+
+import type { TableOf } from 'steps/common.ts'
+import { Given, When, Then } from 'steps/fixture.ts'
+import type { AnswerRaw } from 'steps/question/ops.ts'
+import { createQuestionInList, createWorkspace, openCreateWorkspacePage } from 'steps/workspace/ops.ts'
 
 Given('I start creating a workspace', async function () {
     await openCreateWorkspacePage(this)

@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test'
-import { Then } from '../fixture.ts'
+
+import { Then } from 'steps/fixture.ts'
 
 Then('I see the welcome page', async function () {
     expect(await this.quizWelcomePage.header()).toBe('Welcome to the quiz')
