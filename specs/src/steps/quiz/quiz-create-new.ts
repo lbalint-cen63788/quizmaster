@@ -3,7 +3,7 @@ import { expectedNumberOfChildrenToBe } from '../common.ts'
 import { Then, When } from '../fixture.ts'
 import type { DataTable } from '@cucumber/cucumber'
 import { fail } from 'node:assert'
-import type { QuizMode } from '../world/quiz.ts'
+import type { QuizMode, Difficulty } from '../world/quiz.ts'
 
 When('I start creating a new quiz', async function () {
     await this.workspacePage.createNewQuiz()
@@ -67,16 +67,12 @@ When('I check randomized function', async function () {
     await this.quizCreatePage.selectRandomizedFunction()
 })
 
-When('I select feedback mode {string}', async function (inputMode: string) {
-    const mode = inputMode.toLowerCase() as QuizMode
-    if (mode === 'exam') {
-        await this.quizCreatePage.selectFeedbackMode('exam')
-    } else if (mode === 'learn') {
-        await this.quizCreatePage.selectFeedbackMode('learn')
-    }
+When(/I select (exam|learn) mode/, async function (mode: QuizMode) {
+    await this.quizCreatePage.selectFeedbackMode(mode)
 })
+
 When('I select difficulty {string}', async function (inputDifficulty: string) {
-    const difficulty = inputDifficulty.toLowerCase() as 'easy' | 'hard' | 'keep_question'
+    const difficulty = inputDifficulty.toLowerCase().replace('_', '-') as Difficulty
     await this.quizCreatePage.selectDifficulty(difficulty)
 })
 

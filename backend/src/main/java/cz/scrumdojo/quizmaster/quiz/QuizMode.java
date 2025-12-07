@@ -1,6 +1,8 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum QuizMode {
-    LEARN,
-    EXAM
+    @JsonProperty("learn") LEARN,
+    @JsonProperty("exam") EXAM
 }

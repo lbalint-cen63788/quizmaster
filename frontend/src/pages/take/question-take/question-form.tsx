@@ -46,9 +46,9 @@ export const QuestionForm = (props: QuestionFormProps) => {
     const shouldShowEasyMode =
         state.isMultipleChoice &&
         (props.quizDifficulty
-            ? props.quizDifficulty === 'EASY'
+            ? props.quizDifficulty === 'easy'
                 ? true
-                : props.quizDifficulty === 'HARD'
+                : props.quizDifficulty === 'hard'
                   ? false
                   : easyMode
             : easyMode)
@@ -77,7 +77,7 @@ export const QuestionForm = (props: QuestionFormProps) => {
                             answer={answer}
                             isCorrect={correctAnswers.includes(idx)}
                             explanation={props.question.explanations ? props.question.explanations[idx] : 'not defined'}
-                            showFeedback={state.submitted && feedback.showFeedback(idx) && props.mode === 'LEARN'}
+                            showFeedback={state.submitted && feedback.showFeedback(idx) && props.mode === 'learn'}
                             onAnswerChange={state.onSelectedAnswerChange}
                             isAnswerChecked={state.isAnswerChecked}
                         />
@@ -87,7 +87,7 @@ export const QuestionForm = (props: QuestionFormProps) => {
                 {!state.submitted && (
                     <input type="submit" value="Submit" className="submit-btn" disabled={!isAnswerChecked} />
                 )}
-                {state.submitted && props.mode === 'LEARN' && (
+                {state.submitted && props.mode === 'learn' && (
                     <>
                         <QuestionCorrectness
                             score={feedback.score.score}

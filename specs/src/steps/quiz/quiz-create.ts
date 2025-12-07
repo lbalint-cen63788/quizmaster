@@ -18,7 +18,7 @@ const postQuiz = async (world: QuizmasterWorld, bookmark: string, quiz: Quiz) =>
         title: quiz.title,
         description: quiz.description,
         questionIds,
-        mode: quiz.mode.toUpperCase() as QuizMode,
+        mode: quiz.mode,
         passScore: quiz.passScore,
         timeLimit: quiz.timeLimit,
         size: quiz.size,
@@ -55,9 +55,9 @@ const createDummyQuestion = async (world: QuizmasterWorld, bookmark: string) => 
 
 const toDifficulty = (difficulty: string): Difficulty | undefined => {
     const mapping: Record<string, Difficulty> = {
-        'Keep Question': 'KEEP_QUESTION',
-        Easy: 'EASY',
-        Hard: 'HARD',
+        'Keep Question': 'keep-question',
+        Easy: 'easy',
+        Hard: 'hard',
     }
     return mapping[difficulty]
 }

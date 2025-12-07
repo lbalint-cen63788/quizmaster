@@ -15,5 +15,5 @@ export const QuestionTakePage = () => {
 
     useApi(params.id, fetchQuestion, setQuestion)
 
-    return question ? <QuestionForm question={question} mode={'LEARN' as const} /> : null
+    return question ? <QuestionForm question={question} mode={'learn' as const} /> : null
 }

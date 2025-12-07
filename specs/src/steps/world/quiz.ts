@@ -1,5 +1,5 @@
-export type QuizMode = 'learn' | 'exam' | ''
-export type Difficulty = 'EASY' | 'HARD' | 'KEEP_QUESTION'
+export type QuizMode = 'learn' | 'exam'
+export type Difficulty = 'easy' | 'hard' | 'keep-question'
 
 export interface Quiz {
     title: string
@@ -20,7 +20,7 @@ export const emptyQuiz = (): Quiz => ({
     title: '',
     description: '',
     questionIds: [],
-    mode: '',
+    mode: 'exam',
     passScore: 0,
     timeLimit: 120,
 })
@@ -29,7 +29,7 @@ export const emptyQuizBookmark = (): QuizBookmark => ({
     title: '',
     description: '',
     questionIds: [],
-    mode: '',
+    mode: 'exam',
     passScore: 0,
     timeLimit: 120,
 })

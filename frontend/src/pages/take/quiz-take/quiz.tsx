@@ -89,7 +89,7 @@ export const QuestionForm = (props: QuestionProps) => {
 
     const handleAnswerSubmitted = (answers: AnswerIdxs) => {
         setSelectedAnswers(answers)
-        if (props.quiz.mode === 'LEARN') {
+        if (props.quiz.mode === 'learn') {
             answer(answers)
         } else {
             answerAndNext(answers)

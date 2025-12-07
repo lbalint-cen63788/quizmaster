@@ -1,7 +1,7 @@
 import type { Question } from './question.ts'
 
-export type QuizMode = 'LEARN' | 'EXAM'
-export type Difficulty = 'EASY' | 'HARD' | 'KEEP_QUESTION'
+export type QuizMode = 'learn' | 'exam'
+export type Difficulty = 'easy' | 'hard' | 'keep-question'
 
 export interface Quiz {
     readonly id: number

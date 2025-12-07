@@ -1,7 +1,9 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Difficulty {
-    EASY,
-    HARD,
-    KEEP_QUESTION
+    @JsonProperty("easy") EASY,
+    @JsonProperty("hard") HARD,
+    @JsonProperty("keep-question") KEEP_QUESTION
 }

@@ -8,7 +8,7 @@ export interface QuizDetailsProps {
 }
 
 const getFeedbackText = (mode: string): string => {
-    return mode === 'LEARN' ? 'Continuous feedback' : 'Feedback at the end'
+    return mode === 'learn' ? 'Continuous feedback' : 'Feedback at the end'
 }
 
 export const QuizDetails = ({ quiz, onStart }: QuizDetailsProps) => (

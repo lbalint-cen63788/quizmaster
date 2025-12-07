@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test'
+import type { QuizMode, Difficulty } from '../steps/world/quiz.ts'
 
 export class QuizCreatePage {
     constructor(private page: Page) {}
@@ -8,18 +9,11 @@ export class QuizCreatePage {
     getQuestion = (question: string) => this.page.locator('label', { hasText: question })
     selectQuestion = async (question: string) => this.page.locator('label', { hasText: question }).click()
     selectRandomizedFunction = () => this.page.locator('#isRandomized').check()
-    selectFeedbackMode = async (mode: 'learn' | 'exam') => {
-        const value = mode === 'learn' ? 'LEARN' : 'EXAM'
-        await this.page.locator(`#mode-${value}`).check()
-    }
-    selectDifficulty = async (difficulty: 'easy' | 'hard' | 'keep_question') => {
-        const value = difficulty === 'easy' ? 'EASY' : difficulty === 'hard' ? 'HARD' : 'KEEP_QUESTION'
-        await this.page.locator(`#difficulty-${value}`).check()
+    selectFeedbackMode = (mode: QuizMode) => this.page.locator(`#mode-${mode}`).check()
+    selectDifficulty = async (difficulty: Difficulty) => {
+        await this.page.locator(`#difficulty-${difficulty}`).check()
     }
 
-    feedbackModeElement = () => {
-        return this.page.locator('#mode')
-    }
     private submitLocator = () => this.page.locator('button[type="submit"]')
     submit = () => this.submitLocator().click()
 

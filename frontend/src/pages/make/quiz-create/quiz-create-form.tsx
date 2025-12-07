@@ -30,8 +30,8 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
     const [searchParams] = useSearchParams()
     const [checkRandomize, setCheckRandomize] = useState(false)
     const [filteredQuestions, setFilteredQuestions] = useState<readonly QuestionListItem[]>(questions)
-    const [feedbackMode, setFeedbackMode] = useState<QuizMode>('EXAM')
-    const [difficulty, setDifficulty] = useState<Difficulty>('KEEP_QUESTION')
+    const [feedbackMode, setFeedbackMode] = useState<QuizMode>('exam')
+    const [difficulty, setDifficulty] = useState<Difficulty>('keep-question')
 
     const validator = createValidator(
         () => validateQuizForm({ title, description, timeLimit, passScore, selectedIds, finalCount }),
@@ -81,7 +81,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
                     name="mode"
                     value={feedbackMode}
                     onChange={setFeedbackMode}
-                    options={{ EXAM: 'Exam', LEARN: 'Learning' }}
+                    options={{ exam: 'Exam', learn: 'Learning' }}
                 />
             </Field>
             <Field label="Difficulty">
@@ -89,7 +89,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
                     name="difficulty"
                     value={difficulty}
                     onChange={setDifficulty}
-                    options={{ EASY: 'Easy', HARD: 'Hard', KEEP_QUESTION: 'Keep Question' }}
+                    options={{ easy: 'Easy', hard: 'Hard', 'keep-question': 'Keep Question' }}
                 />
             </Field>
             <div className="label">Select quiz questions</div>
