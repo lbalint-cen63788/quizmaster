@@ -35,7 +35,6 @@ Feature: Create Quiz from Workspace
       | empty-title   |
       | few-questions |
 
-  @skip
   Scenario: Display error when score is above 100
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"

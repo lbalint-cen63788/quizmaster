@@ -71,6 +71,7 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
             <Row>
                 <Field label="Pass score (in %)">
                     <NumberInput id="pass-score" value={passScore} onChange={setPassScore} />
+                    <ErrorMessage errorCode="scoreAboveMax" />
                 </Field>
                 <Field label="Time limit (in sec)">
                     <NumberInput id="time-limit" value={timeLimit} onChange={setTimeLimit} />
