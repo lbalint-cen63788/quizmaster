@@ -43,7 +43,7 @@ Feature: Create Quiz from Workspace
     Then I see error messages in quiz form
       | scoreAboveMax |
 
-  @skip
+
   Scenario: Display error when limit is negative
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"
