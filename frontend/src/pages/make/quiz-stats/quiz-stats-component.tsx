@@ -11,7 +11,7 @@ const formatDuration = (started: string, finished: string): string => {
     const start = new Date(started)
     const end = new Date(finished)
     const diffMs = end.getTime() - start.getTime()
-    const diffSeconds = Math.floor(diffMs / 1000)
+    const diffSeconds = Math.round(diffMs / 1000)
 
     if (diffSeconds < 60) {
         return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}`
