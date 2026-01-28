@@ -3,6 +3,14 @@ import { fetchJson, postJson, patchJson, callDelete } from './helpers.ts'
 
 export const fetchQuestion = async (questionId: string) => await fetchJson<Question>(`/api/question/${questionId}`)
 
+export interface TestNumericalQuestion {
+    readonly question: string
+    readonly correctAnswer: string
+}
+
+export const fetchTestNumericalQuestion = async () =>
+    await fetchJson<TestNumericalQuestion>('/api/test-numerical-question')
+
 export const deleteQuestion = async (questionId: string) => await callDelete(`/api/question/${questionId}`)
 
 export const fetchQuestionByEditId = async (editId: string) => await fetchJson<Question>(`/api/question/${editId}/edit`)
