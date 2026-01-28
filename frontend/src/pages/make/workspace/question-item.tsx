@@ -48,9 +48,9 @@ export const QuestionItem: React.FC<Props> = ({
             </div>
 
             {!question.isInAnyQuiz && (
-            <div className="delete-button">
-                <DeleteQuestionButton id={question.editId} editId={question.editId} onClick={onDeleteQuestion} />
-            </div>
+                <div className="delete-button">
+                    <DeleteQuestionButton id={question.editId} editId={question.editId} onClick={onDeleteQuestion} />
+                </div>
             )}
         </div>
     )
