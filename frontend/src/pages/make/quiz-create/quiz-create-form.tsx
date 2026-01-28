@@ -14,15 +14,18 @@ import type { QuizMode, Difficulty } from 'model/quiz.ts'
 
 export type QuizCreateFormData = QuizCreateRequest
 
+import type { Quiz } from 'model/quiz.ts'
+
 interface QuizCreateProps {
     readonly questions: readonly QuestionListItem[]
     readonly onSubmit: (data: QuizCreateFormData) => void
+    readonly quiz?: Quiz
 }
 
-export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
+export const QuizCreateForm = ({ questions, onSubmit, quiz }: QuizCreateProps) => {
     const [title, setTitle] = useState<string>('')
     const [description, setDescription] = useState<string>('')
-    const [selectedIds, toggleSelectedId] = useStateSet<number>()
+    const [selectedIds, toggleSelectedId, addSelectedId] = useStateSet<number>()
     const [timeLimit, setTimeLimit] = useState<number>(600)
     const [finalCount, setFinalCount] = useState<number>(0)
     const [passScore, setPassScore] = useState<number>(80)
@@ -32,6 +35,25 @@ export const QuizCreateForm = ({ questions, onSubmit }: QuizCreateProps) => {
     const [filteredQuestions, setFilteredQuestions] = useState<readonly QuestionListItem[]>(questions)
     const [feedbackMode, setFeedbackMode] = useState<QuizMode>('exam')
     const [difficulty, setDifficulty] = useState<Difficulty>('keep-question')
+    // Předvyplnění hodnot při editaci
+    useEffect(() => {
+        if (quiz) {
+            setTitle(quiz.title || '')
+            setDescription(quiz.description || '')
+            setTimeLimit(quiz.timeLimit ?? 600)
+            setFinalCount(quiz.size ?? 0)
+            setPassScore(quiz.passScore ?? 80)
+            setFeedbackMode(quiz.mode || 'exam')
+            setDifficulty(quiz.difficulty || 'keep-question')
+            setCheckRandomize(!!quiz.size)
+            // Nastavit vybrané otázky
+            if (quiz.questions) {
+                for (const q of quiz.questions) {
+                    addSelectedId(q.id)
+                }
+            }
+        }
+    }, [quiz, addSelectedId])
 
     const validator = createValidator(
         () => validateQuizForm({ title, description, timeLimit, passScore, selectedIds, finalCount }),

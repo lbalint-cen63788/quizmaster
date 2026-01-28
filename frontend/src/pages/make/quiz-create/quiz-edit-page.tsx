@@ -27,9 +27,20 @@ export const QuizEditPage = () => {
             }
         })
 
+    const quiz = {
+        id: 1,
+        title: 'Sample Quiz',
+        description: 'This is a sample quiz for editing.',
+        questions: [],
+        mode: 'exam' as const,
+        passScore: 70,
+        timeLimit: 900,
+        size: 10,
+    }
+
     return (
         <Page title="Edit Quiz" id="edit-quiz-page">
-            <QuizEditForm questions={workspaceQuestions} onSubmit={onSubmit} />
+            <QuizEditForm questions={workspaceQuestions} quiz={quiz} onSubmit={onSubmit} />
             {errorMessage && <Alert type="error">{errorMessage}</Alert>}
         </Page>
     )
