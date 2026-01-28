@@ -1,7 +1,9 @@
 import type { Question } from 'model/question.ts'
-import { fetchJson, postJson, patchJson } from './helpers.ts'
+import { fetchJson, postJson, patchJson, callDelete } from './helpers.ts'
 
 export const fetchQuestion = async (questionId: string) => await fetchJson<Question>(`/api/question/${questionId}`)
+
+export const deleteQuestion = async (questionId: string) => await callDelete(`/api/question/${questionId}`)
 
 export const fetchQuestionByEditId = async (editId: string) => await fetchJson<Question>(`/api/question/${editId}/edit`)
 

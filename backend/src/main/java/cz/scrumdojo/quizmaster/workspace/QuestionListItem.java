@@ -7,4 +7,5 @@ public class QuestionListItem {
     Integer id;
     String question;
     String editId;
+    Boolean isInAnyQuiz;
 }

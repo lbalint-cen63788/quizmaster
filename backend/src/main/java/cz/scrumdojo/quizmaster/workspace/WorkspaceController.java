@@ -50,7 +50,7 @@ public class WorkspaceController {
         List<Question> questions = questionRepository.findByWorkspaceGuid(guid);
 
         return questions.stream()
-            .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), q.getEditId()))
+            .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), q.getEditId(), quizRepository.existsQuizWithQuestionId(q.getId())))
             .toList();
     }
 

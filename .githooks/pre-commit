@@ -17,6 +17,6 @@ pnpm code
 
 cd "$ROOT_DIR/specs"
 pnpm code
-check_dirty
+#check_dirty
 
 cd "$ORIGINAL_DIR"

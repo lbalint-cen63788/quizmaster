@@ -30,6 +30,16 @@ public class QuestionControllerTest {
     }
 
     @Test
+    public void deleteQuestion() {
+        var question = fixtures.question().build();
+        questionController.saveQuestion(question);
+        var id = question.getId();
+        questionController.deleteQuestion(id);
+        var result = questionController.getQuestion(id).getBody();
+        assertNull(result);
+    }
+
+    @Test
     public void updateQuestion() {
         var originalQuestion = fixtures.save(fixtures.question());
 

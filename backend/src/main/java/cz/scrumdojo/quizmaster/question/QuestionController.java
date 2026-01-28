@@ -27,6 +27,13 @@ public class QuestionController {
     }
 
     @Transactional
+    @DeleteMapping("/question/{id}")
+    public ResponseEntity<Void> deleteQuestion(@PathVariable Integer id) {
+        questionRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
     @GetMapping("/question/{editId}/edit")
     public ResponseEntity<Question> getQuestionByEditId(@PathVariable String editId) {
         return response(questionRepository.findByEditId(editId));

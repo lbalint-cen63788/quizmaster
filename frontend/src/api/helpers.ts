@@ -24,3 +24,12 @@ const sendData =
 export const postJson = sendData('POST')
 export const patchJson = sendData('PATCH')
 export const putJson = sendData('PUT')
+
+export const callDelete = async (url: string) =>
+    fetch(url, { method: 'DELETE' }).then(async response => {
+        if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.message)
+        }
+        return response
+    })

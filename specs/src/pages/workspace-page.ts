@@ -21,7 +21,10 @@ export class WorkspacePage {
     private clickQuizButtonLocator = (button: string) => async (quiz: string) =>
         await this.quizLocator(quiz).locator(button).click()
     takeQuestion = this.clickQuestionButtonLocator('.take-button button')
-    deleteQuestion = this.clickQuestionButtonLocator('.delete-button button')
+    deleteQuestion = async (question: string) => {
+        await this.questionLocator(question).locator('.delete-button button').click()
+        await this.questionLocator(question).waitFor({ state: 'hidden' })
+    }
     editQuestion = this.clickQuestionButtonLocator('.edit-button button')
     copyTakeQuestion = this.clickQuestionButtonLocator('.copy-take-button button')
     copyEditQuestion = this.clickQuestionButtonLocator('.copy-edit-button button')

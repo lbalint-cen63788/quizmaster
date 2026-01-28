@@ -35,12 +35,16 @@ public class WorkspaceControllerTest {
         Workspace workspace = fixtures.save(fixtures.workspace());
         Question question1 = fixtures.save(fixtures.questionIn(workspace));
         Question question2 = fixtures.save(fixtures.questionIn(workspace));
+        Quiz quiz = fixtures.quiz(question2).build();
+        fixtures.save(quiz);
 
         List<QuestionListItem> result = workspaceController.getWorkspaceQuestions(workspace.getGuid());
 
         assertEquals(2, result.size());
         assertEquals(question1.getId(), result.get(0).getId());
         assertEquals(question2.getId(), result.get(1).getId());
+        assertFalse(result.get(0).getIsInAnyQuiz());
+        assertTrue(result.get(1).getIsInAnyQuiz());
     }
 
     @Test
