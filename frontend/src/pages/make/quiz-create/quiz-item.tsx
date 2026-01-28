@@ -11,6 +11,7 @@ interface Props {
 export const QuizItem: React.FC<Props> = ({ quiz }) => {
     const navigate = useNavigate()
 
+    const onEditQuiz = () => navigate(`/quiz/${quiz.id}/edit`)
     const onTakeQuiz = () => navigate(`/quiz/${quiz.id}`)
 
     const copyQuizLink = () => navigator.clipboard.writeText(`${window.location.origin}/quiz/${quiz.id}`)
@@ -21,6 +22,11 @@ export const QuizItem: React.FC<Props> = ({ quiz }) => {
         <div className="quiz-item question-item">
             <span id="quiz-text">
                 {quiz.title}
+                <span className="edit-quiz-button edit-button">
+                    <Button className="edit-quiz" onClick={onEditQuiz}>
+                        Edit
+                    </Button>
+                </span>
                 <span className="take-quiz-button take-button">
                     <Button className="take-quiz" onClick={onTakeQuiz}>
                         Take
