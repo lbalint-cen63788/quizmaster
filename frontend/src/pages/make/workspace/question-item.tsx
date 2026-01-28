@@ -1,5 +1,5 @@
 import type { QuestionListItem } from 'model/question-list-item'
-import { EditQuestionButton, TakeQuestionButton, CopyQuestionButton } from './workspace.tsx'
+import { EditQuestionButton, TakeQuestionButton, CopyQuestionButton, DeleteQuestionButton } from './workspace.tsx'
 
 interface Props {
     question: QuestionListItem
@@ -8,6 +8,7 @@ interface Props {
     onCopyEditQuestion: () => void
     onTakeQuestion: () => void
     onCopyTakeQuestion: () => void
+    onDeleteQuestion: () => void
 }
 
 export const QuestionItem: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const QuestionItem: React.FC<Props> = ({
     onCopyEditQuestion,
     onTakeQuestion,
     onCopyTakeQuestion,
+    onDeleteQuestion,
 }) => {
     return (
         <div className="question-item">
@@ -43,6 +45,9 @@ export const QuestionItem: React.FC<Props> = ({
                     kind="take"
                     onClick={onCopyTakeQuestion}
                 />
+            </div>
+            <div className="delete-button">
+                <DeleteQuestionButton id={question.editId} editId={question.editId} onClick={onDeleteQuestion} />
             </div>
         </div>
     )

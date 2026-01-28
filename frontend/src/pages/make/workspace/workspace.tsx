@@ -12,11 +12,13 @@ interface WorkspaceProps {
     readonly workspace: Workspace
     readonly questions: readonly QuestionListItem[]
     readonly quizzes: readonly QuizListItem[]
+    readonly onDeleteQuestion: (id: number) => void
 }
 
 type EditQuestionButtonProps = { id: string; editId: string; onClick: () => void }
 type TakeQuestionButtonProps = { id: string; editId: string; onClick: () => void }
 type CopyQuestionButtonProps = { id: string; kind: string; editId: string; onClick: () => void }
+type DeleteQuestionButtonProps = { id: string; editId: string; onClick: () => void }
 
 export const CreateQuestionButton = ({ onClick }: WithOnClick) => (
     <Button id="create-question" onClick={onClick}>
@@ -33,6 +35,12 @@ export const EditQuestionButton = ({ id, onClick }: EditQuestionButtonProps) => 
 export const TakeQuestionButton = ({ id, onClick }: TakeQuestionButtonProps) => (
     <Button id={id} className="take-question" onClick={onClick}>
         Take
+    </Button>
+)
+
+export const DeleteQuestionButton = ({ id, onClick }: DeleteQuestionButtonProps) => (
+    <Button id={id} className="delete-question" onClick={onClick}>
+        Delete
     </Button>
 )
 
@@ -57,7 +65,7 @@ export const CreateQuizButton = ({ onClick }: WithOnClick) => (
     </Button>
 )
 
-export function WorkspaceComponent({ workspace, questions, quizzes }: WorkspaceProps) {
+export function WorkspaceComponent({ workspace, questions, quizzes, onDeleteQuestion }: WorkspaceProps) {
     const navigate = useNavigate()
 
     const onCreateNewQuestion = () => {
@@ -112,6 +120,7 @@ export function WorkspaceComponent({ workspace, questions, quizzes }: WorkspaceP
                         onCopyEditQuestion={() => onCopyEditQuestion(q.editId)}
                         onTakeQuestion={() => onTakeQuestion(q.id)}
                         onCopyTakeQuestion={() => onCopyTakeQuestion(q.id)}
+                        onDeleteQuestion={() => onDeleteQuestion(q.id)}
                     />
                 ))}
             </div>

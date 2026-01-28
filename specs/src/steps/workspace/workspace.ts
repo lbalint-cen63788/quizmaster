@@ -35,6 +35,11 @@ When('I take question {string} from the list', async function (question: string)
     await this.workspacePage.takeQuestion(question)
 })
 
+When('I delete question {string} from the list', async function (question: string) {
+    this.activeQuestionBookmark = question
+    await this.workspacePage.deleteQuestion(question)
+})
+
 When('I edit question {string} from the list', async function (question: string) {
     this.activeQuestionBookmark = question
     await this.workspacePage.editQuestion(question)

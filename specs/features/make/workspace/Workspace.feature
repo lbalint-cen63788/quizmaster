@@ -8,6 +8,13 @@ Feature: Workspace - where workspace and quiz list are displayed
     When I take question "2 + 2 = ?" from the list
     Then I see the question and the answers
 
+  Scenario: Delete question in a workspace
+    Given a workspace with questions
+      | question  | answers  |
+      | 2 + 2 = ? | 4 (*), 5 |
+    When I delete question "2 + 2 = ?" from the list
+    Then I see an empty workspace
+
   Scenario: Copy a take question URL
     Given a workspace with question
       | question  | answers  |
