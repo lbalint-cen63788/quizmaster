@@ -78,7 +78,7 @@ Content-Type: application/json
 {
     "title": "Specification by Example",
     "description": "A quiz about Specification by Example",
-    "mode": "LEARN",
+    "mode": "learn",
     "questionIds": [1, 2, 3],
     "timeLimit": 600,
     "passScore": 100
