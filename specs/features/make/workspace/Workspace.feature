@@ -1,9 +1,10 @@
-Feature: Workspace - where workspace and quiz list are displayed
+Feature: Workspace page
   The workspace page is the central hub for managing questions and quizzes.
   From here, a quiz maker can:
   - Take, edit, or delete individual questions
   - Copy shareable take-question and edit-question URLs
   - View updated question text after edits
+  - See newly created quizzes in the quiz list
   Questions used in a quiz cannot be deleted.
 
   Scenario: Take question in a workspace
@@ -71,3 +72,17 @@ Feature: Workspace - where workspace and quiz list are displayed
     And I enter question "A + B = ?"
     When I submit the question
     Then I see question in list "A + B = ?"
+
+  Scenario: Display created quiz in workspace
+    Given workspace "Quiz Workspace" with questions
+      | question  | answers  |
+      | 2 + 2 = ? | 4 (*), 5 |
+      | 3 * 3 = ? | 9 (*), 6 |
+      | 4 / 2 = ? | 2 (*), 3 |
+    When I start creating a new quiz
+    * I enter quiz name "Math Quiz"
+    * I enter quiz description "Very hard math quiz"
+    * I select question "2 + 2 = ?"
+    * I select question "4 / 2 = ?"
+    * I submit the quiz
+    Then I see the quiz "Math Quiz" in the workspace

@@ -1,6 +1,8 @@
-Feature: Create question GUI - Single/multiple choice
-  Single choice question has exactly one answer correct
-  Multiple choice question can have two or more answers correct
+Feature: Create question - single/multiple choice
+  Single choice question has exactly one answer correct.
+  Multiple choice question can have two or more answers correct.
+  Switching between modes preserves or resets the selection depending
+  on whether the current state is valid for the target mode.
 
   Background:
     Given I start creating a question
