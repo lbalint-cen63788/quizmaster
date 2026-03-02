@@ -6,7 +6,7 @@ Feature: Create question - validations
 
   Scenario: Empty question form
     Given I start creating a question
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | empty-question    |
       | empty-answer      |
@@ -17,7 +17,7 @@ Feature: Create question - validations
     And I check show explanations checkbox
     * I enter answer 1 text "4" and mark it as correct
     * I enter answer 2 text "5"
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | empty-question |
 
@@ -28,7 +28,7 @@ Feature: Create question - validations
     * I enter question "What is 2 + 2?"
     * I enter answer 1 text "4"
     * I mark answer 1 as correct
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | empty-answer |
 
@@ -39,7 +39,7 @@ Feature: Create question - validations
     * I enter answer 1 text "4" and mark it as correct
     * I enter answer 2 text "5"
     * I add an additional answer
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | empty-answer |
 
@@ -52,7 +52,7 @@ Feature: Create question - validations
     * I enter answer 1 text "4" and mark it as correct
     * I enter answer 1 explanation "4 is the answer"
     * I enter answer 2 text "5"
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | empty-answer-explanation |
 
@@ -66,7 +66,7 @@ Feature: Create question - validations
     * I enter answer 1 explanation "4 is the answer"
     * I enter answer 2 text "5"
     * I enter answer 2 explanation "5 is the answer, but in another universe"
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see no error messages
 
   Scenario: Single-choice question: No correct answer
@@ -76,7 +76,7 @@ Feature: Create question - validations
     * I enter question "What is 2 + 2?"
     * I enter answer 1 text "4"
     * I enter answer 2 text "5"
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | no-correct-answer |
 
@@ -87,9 +87,9 @@ Feature: Create question - validations
     * I enter question "What is 2 + 2?"
     * I enter answer 1 text "4"
     * I enter answer 2 text "5"
-    * I attempt to save the question
+    * I attempt to submit the question
     * I mark answer 1 as correct
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see no error messages
 
   Scenario: Empty question text error message disappears after adding question text
@@ -97,7 +97,7 @@ Feature: Create question - validations
     And I check show explanations checkbox
     * I enter answer 1 text "4" and mark it as correct
     * I enter answer 2 text "5"
-    * I attempt to save the question
+    * I attempt to submit the question
     * I enter question "What is 2 + 2?"
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see no error messages

@@ -16,7 +16,7 @@ Feature: Quiz answer state after navigation
   Scenario: After page refresh no answer is selected
     Given I start quiz "Quiz"
     When I answer "Green"
-    And I refresh page
+    And I refresh the page
     Then no answer is selected
 
   Scenario: After next page is displayed, no answer and explanation is displayed

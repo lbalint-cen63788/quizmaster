@@ -199,7 +199,7 @@ When('mark question as partially scored', async function () {
 
 // Save question
 
-When('I attempt to save the question', submitQuestion)
+When('I attempt to submit the question', submitQuestion)
 When('I submit the question', submitQuestion)
 
 When('I save the question', async function () {

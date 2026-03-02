@@ -82,9 +82,6 @@ Then('I see buttons {string}', async function (buttonList: string) {
     await expect(this.questionPage.navigationButtonsLocator()).toHaveCount(expectedButtons.length)
 })
 
-Given('I refresh page', async function () {
-    await this.page.reload()
-})
 
 Then('I should see answer {string} is checked', async function (answerList: string) {
     const answers = this.parseAnswers(answerList)

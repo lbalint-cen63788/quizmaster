@@ -20,7 +20,7 @@ Feature: Edit question - multiple choice validations
     * I enter answer 1 text "", incorrect, with explanation ""
     * I enter answer 3 text "", incorrect, with explanation ""
     * I enter question explanation ""
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | empty-question    |
       | empty-answer |

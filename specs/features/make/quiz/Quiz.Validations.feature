@@ -25,7 +25,7 @@ Feature: Create quiz - validations
     * I check randomized function
     * I enter number of randomized questions in quiz 3
     * I submit the quiz
-    Then I see error messages
+    Then I see error messages in quiz form
       | too-many-randomized-questions |
 
   Scenario: Quiz form with only default values

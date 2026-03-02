@@ -15,14 +15,14 @@ Feature: Create question - multiple choice validations
       | Berlin   |  | Germany |
 
   Scenario: Create multiple choice question without correct answer
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see error messages
       | no-correct-answer |
 
   Scenario: Create multiple choice question with one correct answer
     Given I mark answer 2 as correct
     When I mark the question as multiple choice
-    And I attempt to save the question
+    And I attempt to submit the question
     Then I see error messages
       | few-correct-answers |
 
@@ -31,5 +31,5 @@ Feature: Create question - multiple choice validations
     * I mark answer 3 as correct
     * I mark answer 4 as correct
     * I mark answer 1 as correct
-    When I attempt to save the question
+    When I attempt to submit the question
     Then I see no error messages
