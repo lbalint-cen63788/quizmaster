@@ -95,12 +95,12 @@ export const QuizCreateForm = ({ questions, onSubmit, quiz }: QuizCreateProps) =
             <Row>
                 <Field label="Pass score (in %)">
                     <NumberInput id="pass-score" value={passScore} onChange={setPassScore} />
-                    <ErrorMessage errorCode="scoreAboveMax" />
+                    <ErrorMessage errorCode="score-above-max" />
                 </Field>
                 <Field label="Time limit (in sec)">
                     <NumberInput id="time-limit" value={timeLimit} onChange={setTimeLimit} />
-                    <ErrorMessage errorCode="negativeTimeLimit" />
-                    <ErrorMessage errorCode="timeLimitAboveMax" />
+                    <ErrorMessage errorCode="negative-time-limit" />
+                    <ErrorMessage errorCode="time-limit-above-max" />
                 </Field>
             </Row>
             <Field label="Feedback mode">

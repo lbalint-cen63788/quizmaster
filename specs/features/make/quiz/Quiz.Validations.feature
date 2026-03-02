@@ -41,7 +41,7 @@ Feature: Create Quiz from Workspace
     * I enter pass score "220"
     * I submit the quiz
     Then I see error messages in quiz form
-      | scoreAboveMax |
+      | score-above-max |
 
 
   Scenario: Display error when limit is negative
@@ -50,7 +50,7 @@ Feature: Create Quiz from Workspace
     * I enter time limit "-10"
     * I submit the quiz
     Then I see error messages in quiz form
-      | negativeTimeLimit |
+      | negative-time-limit |
 
   Scenario: Display error when limit is over 21600
     When I start creating a new quiz
@@ -58,7 +58,7 @@ Feature: Create Quiz from Workspace
     * I enter time limit "21601"
     * I submit the quiz
     Then I see error messages in quiz form
-      | timeLimitAboveMax |
+      | time-limit-above-max |
 
   Scenario: When time limit is cleared, "0" is automatically set
     When I start creating a new quiz
