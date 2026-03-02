@@ -1,4 +1,4 @@
-Feature: Take a single question
+Feature: Question answer feedback
 
   Background:
     Given questions

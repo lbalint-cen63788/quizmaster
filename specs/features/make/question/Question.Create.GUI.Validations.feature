@@ -1,4 +1,4 @@
-Feature: Create question GUI
+Feature: Create question - validations
     - Question text is required
     - Answer text for each answer is required
     - At least one correct answer is required

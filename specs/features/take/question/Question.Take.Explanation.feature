@@ -1,4 +1,4 @@
-Feature: Take a single question
+Feature: Question explanations after answering
 
   Scenario Outline: Single choice question explanation
     Explanation is displayed after answering the question

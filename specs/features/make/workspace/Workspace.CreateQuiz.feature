@@ -1,4 +1,4 @@
-Feature: Create Quiz from Workspace
+Feature: Display created quiz in workspace
 
   Background:
     Given workspace "Quiz Workspace" with questions

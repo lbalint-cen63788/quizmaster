@@ -1,4 +1,4 @@
-Feature: Create Quiz from Workspace
+Feature: Filter questions when creating a quiz
 
   Background:
     Given workspace "Quiz Filter" with questions

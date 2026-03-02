@@ -1,4 +1,4 @@
-Feature: Take a quiz
+Feature: Quiz answer state after navigation
 
   Background:
     Given workspace "Regression" with questions

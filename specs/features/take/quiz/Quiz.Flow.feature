@@ -1,4 +1,4 @@
-Feature: Take a quiz
+Feature: Quiz navigation flow
 
   Background:
     Given workspace "Flow" with questions

@@ -1,4 +1,4 @@
-Feature: Create Quiz from Workspace
+Feature: Create quiz - validations
 
   Background:
     Given workspace "Quiz Validations" with questions

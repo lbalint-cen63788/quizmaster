@@ -1,4 +1,4 @@
-Feature: Take a quiz
+Feature: Quiz question pool size
 
   Background:
     Given workspace "Quiz Length" with questions
