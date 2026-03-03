@@ -58,10 +58,6 @@ Given('saved and bookmarked as {string}', async function (bookmark) {
     await saveQuestion(this, bookmark)
 })
 
-When('I wait for {int} ms', async (milliseconds: number) => {
-    await new Promise(resolve => setTimeout(resolve, milliseconds))
-})
-
 When('I check "Add explanation to your answer" checkbox', async function () {
     await this.questionEditPage.checkShowExplanationFields()
 })
