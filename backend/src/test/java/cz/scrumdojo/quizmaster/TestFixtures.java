@@ -87,10 +87,6 @@ public class TestFixtures {
             .title("Test Workspace");
     }
 
-    public Workspace createWorkspace(String title) {
-        return workspace().title(title).build();
-    }
-
     public Workspace save(Workspace.WorkspaceBuilder builder) {
         return workspaceRepository.save(builder.build());
     }
