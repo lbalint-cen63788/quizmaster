@@ -22,7 +22,8 @@ public class WorkspaceControllerTest {
 
     @Test
     public void saveAndGetWorkspace() {
-        var response = workspaceController.saveWorkspace(fixtures.workspace().title("Test Workspace").build());
+        var response = workspaceController.saveWorkspace(fixtures.workspace().title("Test Workspace").build()).getBody();
+        assertNotNull(response);
         assertNotNull(response.getGuid());
 
         Workspace workspace = workspaceController.getWorkspace(response.getGuid()).getBody();

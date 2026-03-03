@@ -39,9 +39,9 @@ public class WorkspaceController {
 
     @Transactional
     @PostMapping
-    public WorkspaceCreateResponse saveWorkspace(@RequestBody Workspace workspace) {
+    public ResponseEntity<WorkspaceCreateResponse> saveWorkspace(@RequestBody Workspace workspace) {
         var createdWorkspace = workspaceRepository.save(workspace);
-        return new WorkspaceCreateResponse(createdWorkspace.getGuid());
+        return ResponseEntity.ok(new WorkspaceCreateResponse(createdWorkspace.getGuid()));
     }
 
     @Transactional(readOnly = true)

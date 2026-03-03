@@ -22,7 +22,9 @@ public class QuizControllerTest {
         Question question = fixtures.save(fixtures.question());
         Quiz quiz = fixtures.quiz(question).build();
 
-        Integer quizId = quizController.createQuiz(quiz).getBody();
+        QuizCreateResponse createResponse = quizController.createQuiz(quiz).getBody();
+        assertNotNull(createResponse, "Create response should not be null");
+        Integer quizId = createResponse.getId();
         assertNotNull(quizId, "Quiz ID should not be null after creation");
 
         QuizResponse quizResponse = quizController.getQuiz(quizId).getBody();
