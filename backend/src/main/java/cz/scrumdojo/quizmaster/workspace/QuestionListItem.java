@@ -4,8 +4,8 @@ import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class QuestionListItem {
-    Integer id;
-    String question;
-    String editId;
-    Boolean isInAnyQuiz;
+    private Integer id;
+    private String question;
+    private String editId;
+    private Boolean isInAnyQuiz;
 }
