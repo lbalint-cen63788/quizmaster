@@ -2,7 +2,7 @@ import { expect } from '@playwright/test'
 
 import { expectTextToBe, expectThatIsNotVisible, expectThatIsVisible } from 'steps/common.ts'
 import { Given, When, Then } from 'steps/fixture.ts'
-import { expectQuestion } from 'steps/question/question-take.ts'
+import { expectQuestion } from 'steps/question/expects.ts'
 import type { QuizmasterWorld } from 'steps/world'
 
 const openQuiz = async (world: QuizmasterWorld, quizId: string) => {

@@ -3,26 +3,12 @@ import { expect } from '@playwright/test'
 
 import { expectTextToBe } from 'steps/common.ts'
 import { Then, When } from 'steps/fixture.ts'
-import type { Question } from 'steps/world'
-import type { TakeQuestionPage } from 'pages/take-question-page.ts'
+import { expectQuestion } from 'steps/question/expects.ts'
 
 When('I take question {string}', async function (bookmark: string) {
     await this.page.goto(this.questionBookmarks[bookmark].url)
     this.activeQuestionBookmark = bookmark
 })
-
-export async function expectQuestion(takeQuestionPage: TakeQuestionPage, question: Question) {
-    expect(await takeQuestionPage.questionText()).toBe(question.question)
-    const answers = question.answers
-    const answerLocators = takeQuestionPage.answersLocator()
-
-    expect(await answerLocators.count()).toBe(answers.length)
-
-    for (const [index, { answer }] of answers.entries()) {
-        const answerLocator = answerLocators.nth(index)
-        await expectTextToBe(answerLocator, answer)
-    }
-}
 
 Then('I see the question and the answers', async function () {
     await expectQuestion(this.takeQuestionPage, this.activeQuestion)

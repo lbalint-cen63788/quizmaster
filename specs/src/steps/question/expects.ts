@@ -1,6 +1,21 @@
 import { expect } from '@playwright/test'
 
-import type { QuestionEditPage } from 'pages'
+import type { QuestionEditPage, TakeQuestionPage } from 'pages'
+import { expectTextToBe } from 'steps/common.ts'
+import type { Question } from 'steps/world'
+
+export const expectQuestion = async (takeQuestionPage: TakeQuestionPage, question: Question) => {
+    expect(await takeQuestionPage.questionText()).toBe(question.question)
+    const answers = question.answers
+    const answerLocators = takeQuestionPage.answersLocator()
+
+    expect(await answerLocators.count()).toBe(answers.length)
+
+    for (const [index, { answer }] of answers.entries()) {
+        const answerLocator = answerLocators.nth(index)
+        await expectTextToBe(answerLocator, answer)
+    }
+}
 
 export const expectAnswer = async (
     page: QuestionEditPage,
