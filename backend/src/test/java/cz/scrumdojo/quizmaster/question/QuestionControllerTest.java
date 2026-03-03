@@ -86,6 +86,13 @@ public class QuestionControllerTest {
     }
 
     @Test
+    public void updateNonExistentQuestionReturns404() {
+        var question = fixtures.question().build();
+        var response = questionController.updateQuestion(question, "non-existent-edit-id");
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
     public void nonExistingQuestion() {
         ResponseEntity<?> response = questionController.getQuestion(-1);
 

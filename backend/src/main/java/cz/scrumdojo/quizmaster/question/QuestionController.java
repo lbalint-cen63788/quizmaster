@@ -45,11 +45,13 @@ public class QuestionController {
     @Transactional
     @PatchMapping("/{editId}")
     public ResponseEntity<QuestionCreateResponse> updateQuestion(@RequestBody Question question, @PathVariable String editId) {
-        var existingQuestion = questionRepository.findByEditId(editId)
-            .orElseThrow(() -> new IllegalArgumentException("Question not found with editId: " + editId));
-        question.setId(existingQuestion.getId());
-        question.setEditId(editId);
-        questionRepository.save(question);
-        return ResponseEntity.ok(new QuestionCreateResponse(existingQuestion.getId(), editId));
+        return questionRepository.findByEditId(editId)
+            .map(existing -> {
+                question.setId(existing.getId());
+                question.setEditId(editId);
+                questionRepository.save(question);
+                return ResponseEntity.ok(new QuestionCreateResponse(existing.getId(), editId));
+            })
+            .orElse(ResponseEntity.notFound().build());
     }
 }
