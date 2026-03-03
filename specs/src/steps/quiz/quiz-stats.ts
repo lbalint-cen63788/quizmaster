@@ -3,39 +3,16 @@ import { expect } from '@playwright/test'
 
 import { expectTextToBe } from 'steps/common.ts'
 import { Given, Then, When } from 'steps/fixture.ts'
+import { takeQuizWithAnswers, takeQuizWithAnswersTimed } from 'steps/quiz/ops.ts'
 
 Given('I take quiz {string} with answer(s)', async function (quizName: string, data: DataTable) {
-    await this.workspacePage.takeQuiz(quizName)
-    await this.quizWelcomePage.start()
-    const rows = Array.from(data.rows())
-    for (let i = 0; i < rows.length; i++) {
-        const [, answer] = rows[i]
-        await this.takeQuestionPage.selectAnswer(answer)
-        await this.questionPage.submit()
-    }
-    await this.questionPage.evaluate()
-    await this.workspacePage.goto(this.workspaceCreatePage.workspaceGuid())
+    await takeQuizWithAnswers(this, quizName, data)
 })
 
 When(
     'I take quiz {string} with answers in {int} seconds',
     async function (quizName: string, timer: number, data: DataTable) {
-        await this.page.clock.install({ time: new Date() })
-        await this.workspacePage.takeQuiz(quizName)
-        await this.quizWelcomePage.start()
-        const startTime = Date.now()
-        const rows = Array.from(data.rows())
-        for (let i = 0; i < rows.length; i++) {
-            const [, answer] = rows[i]
-            await this.takeQuestionPage.selectAnswer(answer)
-            await this.questionPage.submit()
-        }
-        const endTime = Date.now()
-        const elapsedTime = endTime - startTime
-
-        await this.page.clock.fastForward(timer * 1000 - elapsedTime)
-        await this.questionPage.evaluate()
-        await this.workspacePage.goto(this.workspaceCreatePage.workspaceGuid())
+        await takeQuizWithAnswersTimed(this, quizName, timer, data)
     },
 )
 
