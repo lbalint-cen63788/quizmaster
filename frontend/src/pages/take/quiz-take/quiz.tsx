@@ -57,7 +57,6 @@ export const QuestionForm = (props: QuestionProps) => {
 
     // Funkce pro Next button - dělá skip/submit/next/evaluate
     const handleNextButton = () => {
-        console.log('Handling Next button click:', selectedAnswers, hasSelectedAnswer)
         if (!hasSelectedAnswer) {
             // Pokud není zodpovězeno, skipni a bookmarkuj
             if (!bookmarks.has(nav.currentQuestionIdx)) {

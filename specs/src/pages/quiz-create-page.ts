@@ -23,11 +23,7 @@ export class QuizCreatePage {
     enterQuizFinalCount = (finalCount: string) => this.page.locator('#quiz-finalCount').fill(finalCount.toString())
     enterDescription = (description: string) => this.page.locator('#quiz-description').fill(description)
     errorMessageLocator = () => this.page.locator('.alert.error')
-    hasError = (errorTestId: string) => {
-        const result = this.page.getByTestId(errorTestId)
-        console.log(result)
-        return result.isVisible()
-    }
+    hasError = (errorTestId: string) => this.page.getByTestId(errorTestId).isVisible()
     clearTimeLimit = () => this.timeLimitInput().fill('')
     clearScore = () => this.passScoreInput().fill('')
     hasAnyError = () => this.page.locator('.alert.error').isVisible()

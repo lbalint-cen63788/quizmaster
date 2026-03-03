@@ -16,7 +16,6 @@ export const Correctness = (props: CorrectnessProps) => {
         label = props.score === 1 ? 'Correct!' : 'Incorrect!'
         className = props.score === 1 ? 'correct' : 'incorrect'
     }
-    console.log('Correctness render', props, label, className)
     return <span className={`feedback ${className}`}>{label}</span>
 }
 
