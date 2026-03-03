@@ -1,5 +1,6 @@
 package cz.scrumdojo.quizmaster.question;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Generated;
@@ -8,6 +9,7 @@ import org.hibernate.generator.EventType;
 import org.hibernate.type.SqlTypes;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class Question {
     @Id
