@@ -47,7 +47,6 @@ const formatDuration = (started: string, finished: string): string => {
     return `${hours} hour${hours !== 1 ? 's' : ''} ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''} ${seconds} second${seconds !== 1 ? 's' : ''}`
 }
 
-
 export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
     const summary: SummaryStats = {
         started: stats.length,
