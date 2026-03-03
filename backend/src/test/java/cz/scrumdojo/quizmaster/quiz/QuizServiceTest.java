@@ -26,14 +26,7 @@ public class QuizServiceTest {
     public void quizWithNoRandomizationReturnsAllQuestions() {
         Question q1 = fixtures.save(fixtures.question());
         Question q2 = fixtures.save(fixtures.question());
-        Quiz quiz = fixtures.save(Quiz.builder()
-            .title("Test")
-            .description("Test")
-            .mode(QuizMode.LEARN)
-            .difficulty(Difficulty.KEEP_QUESTION)
-            .passScore(80)
-            .questionIds(new int[]{q1.getId(), q2.getId()})
-            .build());
+        Quiz quiz = fixtures.save(fixtures.quiz(q1, q2).randomQuestionCount(null).build());
 
         QuizResponse response = quizService.getQuiz(quiz.getId()).orElseThrow();
 
@@ -45,15 +38,7 @@ public class QuizServiceTest {
         Question q1 = fixtures.save(fixtures.question());
         Question q2 = fixtures.save(fixtures.question());
         Question q3 = fixtures.save(fixtures.question());
-        Quiz quiz = fixtures.save(Quiz.builder()
-            .title("Test")
-            .description("Test")
-            .mode(QuizMode.LEARN)
-            .difficulty(Difficulty.KEEP_QUESTION)
-            .passScore(80)
-            .questionIds(new int[]{q1.getId(), q2.getId(), q3.getId()})
-            .randomQuestionCount(2)
-            .build());
+        Quiz quiz = fixtures.save(fixtures.quiz(q1, q2, q3).randomQuestionCount(2).build());
 
         QuizResponse response = quizService.getQuiz(quiz.getId()).orElseThrow();
 
@@ -67,15 +52,7 @@ public class QuizServiceTest {
         Question q3 = fixtures.save(fixtures.question());
         Set<Integer> poolIds = Set.of(q1.getId(), q2.getId(), q3.getId());
 
-        Quiz quiz = fixtures.save(Quiz.builder()
-            .title("Test")
-            .description("Test")
-            .mode(QuizMode.LEARN)
-            .difficulty(Difficulty.KEEP_QUESTION)
-            .passScore(80)
-            .questionIds(new int[]{q1.getId(), q2.getId(), q3.getId()})
-            .randomQuestionCount(2)
-            .build());
+        Quiz quiz = fixtures.save(fixtures.quiz(q1, q2, q3).randomQuestionCount(2).build());
 
         QuizResponse response = quizService.getQuiz(quiz.getId()).orElseThrow();
 
@@ -95,14 +72,7 @@ public class QuizServiceTest {
     @Test
     public void quizWithMissingQuestionSkipsIt() {
         Question q1 = fixtures.save(fixtures.question());
-        Quiz quiz = fixtures.save(Quiz.builder()
-            .title("Test")
-            .description("Test")
-            .mode(QuizMode.LEARN)
-            .difficulty(Difficulty.KEEP_QUESTION)
-            .passScore(80)
-            .questionIds(new int[]{q1.getId(), -999})
-            .build());
+        Quiz quiz = fixtures.save(fixtures.quiz(q1).questionIds(new int[]{q1.getId(), -999}).randomQuestionCount(null).build());
 
         QuizResponse response = quizService.getQuiz(quiz.getId()).orElseThrow();
 
