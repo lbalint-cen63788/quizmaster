@@ -1,4 +1,3 @@
-import { fail } from 'node:assert'
 import type { DataTable } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 
@@ -106,12 +105,4 @@ Then('I see error messages in quiz form', async function (table: DataTable) {
 Then('I see no error messages in quiz form', async function () {
     const hasError = await this.quizCreatePage.hasAnyError()
     expect(hasError).toBe(false)
-})
-
-Then("I don't see questions in quiz creation form", () => {
-    fail('Not implemented yet')
-})
-
-Then('I see questions in quiz creation form', () => {
-    fail('Not implemented yet')
 })

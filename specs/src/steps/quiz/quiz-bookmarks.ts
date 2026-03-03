@@ -27,11 +27,5 @@ Then("I don't see bookmark link {string}", async function (questionTitle: string
 })
 
 Then('I see bookmark to previous question {string}', async function (prevQuestionTitle: string) {
-    // Ověří, že v seznamu bookmarků na aktuální stránce je odkaz na předchozí otázku
-    await expect(this.questionPage.bookmarkListLocator(prevQuestionTitle)).toBeVisible()
-})
-
-Then('I see bookmark link to previous question {string}', async function (prevQuestionTitle: string) {
-    // Ověří, že v seznamu bookmarků je tlačítko/odkaz na předchozí otázku
     await expect(this.questionPage.bookmarkListLocator(prevQuestionTitle)).toBeVisible()
 })
