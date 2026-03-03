@@ -1,8 +1,7 @@
 import type { DataTable } from '@cucumber/cucumber'
-import { expect } from '@playwright/test'
 
 import type { TableOf } from 'steps/common.ts'
-import { Given, When, Then } from 'steps/fixture.ts'
+import { Given } from 'steps/fixture.ts'
 import {
     addAnswers,
     createQuestion,
@@ -56,13 +55,4 @@ Given('marked as easy mode', async function () {
 
 Given('saved and bookmarked as {string}', async function (bookmark) {
     await saveQuestion(this, bookmark)
-})
-
-When('I check "Add explanation to your answer" checkbox', async function () {
-    await this.questionEditPage.checkShowExplanationFields()
-})
-
-Then('I see explanation fields are visible for answers', async function () {
-    const countExplanationFields = await this.questionEditPage.countExplanationFields()
-    expect(countExplanationFields).toBe(2)
 })
