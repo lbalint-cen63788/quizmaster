@@ -19,22 +19,22 @@ When('I set randomized question count to {int}', async function (finalCount: str
     await this.quizCreatePage.enterQuizFinalCount(finalCount)
 })
 
-When('I see empty quiz title', async function () {
+Then('I see empty quiz title', async function () {
     const value = await this.quizCreatePage.getQuizTitleValue()
     expect(value).toBe('')
 })
 
-When('I see empty quiz description', async function () {
+Then('I see empty quiz description', async function () {
     const value = await this.quizCreatePage.getQuizDescriptionValue()
     expect(value).toBe('')
 })
 
-When('I see time limit {string} seconds', async function (timeLimit: string) {
+Then('I see time limit {string} seconds', async function (timeLimit: string) {
     const value = await this.quizCreatePage.timeLimitInput().inputValue()
     expect(value).toBe(timeLimit)
 })
 
-When('I see pass score {string}', async function (score: string) {
+Then('I see pass score {string}', async function (score: string) {
     const value = await this.quizCreatePage.passScoreInput().inputValue()
     expect(value).toBe(score)
 })
