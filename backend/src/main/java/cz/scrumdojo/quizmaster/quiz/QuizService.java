@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class QuizService {
@@ -46,10 +48,12 @@ public class QuizService {
     }
 
     private List<Question> loadQuestions(Quiz quiz) {
-        List<Question> questions = new ArrayList<>();
-        for (int questionId : quiz.getQuestionIds()) {
-            questionRepository.findById(questionId).ifPresent(questions::add);
-        }
-        return questions;
+        List<Integer> ids = Arrays.stream(quiz.getQuestionIds()).boxed().toList();
+        Map<Integer, Question> questionsById = questionRepository.findAllById(ids).stream()
+            .collect(Collectors.toMap(Question::getId, Function.identity()));
+        return ids.stream()
+            .map(questionsById::get)
+            .filter(Objects::nonNull)
+            .toList();
     }
 }
