@@ -1,5 +1,4 @@
-import { useRef, useState } from 'react'
-import { Button, SubmitButton, Form, Field, TextArea, CheckField, Row } from 'pages/components'
+import { SubmitButton, Form, Field, TextArea, CheckField, Row } from 'pages/components'
 import { AnswersEdit, stateToQuestionApiData } from 'pages/make/create-question/form'
 import { useQuestionFormState } from './question-form-state'
 import { validateQuestionFormState, errorMessage } from './validators.ts'
@@ -14,27 +13,15 @@ interface QuestionEditProps {
 
 export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
     const state = useQuestionFormState(question)
-    const aiAssistDialogRef = useRef<HTMLDialogElement>(null)
-    const [aiPrompt, setAiPrompt] = useState('')
 
     const validator = createValidator(() => validateQuestionFormState(state), errorMessage)
 
     const handleSubmit = () => onSubmit(stateToQuestionApiData(state))
-    const handleAiAssist = () => aiAssistDialogRef.current?.showModal()
-
-    const handleAiGenerate = () => {
-        // TODO: Call AI API with aiPrompt to generate question and answers
-        aiAssistDialogRef.current?.close()
-        setAiPrompt('')
-    }
 
     return (
         <Form id="question-create-form" validator={validator} onSubmit={handleSubmit}>
             <Field label="Question" required>
                 <TextArea id="question-text" value={state.questionText} onChange={state.setQuestionText} />
-                <Button id="ai-assistent" className="secondary button" onClick={handleAiAssist}>
-                    AI assist
-                </Button>
                 <ErrorMessage errorCode="empty-question" />
             </Field>
             <Row>
@@ -71,18 +58,6 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
             <Row>
                 <SubmitButton />
             </Row>
-
-            <dialog ref={aiAssistDialogRef}>
-                <h3>AI assist</h3>
-                <Field label="Prompt">
-                    <TextArea id="ai-assist-prompt" value={aiPrompt} onChange={setAiPrompt} />
-                </Field>
-                <Row>
-                    <Button id="ai-assist-generate" className="primary button" onClick={handleAiGenerate}>
-                        Vygenerovat
-                    </Button>
-                </Row>
-            </dialog>
         </Form>
     )
 }

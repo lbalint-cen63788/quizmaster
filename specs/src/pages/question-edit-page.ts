@@ -12,17 +12,6 @@ export class QuestionEditPage {
     enterQuestion = (question: string) => this.questionLocator().fill(question)
     questionValue = () => this.questionLocator().inputValue()
 
-    aiAssistButtonLocator = () => this.page.locator('#ai-assistent')
-    clickAiAssistButton = () => this.aiAssistButtonLocator().click()
-
-    aiAssistDialogLocator = () => this.page.getByRole('dialog')
-
-    private aiAssistPromptLocator = () => this.page.getByRole('textbox', { name: /prompt/i })
-    fillAiAssistPrompt = (prompt: string) => this.aiAssistPromptLocator().fill(prompt)
-
-    private aiAssistGenerateButtonLocator = () => this.page.getByRole('button', { name: /vygenerovat/i })
-    clickAiAssistGenerateButton = () => this.aiAssistGenerateButtonLocator().click()
-
     private showAnswerExplanationLocator = () => this.page.locator('#show-answer-explanations')
     answerExplanationsVisible = () => this.showAnswerExplanationLocator().isChecked()
     showAnswerExplanations = () => this.showAnswerExplanationLocator().check()
