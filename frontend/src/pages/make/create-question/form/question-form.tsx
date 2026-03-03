@@ -1,4 +1,4 @@
-import { SubmitButton, Form, Field, TextArea, CheckField, Row } from 'pages/components'
+import { Button, SubmitButton, Form, Field, TextArea, CheckField, Row } from 'pages/components'
 import { AnswersEdit, stateToQuestionApiData } from 'pages/make/create-question/form'
 import { useQuestionFormState } from './question-form-state'
 import { validateQuestionFormState, errorMessage } from './validators.ts'
@@ -17,11 +17,15 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
     const validator = createValidator(() => validateQuestionFormState(state), errorMessage)
 
     const handleSubmit = () => onSubmit(stateToQuestionApiData(state))
+    const handleAiAssist = () => undefined
 
     return (
         <Form id="question-create-form" validator={validator} onSubmit={handleSubmit}>
             <Field label="Question" required>
                 <TextArea id="question-text" value={state.questionText} onChange={state.setQuestionText} />
+                <Button id="ai-assistent" className="secondary button" onClick={handleAiAssist}>
+                    AI assist
+                </Button>
                 <ErrorMessage errorCode="empty-question" />
             </Field>
             <Row>
