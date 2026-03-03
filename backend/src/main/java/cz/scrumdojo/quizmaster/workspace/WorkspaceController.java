@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/workspaces")
@@ -48,9 +49,10 @@ public class WorkspaceController {
     @GetMapping("/{guid}/questions")
     public List<QuestionListItem> getWorkspaceQuestions(@PathVariable String guid) {
         List<Question> questions = questionRepository.findByWorkspaceGuid(guid);
+        Set<Integer> questionIdsInQuizzes = quizRepository.findQuestionIdsInQuizzesByWorkspaceGuid(guid);
 
         return questions.stream()
-            .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), q.getEditId(), quizRepository.existsQuizWithQuestionId(q.getId())))
+            .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), q.getEditId(), questionIdsInQuizzes.contains(q.getId())))
             .toList();
     }
 

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public interface QuizRepository extends JpaRepository<Quiz, Integer> {
 
@@ -11,4 +12,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer> {
 
     @Query(value = "SELECT COUNT(*) > 0 FROM quiz WHERE ? = ANY(questions)", nativeQuery = true)
     boolean existsQuizWithQuestionId(int questionId);
+
+    @Query(value = "SELECT DISTINCT unnest(questions) FROM quiz WHERE workspace_guid = ?", nativeQuery = true)
+    Set<Integer> findQuestionIdsInQuizzesByWorkspaceGuid(String workspaceGuid);
 }
