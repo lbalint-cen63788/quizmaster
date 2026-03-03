@@ -118,3 +118,32 @@ export const takeQuizWithAnswersTimed = async (
     await world.questionPage.evaluate()
     await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
 }
+
+export const progressThroughQuestions = async (world: QuizmasterWorld) => {
+    const textToBookmark: Record<string, string> = {}
+    for (const [bookmark, question] of Object.entries(world.questionBookmarks)) {
+        textToBookmark[question.question] = bookmark
+    }
+
+    const questionCount = Object.keys(textToBookmark).length
+
+    for (let i = 0; i < questionCount; i++) {
+        await world.takeQuestionPage.waitForLoaded()
+
+        const questionText = (await world.takeQuestionPage.questionText()) || ''
+        const bookmark = textToBookmark[questionText] || questionText
+
+        const countLocator = world.takeQuestionPage.correctAnswersCountLocator()
+        const isVisible = await countLocator.isVisible()
+
+        if (isVisible) {
+            const count = await countLocator.textContent()
+            world.correctAnswersCounts[bookmark] = count || '-'
+        } else {
+            world.correctAnswersCounts[bookmark] = '-'
+        }
+
+        await world.takeQuestionPage.selectAnswerNth(0)
+        await world.takeQuestionPage.submit()
+    }
+}
