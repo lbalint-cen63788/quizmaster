@@ -3,7 +3,6 @@ import { expect } from '@playwright/test'
 import { Given, When, Then } from 'steps/fixture.ts'
 import { emptyAnswer, emptyQuestion } from 'steps/world/question.ts'
 
-/*
 Given('I open question create page for workspace {string}', async function (workspaceGuid: string) {
     await this.page.goto(`/question/new?workspaceguid=${workspaceGuid}`, { waitUntil: 'networkidle' })
     this.questionWip = emptyQuestion()
@@ -66,4 +65,3 @@ Then('I see the generated question in the workspace list', async function () {
     await this.page.waitForURL(/\/workspace\//)
     await expect(this.page.getByText(this.questionWip.question)).toBeVisible()
 })
-*/
