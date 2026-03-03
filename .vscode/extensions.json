@@ -2,12 +2,15 @@
     "recommendations": [
         "EditorConfig.EditorConfig",
 
-        "GitHub.copilot",
         "GitHub.copilot-chat",
 
         "ritwickdey.LiveServer",
 
-        "vscode.vscode-java-pack",
+        "redhat.java",
+        "vscjava.vscode-java-debug",
+        "vscjava.vscode-java-test",
+        "vscjava.vscode-gradle",
+
         "ms-playwright.playwright",
         "cucumberopen.cucumber-official"
     ]

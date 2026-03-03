@@ -14,12 +14,15 @@
             "extensions": [
                 "EditorConfig.EditorConfig",
 
-                "GitHub.copilot",
                 "GitHub.copilot-chat",
 
-                "vscode.vscode-java-pack",
+                "redhat.java",
+                "vscjava.vscode-java-debug",
+                "vscjava.vscode-java-test",
+                "vscjava.vscode-gradle",
+
                 "ms-playwright.playwright",
-                "alexkrechik.cucumberautocomplete"
+                "cucumberopen.cucumber-official"
             ]
         }
     }
