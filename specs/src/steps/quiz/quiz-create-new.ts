@@ -5,7 +5,6 @@ import { expectedNumberOfChildrenToBe } from 'steps/common.ts'
 import { Then, When } from 'steps/fixture.ts'
 import { expectQuizFormErrors } from 'steps/quiz/expects.ts'
 import type { QuizMode, Difficulty } from 'steps/world/quiz.ts'
-import { skip } from 'node:test'
 
 When('I start creating a new quiz', async function () {
     await this.workspacePage.createNewQuiz()
@@ -122,12 +121,4 @@ Then('I see question is marked {string}', async function (question: string) {
 
 Then('I see question is not marked {string}', async function (question: string) {
     await expect(this.page.getByLabel(question)).not.toBeChecked()
-})
-
-Then("I don't see questions in quiz creation form", () => {
-    fail('Not implemented yet')
-})
-
-Then('I see questions in quiz creation form', () => {
-    fail('Not implemented yet')
 })
