@@ -5,6 +5,7 @@ import { expectedNumberOfChildrenToBe } from 'steps/common.ts'
 import { Then, When } from 'steps/fixture.ts'
 import { expectQuizFormErrors } from 'steps/quiz/expects.ts'
 import type { QuizMode, Difficulty } from 'steps/world/quiz.ts'
+import { skip } from 'node:test'
 
 When('I start creating a new quiz', async function () {
     await this.workspacePage.createNewQuiz()
@@ -40,6 +41,14 @@ Then('I see pass score {string}', async function (score: string) {
 
 When('I see quiz question {string}', async function (title: string) {
     await expect(this.quizCreatePage.getQuestion(title).first()).toBeVisible()
+})
+
+When('I start editing a quiz {string}', async function (quiz: string) {
+    await expect(this.quizCreatePage.getQuestion(quiz).first()).toBeVisible()
+})
+
+When('questions belonging to the quiz are marked', async function (quiz: string) {
+    await expect(this.quizCreatePage.getQuestion(quiz).first()).toBeVisible()
 })
 
 When("I don't see quiz questions {string}", async function (title: string) {
@@ -105,4 +114,20 @@ Then('I see error messages in quiz form', async function (table: DataTable) {
 Then('I see no error messages in quiz form', async function () {
     const hasError = await this.quizCreatePage.hasAnyError()
     expect(hasError).toBe(false)
+})
+
+Then('I see question is marked {string}', async function (question: string) {
+    await expect(this.page.getByLabel(question)).toBeChecked()
+})
+
+Then('I see question is not marked {string}', async function (question: string) {
+    await expect(this.page.getByLabel(question)).not.toBeChecked()
+})
+
+Then("I don't see questions in quiz creation form", () => {
+    fail('Not implemented yet')
+})
+
+Then('I see questions in quiz creation form', () => {
+    fail('Not implemented yet')
 })

@@ -13,7 +13,7 @@
         "test:playwright": "bddgen && cross-var wait-on tcp:$FE_PORT && playwright test",
         "test:e2e": "cross-env FE_PORT=8080 pnpm test:playwright",
         "test:e2e:vite": "cross-env FE_PORT=5173 pnpm test:playwright",
-        "test:e2e:watch": "chokidar features/**/*.feature -c bddgen",
+        "test:e2e:watch": "chokidar 'features/**/*.feature' 'src/**/*.ts' -c bddgen",
         "test:e2e:ui": "concurrently 'pnpm test:e2e:watch' 'pnpm test:e2e:vite --ui-host=0.0.0.0 --ui-port=3333'",
 
         "doc:gen": "node --require esbuild-register src/doc-gen/doc-gen.ts",
