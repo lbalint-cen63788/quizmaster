@@ -33,8 +33,9 @@ public class QuestionControllerTest {
     @Test
     public void deleteQuestion() {
         var question = fixtures.question().build();
-        questionController.saveQuestion(question);
-        var id = question.getId();
+        var response = questionController.saveQuestion(question).getBody();
+        assertNotNull(response);
+        var id = response.getId();
         questionController.deleteQuestion(id);
         var result = questionController.getQuestion(id).getBody();
         assertNull(result);
