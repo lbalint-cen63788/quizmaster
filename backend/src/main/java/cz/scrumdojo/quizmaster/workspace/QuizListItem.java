@@ -4,6 +4,6 @@ import lombok.*;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class QuizListItem {
-    Integer id;
-    String title;
+    private Integer id;
+    private String title;
 }
