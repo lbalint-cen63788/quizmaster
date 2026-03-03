@@ -1,6 +1,12 @@
 import { expect } from '@playwright/test'
 
 import { Given, Then } from 'steps/fixture.ts'
+import {
+    expectAllOptionsForQuestion,
+    expectOriginalResult,
+    expectOriginalResultNotVisible,
+    expectQuizResult,
+} from 'steps/quiz/expects.ts'
 
 Given('I finish the quiz', async function () {
     await this.page.goto('quiz/score')
@@ -15,20 +21,14 @@ Then(
         expectedTextResult: string,
         expectedPassScore: number,
     ) {
-        const correctAnswers = await this.quizScorePage.correctAnswers()
-        expect(correctAnswers).toBe(expectedCorrectAnswers)
-
-        const totalQuestions = await this.quizScorePage.totalQuestions()
-        expect(totalQuestions).toBe(expectedTotalQuestions)
-
-        const result = await this.quizScorePage.percentageResult()
-        expect(result).toBe(expectedPercentage)
-
-        const textResult = await this.quizScorePage.textResult()
-        expect(textResult).toBe(expectedTextResult)
-
-        const passScore = await this.quizScorePage.passScore()
-        expect(passScore).toBe(expectedPassScore)
+        await expectQuizResult(
+            this.quizScorePage,
+            expectedCorrectAnswers,
+            expectedTotalQuestions,
+            expectedPercentage,
+            expectedTextResult,
+            expectedPassScore,
+        )
     },
 )
 
@@ -44,26 +44,17 @@ Then(
         expectedOriginalPercentage: number,
         expectedOriginalTextResult: string,
     ) {
-        const firstCorrectAnswers = await this.quizScorePage.firstCorrectAnswers()
-        expect(firstCorrectAnswers).toBe(expectedOriginalCorrectAnswers)
-
-        const result = await this.quizScorePage.firstPercentageResult()
-        expect(result).toBe(expectedOriginalPercentage)
-
-        const textResult = await this.quizScorePage.firstTextResult()
-        expect(textResult).toBe(expectedOriginalTextResult)
+        await expectOriginalResult(
+            this.quizScorePage,
+            expectedOriginalCorrectAnswers,
+            expectedOriginalPercentage,
+            expectedOriginalTextResult,
+        )
     },
 )
 
 Then("I don't see the original results", async function () {
-    const firstCorrectAnswers = await this.quizScorePage.firstCorrectAnswersPresent()
-    expect(firstCorrectAnswers).toBe(false)
-
-    const result = await this.quizScorePage.firstPercentageResultPresent()
-    expect(result).toBe(false)
-
-    const textResult = await this.quizScorePage.firstTextResultPresent()
-    expect(textResult).toBe(false)
+    await expectOriginalResultNotVisible(this.quizScorePage)
 })
 
 Then('I see the question {string}', async function (question: string) {
@@ -72,20 +63,11 @@ Then('I see the question {string}', async function (question: string) {
 })
 
 Then('I see all options for question {string}', async function (question: string) {
-    const answersOrig = this.questionBookmarks[question].answers
-
-    const answers: string[] = await this.quizScorePage.answers(question)
-
-    expect(answers.length).toBe(answersOrig.length)
-
-    for (const answer of answersOrig) {
-        expect(answers).toContain(answer.answer)
-    }
+    await expectAllOptionsForQuestion(this.quizScorePage, question, this.questionBookmarks[question].answers)
 })
 
 Then('I see explanation {string} for question {string}', async function (explanation: string, question: string) {
     const explanations: string[] = await this.quizScorePage.explanations(question)
-
     expect(explanations).toContain(explanation)
 })
 
@@ -93,14 +75,12 @@ Then(
     'I see question explanation {string} for question {string}',
     async function (explanationOrig: string, question: string) {
         const explanation = await this.quizScorePage.questionExplanation(question)
-
         expect(explanation).toBe(explanationOrig)
     },
 )
 
 Then('I see user select {string} for question {string}', async function (userSelect: string, question: string) {
     const answerLabel = await this.quizScorePage.checkedAnswerLabel(question)
-
     expect(answerLabel).toBe(userSelect)
 })
 
@@ -108,7 +88,6 @@ Then(
     'I see corresponding response {string} for answer {string} for question {string}',
     async function (response: string, answer: string, question: string) {
         const answerResponse = await this.quizScorePage.answerCorrespondingResponse(question, answer)
-
         expect(answerResponse).toBe(response)
     },
 )
