@@ -12,7 +12,6 @@ Feature: Question answer feedback
       | Australia | What's the capital city of Australia? | Sydney, Canberra (*), Melbourne   |
       | Planets   | Which of the following are planets?   | Mars (*), Pluto, Venus (*), Titan |
 
-  @screenshot:quiz-take-feedback-single-choice.png:1
   Scenario Outline: Single choice question feedback
     Question is answered correctly if the correct answer is selected
 
@@ -41,7 +40,6 @@ Feature: Question answer feedback
       | Mars, Pluto, Venus, Titan | Incorrect! |
       | Pluto, Titan              | Incorrect! |
 
-  @screenshot:quiz-take-feedback-multiple-choice.png:3
   Scenario Outline: Multiple choice question per-answer feedback
     Upon submitting the question, each answer is marked with a color:
     - green if the answer is correct
