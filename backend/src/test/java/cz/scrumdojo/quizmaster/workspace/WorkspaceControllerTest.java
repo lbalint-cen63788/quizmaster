@@ -24,9 +24,9 @@ public class WorkspaceControllerTest {
     public void saveAndGetWorkspace() {
         var response = workspaceController.saveWorkspace(fixtures.workspace().title("Test Workspace").build()).getBody();
         assertNotNull(response);
-        assertNotNull(response.getGuid());
+        assertNotNull(response.guid());
 
-        Workspace workspace = workspaceController.getWorkspace(response.getGuid()).getBody();
+        Workspace workspace = workspaceController.getWorkspace(response.guid()).getBody();
         assertNotNull(workspace);
         assertEquals("Test Workspace", workspace.getTitle());
     }
@@ -42,10 +42,10 @@ public class WorkspaceControllerTest {
         List<QuestionListItem> result = workspaceController.getWorkspaceQuestions(workspace.getGuid());
 
         assertEquals(2, result.size());
-        assertEquals(question1.getId(), result.get(0).getId());
-        assertEquals(question2.getId(), result.get(1).getId());
-        assertFalse(result.get(0).getIsInAnyQuiz());
-        assertTrue(result.get(1).getIsInAnyQuiz());
+        assertEquals(question1.getId(), result.get(0).id());
+        assertEquals(question2.getId(), result.get(1).id());
+        assertFalse(result.get(0).isInAnyQuiz());
+        assertTrue(result.get(1).isInAnyQuiz());
     }
 
     @Test
@@ -59,7 +59,7 @@ public class WorkspaceControllerTest {
         List<QuizListItem> quizzes = workspaceController.getWorkspaceQuizzes(workspace.getGuid());
 
         assertEquals(2, quizzes.size());
-        assertEquals(quiz1.getId(), quizzes.get(0).getId());
-        assertEquals(quiz2.getId(), quizzes.get(1).getId());
+        assertEquals(quiz1.getId(), quizzes.get(0).id());
+        assertEquals(quiz2.getId(), quizzes.get(1).id());
     }
 }

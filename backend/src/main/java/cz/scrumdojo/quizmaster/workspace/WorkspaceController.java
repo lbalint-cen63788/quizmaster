@@ -60,10 +60,7 @@ public class WorkspaceController {
         List<Quiz> quizzes = quizRepository.findByWorkspaceGuid(guid);
 
         return quizzes.stream()
-            .map(quiz -> QuizListItem.builder()
-                .id(quiz.getId())
-                .title(quiz.getTitle())
-                .build())
+            .map(quiz -> new QuizListItem(quiz.getId(), quiz.getTitle()))
             .toList();
     }
 }

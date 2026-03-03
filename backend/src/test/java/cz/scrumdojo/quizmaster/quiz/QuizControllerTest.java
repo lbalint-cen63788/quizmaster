@@ -24,7 +24,7 @@ public class QuizControllerTest {
 
         QuizCreateResponse createResponse = quizController.createQuiz(quiz).getBody();
         assertNotNull(createResponse, "Create response should not be null");
-        Integer quizId = createResponse.getId();
+        Integer quizId = createResponse.id();
         assertNotNull(quizId, "Quiz ID should not be null after creation");
 
         QuizResponse quizResponse = quizController.getQuiz(quizId).getBody();

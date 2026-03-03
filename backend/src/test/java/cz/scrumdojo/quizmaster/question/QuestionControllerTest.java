@@ -23,9 +23,9 @@ public class QuestionControllerTest {
         var question = fixtures.question().build();
         var response = questionController.saveQuestion(question).getBody();
         assertNotNull(response);
-        assertNotNull(response.getId());
+        assertNotNull(response.id());
 
-        Question result = questionController.getQuestion(response.getId()).getBody();
+        Question result = questionController.getQuestion(response.id()).getBody();
         assertNotNull(result);
         assertQuestion(question, result);
     }
@@ -35,7 +35,7 @@ public class QuestionControllerTest {
         var question = fixtures.question().build();
         var response = questionController.saveQuestion(question).getBody();
         assertNotNull(response);
-        var id = response.getId();
+        var id = response.id();
         questionController.deleteQuestion(id);
         var result = questionController.getQuestion(id).getBody();
         assertNull(result);
@@ -81,8 +81,8 @@ public class QuestionControllerTest {
         var response = questionController.saveQuestion(question).getBody();
         assertNotNull(response);
 
-        assertNotNull(response.getId());
-        assertNotNull(response.getEditId());
+        assertNotNull(response.id());
+        assertNotNull(response.editId());
     }
 
     @Test
