@@ -17,13 +17,13 @@ export const fetchQuestionByEditId = async (editId: string) => await fetchJson<Q
 
 export type QuestionApiData = Omit<Question, 'id'>
 
-export interface QuestionCreateResponse {
+export interface QuestionWriteResponse {
     readonly id: number
     readonly editId: string
 }
 
 export const saveQuestion = async (question: QuestionApiData) =>
-    await postJson<QuestionApiData, QuestionCreateResponse>('/api/question', question)
+    await postJson<QuestionApiData, QuestionWriteResponse>('/api/question', question)
 
 export const updateQuestion = async (question: QuestionApiData, editId: string) =>
-    await patchJson<QuestionApiData, QuestionCreateResponse>(`/api/question/${editId}`, question)
+    await patchJson<QuestionApiData, QuestionWriteResponse>(`/api/question/${editId}`, question)
