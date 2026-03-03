@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import cz.scrumdojo.quizmaster.QuizUtils;
 import java.util.*;
 
 @Slf4j
@@ -37,24 +36,21 @@ public class QuizController {
                 ? quiz.getSize()
                 : quiz.getQuestionIds().length;
 
-        Question[] questions = new Question[questionsLimit];
+        List<Question> questions = new ArrayList<>(questionsLimit);
         for (int i = 0; i < questionsLimit; i++) {
-            questions[i] = questionRepository.getReferenceById(quiz.getQuestionIds()[i]);
+            questionRepository.findById(quiz.getQuestionIds()[i]).ifPresent(questions::add);
         }
 
-        if (quiz.getFinalCount() != null && quiz.getFinalCount() > 0  && questions.length > 0) {
-            List<Question> questionList = Arrays.asList(questions);
-            Collections.shuffle(questionList);
-            questions = questionList.subList(0, quiz.getFinalCount())
-                    .toArray(new Question[quiz.getFinalCount() - 1]);
-                    questions = QuizUtils.shrinkQuestions(questions, quiz.getFinalCount());
+        if (quiz.getFinalCount() != null && quiz.getFinalCount() > 0 && !questions.isEmpty()) {
+            Collections.shuffle(questions);
+            questions = new ArrayList<>(questions.subList(0, Math.min(quiz.getFinalCount(), questions.size())));
         }
 
         QuizResponse build = QuizResponse.builder()
                 .id(quiz.getId())
                 .title(quiz.getTitle())
                 .description(quiz.getDescription())
-                .questions(questions)
+                .questions(questions.toArray(new Question[0]))
                 .mode(quiz.getMode())
                 .difficulty(quiz.getDifficulty())
                 .passScore(quiz.getPassScore())
