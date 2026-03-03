@@ -90,6 +90,14 @@ export const addAnswers = async (world: QuizmasterWorld, answerRawTable: TableOf
     }
 }
 
+export const answerQuestion = async (world: QuizmasterWorld, answerList: string) => {
+    const answers = world.parseAnswers(answerList)
+    for (const answer of answers) {
+        await world.takeQuestionPage.selectAnswer(answer)
+    }
+    await world.takeQuestionPage.submit()
+}
+
 export const createQuestion = async (
     world: QuizmasterWorld,
     bookmark: string,

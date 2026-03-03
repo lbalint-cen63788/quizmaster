@@ -4,6 +4,7 @@ import { expect } from '@playwright/test'
 import { expectTextToBe } from 'steps/common.ts'
 import { Then, When } from 'steps/fixture.ts'
 import { expectColorFeedback, expectQuestion } from 'steps/question/expects.ts'
+import { answerQuestion } from 'steps/question/ops.ts'
 
 When('I take question {string}', async function (bookmark: string) {
     await this.page.goto(this.questionBookmarks[bookmark].url)
@@ -15,11 +16,7 @@ Then('I see the question and the answers', async function () {
 })
 
 When('I answer {string}', async function (answerList: string) {
-    const answers = this.parseAnswers(answerList)
-    for (const answer of answers) {
-        await this.takeQuestionPage.selectAnswer(answer)
-    }
-    await this.takeQuestionPage.submit()
+    await answerQuestion(this, answerList)
 })
 
 When('I press the key {int}', async function (num: number) {
