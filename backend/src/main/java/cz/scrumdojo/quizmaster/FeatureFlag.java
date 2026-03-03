@@ -1,23 +1,18 @@
 package cz.scrumdojo.quizmaster;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FeatureFlag {
 
-    private static boolean featureFlag = false;
+    private final boolean enabled;
 
-    public static boolean isEnabled() {
-        return featureFlag;
+    public FeatureFlag(@Value("${feature.flag:false}") boolean enabled) {
+        this.enabled = enabled;
     }
 
-    static {
-        InputStream input = QuizmasterApplication.class.getClassLoader().getResourceAsStream("feature-flag.properties");
-        if (input != null) try {
-            Properties properties = new Properties();
-            properties.load(input);
-            featureFlag = Boolean.parseBoolean(properties.getProperty("feature.flag"));
-        } catch (IOException ignored) {}
+    public boolean isEnabled() {
+        return enabled;
     }
 }
