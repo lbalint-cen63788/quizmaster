@@ -20,7 +20,7 @@ public class QuizControllerTest {
     @Test
     public void createAndGetQuiz() {
         Question question = fixtures.save(fixtures.question());
-        Quiz quiz = fixtures.quiz(question,question).build();
+        Quiz quiz = fixtures.quiz(question).build();
 
         Integer quizId = quizController.createQuiz(quiz).getBody();
         assertNotNull(quizId, "Quiz ID should not be null after creation");
