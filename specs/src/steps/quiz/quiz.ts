@@ -3,6 +3,7 @@ import { expect } from '@playwright/test'
 import { expectTextToBe, expectThatIsNotVisible, expectThatIsVisible } from 'steps/common.ts'
 import { Given, When, Then } from 'steps/fixture.ts'
 import { expectQuestion } from 'steps/question/expects.ts'
+import { expectAnswersChecked, expectNavigationButtons } from 'steps/quiz/expects.ts'
 import { openQuiz, startQuiz } from 'steps/quiz/ops.ts'
 
 Given('I open quiz {string}', async function (quizId: string) {
@@ -55,35 +56,18 @@ When('I confirm the "Game over" dialog', async function () {
 })
 
 Then('I see buttons {string}', async function (buttonList: string) {
-    const expectedButtons = buttonList.split(',').map(b => b.trim())
-
-    const buttonLocatorMap: Record<string, () => ReturnType<typeof this.questionPage.backButtonLocator>> = {
-        Back: () => this.questionPage.backButtonLocator(),
-        Next: () => this.questionPage.nextButtonLocator(),
-        Evaluate: () => this.questionPage.evaluateButtonLocator(),
-    }
-
-    for (const name of expectedButtons) {
-        const locator = buttonLocatorMap[name]
-        if (!locator) throw new Error(`Unknown button: "${name}"`)
-        await expect(locator()).toBeVisible()
-    }
-
-    await expect(this.questionPage.navigationButtonsLocator()).toHaveCount(expectedButtons.length)
+    await expectNavigationButtons(
+        this.questionPage,
+        buttonList.split(',').map(b => b.trim()),
+    )
 })
 
 Then('I should see answer {string} is checked', async function (answerList: string) {
-    const answers = this.parseAnswers(answerList)
-    for (const element of answers) {
-        await expect(this.takeQuestionPage.answerCheckLocator(element)).toBeChecked()
-    }
+    await expectAnswersChecked(this.takeQuestionPage, this.parseAnswers(answerList), true)
 })
 
 Then('I should see answer {string} is unchecked', async function (answerList: string) {
-    const answers = this.parseAnswers(answerList)
-    for (const element of answers) {
-        await expect(this.takeQuestionPage.answerCheckLocator(element)).not.toBeChecked()
-    }
+    await expectAnswersChecked(this.takeQuestionPage, this.parseAnswers(answerList), false)
 })
 
 Then('I should not see the answer', async function () {
