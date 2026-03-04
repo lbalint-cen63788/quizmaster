@@ -5,7 +5,6 @@ import cz.scrumdojo.quizmaster.question.QuestionRepository;
 import cz.scrumdojo.quizmaster.quiz.Quiz;
 import cz.scrumdojo.quizmaster.quiz.QuizRepository;
 import cz.scrumdojo.quizmaster.ResponseHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,6 @@ public class WorkspaceController {
     private final QuestionRepository questionRepository;
     private final QuizRepository quizRepository;
 
-    @Autowired
     public WorkspaceController(
         WorkspaceRepository workspaceRepository,
         QuestionRepository questionRepository,
@@ -31,14 +29,11 @@ public class WorkspaceController {
         this.quizRepository = quizRepository;
     }
 
-
-    @Transactional(readOnly = true)
     @GetMapping("/{guid}")
     public ResponseEntity<Workspace> getWorkspace(@PathVariable String guid) {
         return ResponseHelper.okOrNotFound(workspaceRepository.findById(guid));
     }
 
-    @Transactional
     @PostMapping
     public ResponseEntity<WorkspaceCreateResponse> saveWorkspace(@RequestBody Workspace workspace) {
         var createdWorkspace = workspaceRepository.save(workspace);
