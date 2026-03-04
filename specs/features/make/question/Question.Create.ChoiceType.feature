@@ -129,3 +129,12 @@ Feature: Create question - single/multiple choice
     And I submit the question
     Then I see question edit page
     And I see numerical correct answer "14"
+
+  @skip
+  Scenario: Numeric question: Create numerical question with decimal places
+    * I switch to numeric question
+    * I enter question "Value of Pi on 3 decimal places"
+    * I enter numerical answer "3,141"
+    When I click save
+    Then I see workspace with question
+    | Value of Pi on 3 decimal places |
