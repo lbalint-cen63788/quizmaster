@@ -1,4 +1,4 @@
-import { SubmitButton, Form, Field, TextArea, CheckField, Row } from 'pages/components'
+import { SubmitButton, Form, Field, TextArea, CheckField, Row, Button } from 'pages/components'
 import { AnswersEdit, stateToQuestionApiData } from 'pages/make/create-question/form'
 import { useQuestionFormState } from './question-form-state'
 import { validateQuestionFormState, errorMessage } from './validators.ts'
@@ -9,19 +9,35 @@ import { ErrorMessage, createValidator } from 'pages/components/forms/validation
 interface QuestionEditProps {
     readonly question?: Question
     readonly onSubmit: (questionData: QuestionApiData) => void
+    readonly onAiAssistantClick?: (instructions: string) => void
 }
 
-export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
+export const QuestionEditForm = ({ question, onSubmit, onAiAssistantClick }: QuestionEditProps) => {
     const state = useQuestionFormState(question)
 
     const validator = createValidator(() => validateQuestionFormState(state), errorMessage)
 
     const handleSubmit = () => onSubmit(stateToQuestionApiData(state))
+    const handleAiAssistantClick = () => onAiAssistantClick?.(state.questionText)
 
     return (
         <Form id="question-create-form" validator={validator} onSubmit={handleSubmit}>
             <Field label="Question" required>
-                <TextArea id="question-text" value={state.questionText} onChange={state.setQuestionText} />
+                <div className="question-input-with-action">
+                    <TextArea
+                        id="question-text"
+                        className="question-textarea-with-action"
+                        value={state.questionText}
+                        onChange={state.setQuestionText}
+                    />
+                    <Button
+                        id="question-ai-assistant-button"
+                        className="secondary button question-ai-assistant-button"
+                        onClick={handleAiAssistantClick}
+                    >
+                        AI Assistant
+                    </Button>
+                </div>
                 <ErrorMessage errorCode="empty-question" />
             </Field>
             <Row>

@@ -12,7 +12,7 @@ export class QuestionEditPage {
     enterQuestion = (question: string) => this.questionLocator().fill(question)
     questionValue = () => this.questionLocator().inputValue()
 
-    private aiAssistButtonLocator = () => this.page.getByRole('button', { name: 'AI assist' })
+    private aiAssistButtonLocator = () => this.page.getByRole('button', { name: /AI assist(ant)?/i })
     clickAiAssist = () => this.aiAssistButtonLocator().click()
 
     private showExplanationLocator = () => this.page.locator('#show-explanation')
