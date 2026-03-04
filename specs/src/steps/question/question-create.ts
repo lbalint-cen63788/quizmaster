@@ -5,6 +5,7 @@ import { Given } from 'steps/fixture.ts'
 import {
     addAnswers,
     createQuestion,
+    enterImageUrl,
     enterQuestion,
     openCreatePage,
     saveQuestion,
@@ -48,6 +49,10 @@ Given('questions', async function (data: DataTable) {
 
         await createQuestion(this, bookmark, question, isEasy, answerRawTable, explanation)
     }
+})
+
+Given('with image {string}', async function (imageUrl: string) {
+    await enterImageUrl(this, imageUrl)
 })
 
 Given('with answers:', async function (answerRawTable: TableOf<AnswerRaw>) {

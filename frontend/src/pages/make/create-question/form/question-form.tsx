@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { postAiAssistant } from 'api/ai-assistant.ts'
-import { SubmitButton, Form, Field, TextArea, CheckField, Row, Button, Alert } from 'pages/components'
+import { SubmitButton, Form, Field, TextArea, TextInput, CheckField, Row, Button, Alert } from 'pages/components'
 import { AnswersEdit, stateToQuestionApiData } from 'pages/make/create-question/form'
 import { useQuestionFormState } from './question-form-state'
 import { validateQuestionFormState, errorMessage } from './validators.ts'
@@ -108,6 +108,9 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
                     value={state.questionExplanation}
                     onChange={state.setQuestionExplanation}
                 />
+            </Field>
+            <Field label="Image URL">
+                <TextInput id="image-url" value={state.imageUrl} onChange={state.setImageUrl} />
             </Field>
             <Row>
                 <SubmitButton />

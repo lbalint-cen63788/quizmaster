@@ -12,6 +12,7 @@ export interface Question {
     question: string
     answers: Answer[]
     explanation: string
+    imageUrl?: string
 }
 
 export const emptyQuestion = (): Question => ({ url: '', editUrl: '', question: '', answers: [], explanation: '' })

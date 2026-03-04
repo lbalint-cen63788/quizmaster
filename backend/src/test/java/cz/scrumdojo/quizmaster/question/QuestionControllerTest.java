@@ -89,6 +89,18 @@ public class QuestionControllerTest {
     }
 
     @Test
+    public void saveAndGetQuestionWithImageUrl() {
+        var imageUrl = "https://placekitten.com/300/200";
+        var request = fixtures.questionRequestWithImage(imageUrl);
+        var response = questionController.saveQuestion(request).getBody();
+        assertNotNull(response);
+
+        Question result = questionController.getQuestion(response.id()).getBody();
+        assertNotNull(result);
+        assertEquals(imageUrl, result.getImageUrl());
+    }
+
+    @Test
     public void nonExistingQuestion() {
         ResponseEntity<?> response = questionController.getQuestion(-1);
 

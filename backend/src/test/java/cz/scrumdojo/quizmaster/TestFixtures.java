@@ -48,6 +48,7 @@ public class TestFixtures {
             new String[]{"No", "Correct!", "No", "No"},
             null,
             false,
+            null,
             null
         );
     }
@@ -60,7 +61,21 @@ public class TestFixtures {
             new String[]{"Yes!", "Yes!", "No, France", "No, Germany"},
             null,
             false,
+            null,
             null
+        );
+    }
+
+    public QuestionRequest questionRequestWithImage(String imageUrl) {
+        return new QuestionRequest(
+            "What is the capital of Italy?",
+            new String[]{"Naples", "Rome", "Florence", "Palermo"},
+            new int[]{1},
+            new String[]{"No", "Correct!", "No", "No"},
+            null,
+            false,
+            null,
+            imageUrl
         );
     }
 

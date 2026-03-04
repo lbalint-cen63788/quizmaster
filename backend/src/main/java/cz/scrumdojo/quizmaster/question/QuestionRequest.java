@@ -7,7 +7,8 @@ public record QuestionRequest(
     String[] explanations,
     String questionExplanation,
     boolean easyMode,
-    String workspaceGuid
+    String workspaceGuid,
+    String imageUrl
 ) {
     public Question toEntity() {
         return Question.builder()
@@ -18,6 +19,7 @@ public record QuestionRequest(
             .questionExplanation(questionExplanation)
             .isEasyMode(easyMode)
             .workspaceGuid(workspaceGuid)
+            .imageUrl(imageUrl)
             .build();
     }
 }

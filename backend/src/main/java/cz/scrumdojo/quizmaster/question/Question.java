@@ -44,4 +44,7 @@ public class Question {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     @Generated(event = EventType.INSERT)
     private String editId;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 }

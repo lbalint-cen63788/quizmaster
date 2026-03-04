@@ -25,6 +25,7 @@ export interface QuestionFormState {
     readonly questionExplanation: string
     readonly workspaceGuid: string
     readonly showExplanations: boolean
+    readonly imageUrl: string
 }
 
 export type QuestionType = 'single' | 'multiple' | 'numerical'
@@ -51,6 +52,7 @@ export const useQuestionFormState = (question?: Question) => {
 
     const [questionExplanation, setQuestionExplanation] = useState(question?.questionExplanation || '')
     const [workspaceGuid, setWorkspaceGuid] = useState(question?.workspaceGuid || '')
+    const [imageUrl, setImageUrl] = useState(question?.imageUrl || '')
 
     const isMultipleChoice = questionType === 'multiple'
     const isNumerical = questionType === 'numerical'
@@ -127,6 +129,7 @@ export const useQuestionFormState = (question?: Question) => {
         easyMode,
         workspaceGuid,
         showExplanations,
+        imageUrl,
         setQuestionText,
         addAnswer,
         removeAnswer,
@@ -138,6 +141,7 @@ export const useQuestionFormState = (question?: Question) => {
         setEasyMode,
         setWorkspaceGuid,
         setShowExplanations,
+        setImageUrl,
     }
 }
 
@@ -164,5 +168,6 @@ export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiDat
         explanations: Array.from(state.explanations),
         questionExplanation: state.questionExplanation,
         easyMode: state.easyMode,
+        imageUrl: state.imageUrl || undefined,
     }
 }
