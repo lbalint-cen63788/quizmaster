@@ -1,3 +1,4 @@
+import './quiz.scss'
 import type { AnswerIdxs } from 'model/question'
 import type { Quiz } from 'model/quiz.ts'
 import { QuestionForm as StandaloneQuestionForm } from '../question-take/index.ts'
@@ -97,9 +98,9 @@ export const QuestionForm = (props: QuestionProps) => {
         <div>
             <TimeLimit timeLimit={props.quiz.timeLimit} onConfirm={evaluateTimedOut} />
             <h2>Quiz</h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <div className="feedback-mode-row">
                 <div id="feedback-mode">Feedback mode:</div>
-                <label style={{ fontWeight: 800 }}>{props.quiz.mode}</label>
+                <label className="feedback-mode-label">{props.quiz.mode}</label>
             </div>
 
             <ProgressBar current={nav.currentQuestionIdx + 1} total={props.quiz.questions.length} />
@@ -115,9 +116,7 @@ export const QuestionForm = (props: QuestionProps) => {
                 mode={props.quiz.mode}
                 quizDifficulty={props.quiz.difficulty}
             />
-            <div
-                style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '10px', marginBottom: '20px' }}
-            >
+            <div className="quiz-button-bar">
                 {nav.canBack && <BackButton onClick={nav.back} />}
                 {nav.canNext && <NextButton onClick={handleNextButton} />}
                 {isAnswered && !nav.canNext && <EvaluateButton onClick={evaluate} />}

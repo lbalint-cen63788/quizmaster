@@ -134,38 +134,37 @@ export const QuizCreateForm = ({ questions, onSubmit, quiz }: QuizCreateProps) =
             <QuestionSelect questions={filteredQuestions} selectedIds={selectedIds} onSelect={toggleSelectedId} />
             <ErrorMessage errorCode="few-questions" />
 
-            <div style={{ paddingLeft: '25px' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ fontWeight: 800 }} id="selected-question-count-for-quiz">
+            <div className="question-count-info">
+                <span className="inline-label">
+                    <div className="bold-count" id="selected-question-count-for-quiz">
                         {selectedIds.size}
                     </div>
                     selected question(s)
                 </span>
             </div>
-            <div style={{ paddingLeft: '25px' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ fontWeight: 800 }} id="total-question-count-for-quiz">
+            <div className="question-count-info">
+                <span className="inline-label">
+                    <div className="bold-count" id="total-question-count-for-quiz">
                         {questions.length}
                     </div>
                     total questions available
                 </span>
             </div>
 
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span className="inline-label">
                 <input
                     type="checkbox"
                     id="isRandomized"
                     onChange={e => setCheckRandomize(e.target.checked)}
                     checked={checkRandomize}
                 />
-                <label htmlFor="isRandomized" style={{ marginTop: '5px', fontWeight: 'bold' }}>
-                    {' '}
-                    Randomize questions in the quiz{' '}
+                <label htmlFor="isRandomized" className="randomize-label">
+                    Randomize questions in the quiz
                 </label>
             </span>
             {checkRandomize && (
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <div style={{ width: '150px', paddingLeft: '25px' }}>
+                <span className="inline-label">
+                    <div className="random-count-input">
                         <NumberInput
                             id="quiz-randomQuestionCount"
                             value={randomQuestionCount}

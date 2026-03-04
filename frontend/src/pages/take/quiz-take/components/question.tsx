@@ -22,7 +22,7 @@ export const QuestionFeedback = ({ question, selectedAnswerIdxs }: QuestionFeedb
             <legend>
                 <strong id={`question-name-${question.id}`}>{question.question}</strong>
             </legend>
-            <ul id={`question-answers-${question.id}`} className="answers" style={{ width: '100%' }}>
+            <ul id={`question-answers-${question.id}`} className="answers">
                 {question.answers.map((answer, idx) => (
                     <Answer
                         key={answer}

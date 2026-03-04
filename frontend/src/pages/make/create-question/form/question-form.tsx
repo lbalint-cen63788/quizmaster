@@ -81,14 +81,7 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
             </Field>
             <Field label="Image URL">
                 <TextInput id="image-url" value={state.imageUrl} onChange={state.setImageUrl} />
-                {state.imageUrl && (
-                    <img
-                        src={state.imageUrl}
-                        alt="preview"
-                        className="image-preview"
-                        style={{ maxWidth: '300px', display: 'block', marginTop: '0.5rem' }}
-                    />
-                )}
+                {state.imageUrl && <img src={state.imageUrl} alt="preview" className="image-preview" />}
             </Field>
             <Row>
                 <Field label="Question type" required>

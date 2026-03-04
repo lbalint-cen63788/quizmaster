@@ -51,7 +51,7 @@ export const CopyQuestionButton = ({ id, kind, onClick }: CopyQuestionButtonProp
             src={copyClipboardIcon}
             alt={`Copy the ${kind} url to clipboard`}
             title={`Copy the ${kind} url to clipboard`}
-            style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}
+            className="copy-icon"
             onError={e => {
                 e.currentTarget.style.display = 'none'
             }}

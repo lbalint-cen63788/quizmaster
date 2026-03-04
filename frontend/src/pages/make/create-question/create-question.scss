@@ -18,6 +18,12 @@
         z-index: 1;
     }
 
+    .image-preview {
+        max-width: 300px;
+        display: block;
+        margin-top: 0.5rem;
+    }
+
     .answer-row {
         display: flex;
         flex-direction: row;

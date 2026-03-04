@@ -40,7 +40,7 @@ export const QuizItem: React.FC<Props> = ({ quiz, workspaceguid }) => {
                             src={copyClipboardIcon}
                             alt="Copy the quiz url to clipboard"
                             title="Copy the quiz url to clipboard"
-                            style={{ width: '1em', height: '1em', verticalAlign: 'middle' }}
+                            className="copy-icon"
                             onError={e => {
                                 e.currentTarget.style.display = 'none'
                             }}

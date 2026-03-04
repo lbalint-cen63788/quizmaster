@@ -226,6 +226,13 @@ h1 {
     display: flex;
     align-items: center;
 
+    .question-thumbnail {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        margin-right: 0.5rem;
+    }
+
     .question-index {
         font-weight: 600;
         margin-right: 0.75rem;
@@ -239,4 +246,10 @@ h1 {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+}
+
+.copy-icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
 }

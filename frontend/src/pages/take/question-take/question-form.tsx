@@ -121,12 +121,7 @@ export const QuestionForm = (props: QuestionFormProps) => {
                 )}
 
                 {!!props.question.imageUrl && (
-                    <img
-                        src={props.question.imageUrl}
-                        alt="question"
-                        className="question-image"
-                        style={{ maxWidth: '300px', display: 'block', marginBottom: '1rem' }}
-                    />
+                    <img src={props.question.imageUrl} alt="question" className="question-image" />
                 )}
 
                 {isNumerical ? (

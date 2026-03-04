@@ -1,3 +1,27 @@
 form#create-quiz {
     .row > * { flex: 1; }
+
+    .question-count-info {
+        padding-left: 25px;
+    }
+
+    .inline-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .bold-count {
+        font-weight: 800;
+    }
+
+    .randomize-label {
+        margin-top: 5px;
+        font-weight: bold;
+    }
+
+    .random-count-input {
+        width: 150px;
+        padding-left: 25px;
+    }
 }
