@@ -1,6 +1,6 @@
 import './quiz-create-form.scss'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { useStateSet } from 'helpers'
 import type { QuestionListItem } from 'model/question-list-item.ts'
@@ -23,6 +23,7 @@ interface QuizCreateProps {
 }
 
 export const QuizCreateForm = ({ questions, onSubmit, quiz }: QuizCreateProps) => {
+    const navigate = useNavigate()
     const [title, setTitle] = useState<string>('')
     const [description, setDescription] = useState<string>('')
     const [selectedIds, toggleSelectedId, addSelectedId] = useStateSet<number>()
@@ -73,6 +74,15 @@ export const QuizCreateForm = ({ questions, onSubmit, quiz }: QuizCreateProps) =
         workspaceGuid: searchParams.get('workspaceguid') || null,
         randomQuestionCount,
     })
+
+    const onBack = () => {
+        const workspaceGuid = searchParams.get('workspaceguid')
+        if (workspaceGuid) {
+            navigate(`/workspace/${workspaceGuid}`)
+            return
+        }
+        navigate('/')
+    }
 
     useEffect(() => {
         if (filter === '') {
@@ -168,7 +178,12 @@ export const QuizCreateForm = ({ questions, onSubmit, quiz }: QuizCreateProps) =
                 </span>
             )}
             <ErrorMessage errorCode="too-many-randomized-questions" />
-            <SubmitButton />
+            <div className="flex-container">
+                <button id="back" type="button" className="primary button" onClick={onBack}>
+                    Back
+                </button>
+                <SubmitButton />
+            </div>
         </Form>
     )
 }
