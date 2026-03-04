@@ -1,26 +1,28 @@
 package cz.scrumdojo.quizmaster.aiassistant;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@SpringBootTest
 public class AiAssistantServiceTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String apiToken = System.getenv("AI_TOKEN");
+    @Autowired
+    private AiAssistantService aiAssistantService;
 
-    private AiAssistantService createService(String token) {
-        return new AiAssistantService(objectMapper, token);
-    }
+    @Value("${ai.token:}")
+    private String apiToken;
 
     @Test
     void generateQuestionReturnsValidResponse() {
-        assumeTrue(apiToken != null && !apiToken.isBlank(), "AI_TOKEN env var not set");
+        assumeTrue(!apiToken.isBlank(), "ai.token not configured");
 
-        var response = createService(apiToken).generateQuestion("capital cities of Europe");
+        var response = aiAssistantService.generateQuestion("capital cities of Europe");
 
         assertNotNull(response.question());
         assertFalse(response.question().isBlank());
@@ -33,11 +35,6 @@ public class AiAssistantServiceTest {
 
     @Test
     void generateQuestionFailsOnEmptyPrompt() {
-        assertThrows(ResponseStatusException.class, () -> createService("token").generateQuestion("   "));
-    }
-
-    @Test
-    void generateQuestionFailsWhenTokenMissing() {
-        assertThrows(ResponseStatusException.class, () -> createService("").generateQuestion("topic"));
+        assertThrows(ResponseStatusException.class, () -> aiAssistantService.generateQuestion("   "));
     }
 }

@@ -2,6 +2,7 @@ package cz.scrumdojo.quizmaster.aiassistant;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -18,12 +19,12 @@ public class AiAssistantControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Value("${ai.token:}")
+    private String apiToken;
+
     @Test
     public void generateReturnsQuestionShape() throws Exception {
-        assumeTrue(
-            System.getenv("AI_TOKEN") != null && !System.getenv("AI_TOKEN").isBlank(),
-            "AI_TOKEN env var not set"
-        );
+        assumeTrue(!apiToken.isBlank(), "ai.token not configured");
 
         mockMvc.perform(post("/api/ai-assistant")
                 .contentType(MediaType.APPLICATION_JSON)

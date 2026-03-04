@@ -52,7 +52,7 @@ public class AiAssistantService {
         @Value("${ai.token:}") String apiToken
     ) {
         this.objectMapper = objectMapper;
-        this.apiToken = apiToken;
+        this.apiToken = apiToken.strip();
         this.httpClient = HttpClient.newBuilder().connectTimeout(TIMEOUT).build();
     }
 
