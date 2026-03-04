@@ -17,6 +17,9 @@ export interface QuestionFormState {
     readonly answers: readonly string[]
     readonly explanations: readonly string[]
     readonly correctAnswers: readonly number[]
+    readonly questionType: QuestionType
+    readonly numericalAnswer: string
+    readonly isNumerical: boolean
     readonly isMultipleChoice: boolean
     readonly easyMode: boolean
     readonly questionExplanation: string
@@ -24,9 +27,20 @@ export interface QuestionFormState {
     readonly showExplanations: boolean
 }
 
+export type QuestionType = 'single' | 'multiple' | 'numerical'
+
 export const useQuestionFormState = (question?: Question) => {
+    const isQuestionNumerical =
+        (question?.answers?.length || 0) === 1 &&
+        (question?.correctAnswers?.length || 0) === 1 &&
+        question?.correctAnswers?.[0] === 0 &&
+        /^-?\d+$/.test(question?.answers?.[0] || '')
+
     const [questionText, setQuestionText] = useState<string>(question?.question || '')
-    const [isMultipleChoice, setIsMultipleChoice] = useState((question?.correctAnswers?.length || 0) > 1 || false)
+    const [questionType, setQuestionType] = useState<QuestionType>(
+        isQuestionNumerical ? 'numerical' : (question?.correctAnswers?.length || 0) > 1 ? 'multiple' : 'single',
+    )
+    const [numericalAnswer, setNumericalAnswer] = useState(isQuestionNumerical ? (question?.answers?.[0] ?? '') : '')
     const [easyMode, setEasyMode] = useState(question?.easyMode || false)
     const [showExplanations, setShowExplanations] = useState(
         question?.explanations?.some(explanation => !!explanation) ?? false,
@@ -38,9 +52,25 @@ export const useQuestionFormState = (question?: Question) => {
     const [questionExplanation, setQuestionExplanation] = useState(question?.questionExplanation || '')
     const [workspaceGuid, setWorkspaceGuid] = useState(question?.workspaceGuid || '')
 
+    const isMultipleChoice = questionType === 'multiple'
+    const isNumerical = questionType === 'numerical'
+
+    const selectQuestionType = (nextType: QuestionType) => {
+        if (nextType === 'single' && correctAnswers.length > 1) {
+            setCorrectAnswers([])
+        }
+        if (nextType !== 'multiple') {
+            setEasyMode(false)
+        }
+        setQuestionType(nextType)
+    }
+
     const toggleMultipleChoice = () => {
-        if (isMultipleChoice && correctAnswers.length > 1) setCorrectAnswers([])
-        setIsMultipleChoice(!isMultipleChoice)
+        selectQuestionType(isMultipleChoice ? 'single' : 'multiple')
+    }
+
+    const toggleNumerical = (value: boolean) => {
+        selectQuestionType(value ? 'numerical' : 'single')
     }
 
     const setAnswer = (index: number, answer: string) => setAnswers(updated(answers, index, answer))
@@ -89,6 +119,9 @@ export const useQuestionFormState = (question?: Question) => {
         answers,
         explanations,
         correctAnswers,
+        questionType,
+        numericalAnswer,
+        isNumerical,
         questionExplanation,
         isMultipleChoice,
         easyMode,
@@ -98,7 +131,10 @@ export const useQuestionFormState = (question?: Question) => {
         addAnswer,
         removeAnswer,
         setQuestionExplanation,
+        selectQuestionType,
         toggleMultipleChoice,
+        toggleNumerical,
+        setNumericalAnswer,
         setEasyMode,
         setWorkspaceGuid,
         setShowExplanations,
@@ -106,6 +142,19 @@ export const useQuestionFormState = (question?: Question) => {
 }
 
 export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiData => {
+    if (state.isNumerical) {
+        return {
+            question: state.questionText,
+            editId: '',
+            workspaceGuid: state.workspaceGuid,
+            answers: [state.numericalAnswer.trim()],
+            correctAnswers: [0],
+            explanations: [''],
+            questionExplanation: state.questionExplanation,
+            easyMode: false,
+        }
+    }
+
     return {
         question: state.questionText,
         editId: '',

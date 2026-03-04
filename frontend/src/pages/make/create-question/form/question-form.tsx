@@ -25,12 +25,17 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
                 <ErrorMessage errorCode="empty-question" />
             </Field>
             <Row>
-                <CheckField
-                    id="is-multiple-choice"
-                    label="Multiple choice"
-                    checked={state.isMultipleChoice}
-                    onToggle={state.toggleMultipleChoice}
-                />
+                <Field label="Question type" required>
+                    <select
+                        id="question-type"
+                        value={state.questionType}
+                        onChange={e => state.selectQuestionType(e.target.value as 'single' | 'multiple' | 'numerical')}
+                    >
+                        <option value="single">Single choice</option>
+                        <option value="multiple">Multiple choice</option>
+                        <option value="numerical">Numerical question</option>
+                    </select>
+                </Field>
                 {state.isMultipleChoice && (
                     <CheckField
                         id="easy-mode"
@@ -40,14 +45,27 @@ export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
                     />
                 )}
             </Row>
-            <AnswersEdit
-                setShowExplanations={state.setShowExplanations}
-                showExplanations={state.showExplanations}
-                answerStates={state.answerStates}
-                isMultipleChoice={state.isMultipleChoice}
-                addAnswer={state.addAnswer}
-                removeAnswer={state.removeAnswer}
-            />
+            {state.isNumerical ? (
+                <Field label="Correct numerical answer" required>
+                    <input
+                        type="number"
+                        id="numerical-correct-answer"
+                        value={state.numericalAnswer}
+                        onChange={e => state.setNumericalAnswer(e.target.value)}
+                    />
+                    <ErrorMessage errorCode="empty-numerical-answer" />
+                    <ErrorMessage errorCode="invalid-numerical-answer" />
+                </Field>
+            ) : (
+                <AnswersEdit
+                    setShowExplanations={state.setShowExplanations}
+                    showExplanations={state.showExplanations}
+                    answerStates={state.answerStates}
+                    isMultipleChoice={state.isMultipleChoice}
+                    addAnswer={state.addAnswer}
+                    removeAnswer={state.removeAnswer}
+                />
+            )}
             <Field label="Question explanation">
                 <TextArea
                     id="question-explanation"

@@ -110,3 +110,21 @@ Feature: Edit question form
     When I start editing question "Cambodia"
     Then I see explanations are disabled
     And I do not see explanation fields
+
+  Scenario: Update question from multiple choice to numerical
+    Given a question "What are cities of Czech Republic?"
+      * with answers:
+        | Brno     | * | Yes |
+        | Prague   | * | Yes |
+        | Berlin   |   | No  |
+      * saved and bookmarked as "Cities"
+    When I start editing question "Cities"
+    And I mark the question as numerical choice
+    And I enter numerical correct answer "14"
+    And I submit the question
+    And I refresh the page
+    And I start editing question "Cities"
+    Then the question is numerical choice
+    And I see numerical correct answer "14"
+    And I do not see answer fields
+    And I do not see Add Answer button

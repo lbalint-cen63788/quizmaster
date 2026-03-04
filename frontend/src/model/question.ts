@@ -19,6 +19,9 @@ export interface Answers {
     readonly questionExplanation: string
 }
 
+export const isNumericalQuestion = (question: Question) =>
+    question.answers.length === 1 && question.correctAnswers.length === 1 && question.correctAnswers[0] === 0
+
 export const isAnsweredCorrectly = (selectedAnswerIdxs: AnswerIdxs, correctAnswers: AnswerIdxs): boolean => {
     if (selectedAnswerIdxs) {
         return (

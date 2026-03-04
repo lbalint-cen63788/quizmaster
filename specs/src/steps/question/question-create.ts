@@ -23,6 +23,17 @@ Given(
     },
 )
 
+Given(
+    'a numerical question {string} with correct answer {string} bookmarked as {string}',
+    async function (question: string, correctAnswer: string, bookmark: string) {
+        await openCreatePage(this)
+        await enterQuestion(this, question)
+        await this.questionEditPage.setNumericalChoice()
+        await this.questionEditPage.enterNumericalCorrectAnswer(correctAnswer)
+        await saveQuestion(this, bookmark)
+    },
+)
+
 Given('questions', async function (data: DataTable) {
     for (const row of data.hashes()) {
         const { bookmark, question, answers, easy, explanation } = row

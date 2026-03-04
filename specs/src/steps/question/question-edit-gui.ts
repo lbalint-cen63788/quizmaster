@@ -65,9 +65,35 @@ Then(/I see explanations are (enabled|disabled)/, async function (value: string)
     expect(showExplanation).toBe(value === 'enabled')
 })
 
-Then(/the question is (single|multiple) choice/, async function (value: string) {
-    const isMultipleChoice = await this.questionEditPage.isMultipleChoice()
-    expect(isMultipleChoice).toBe(value === 'multiple')
+Then(/the question is (single|multiple|numerical) choice/, async function (value: string) {
+    const selectedType = await this.questionEditPage.questionType()
+    const expectedType = value === 'numerical' ? 'numerical' : value === 'multiple' ? 'multiple' : 'single'
+    expect(selectedType).toBe(expectedType)
+})
+
+Then('I see numerical answer field', async function () {
+    const isVisible = await this.questionEditPage.isNumericalCorrectAnswerVisible()
+    expect(isVisible).toBe(true)
+})
+
+Then('I do not see numerical answer field', async function () {
+    const isVisible = await this.questionEditPage.isNumericalCorrectAnswerVisible()
+    expect(isVisible).toBe(false)
+})
+
+Then('I do not see answer fields', async function () {
+    const answerCount = await this.questionEditPage.answerRowCount()
+    expect(answerCount).toBe(0)
+})
+
+Then('I do not see Add Answer button', async function () {
+    const isVisible = await this.questionEditPage.isAddAnswerButtonVisible()
+    expect(isVisible).toBe(false)
+})
+
+Then('I see numerical correct answer {string}', async function (value: string) {
+    const current = await this.questionEditPage.numericalCorrectAnswerValue()
+    expect(current).toBe(value)
 })
 
 Then(/easy mode is (on|off)/, async function (value: string) {
@@ -139,12 +165,18 @@ When('I enter question {string}', async function (question: string) {
     await enterQuestion(this, question)
 })
 
-When(/I mark the question as (single|multiple) choice/, async function (choice: string) {
+When(/I mark the question as (single|multiple|numerical) choice/, async function (choice: string) {
     if (choice === 'single') {
         await this.questionEditPage.setSingleChoice()
-    } else {
+    } else if (choice === 'multiple') {
         await this.questionEditPage.setMultipleChoice()
+    } else {
+        await this.questionEditPage.setNumericalChoice()
     }
+})
+
+When('I enter numerical correct answer {string}', async function (value: string) {
+    await this.questionEditPage.enterNumericalCorrectAnswer(value)
 })
 
 When('I enter answer {int} text {string}', async function (index: number, answer: string) {

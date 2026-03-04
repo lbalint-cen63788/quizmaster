@@ -142,3 +142,21 @@ Feature: Create question - validations
     * I mark answer 1 as correct
     When I attempt to submit the question
     Then I see no error messages
+
+  Scenario: Numerical question validates integer format
+    Given I start creating a question
+    * I enter question "How many regions does Czechia have?"
+    * I mark the question as numerical choice
+
+    When I attempt to submit the question
+    Then I see error messages
+      | empty-numerical-answer |
+
+    When I enter numerical correct answer "3.14"
+    * I attempt to submit the question
+    Then I see error messages
+      | invalid-numerical-answer |
+
+    When I enter numerical correct answer "14"
+    * I attempt to submit the question
+    Then I see no error messages

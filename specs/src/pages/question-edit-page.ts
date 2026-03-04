@@ -17,10 +17,18 @@ export class QuestionEditPage {
     enableExplanations = () => this.showExplanationLocator().check()
     disableExplanations = () => this.showExplanationLocator().uncheck()
 
-    private multipleChoiceLocator = () => this.page.locator('#is-multiple-choice')
-    isMultipleChoice = () => this.multipleChoiceLocator().isChecked()
-    setMultipleChoice = () => this.multipleChoiceLocator().check()
-    setSingleChoice = () => this.multipleChoiceLocator().uncheck()
+    private questionTypeLocator = () => this.page.locator('#question-type')
+    questionType = () => this.questionTypeLocator().inputValue()
+    isMultipleChoice = async () => (await this.questionType()) === 'multiple'
+    isNumericalChoice = async () => (await this.questionType()) === 'numerical'
+    setMultipleChoice = () => this.questionTypeLocator().selectOption('multiple')
+    setSingleChoice = () => this.questionTypeLocator().selectOption('single')
+    setNumericalChoice = () => this.questionTypeLocator().selectOption('numerical')
+
+    private numericalCorrectAnswerLocator = () => this.page.locator('#numerical-correct-answer')
+    isNumericalCorrectAnswerVisible = () => this.numericalCorrectAnswerLocator().isVisible()
+    enterNumericalCorrectAnswer = (value: string) => this.numericalCorrectAnswerLocator().fill(value)
+    numericalCorrectAnswerValue = () => this.numericalCorrectAnswerLocator().inputValue()
 
     private easyModeLocator = () => this.page.locator('#easy-mode')
     isEasyMode = () => this.easyModeLocator().isChecked()
@@ -56,6 +64,7 @@ export class QuestionEditPage {
     }
 
     private addAnswerButtonLocator = () => this.page.locator('button#add-answer')
+    isAddAnswerButtonVisible = () => this.addAnswerButtonLocator().isVisible()
     addAdditionalAnswer = async () => {
         const idx = await this.answerRowCount()
         await this.addAnswerButtonLocator().click()

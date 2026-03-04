@@ -94,3 +94,38 @@ Feature: Create question - single/multiple choice
     When I mark the question as multiple choice
     Then easy mode is available
     And easy mode is off
+
+  Scenario: Switch single choice to numerical
+    * I enter question "How many regions does Czechia have?"
+    * I enter answers
+      | 13 |   |
+      | 14 | * |
+    When I mark the question as numerical choice
+    Then the question is numerical choice
+    And I see numerical answer field
+    And I do not see answer fields
+    And I do not see Add Answer button
+    And easy mode is not available
+
+    When I enter numerical correct answer "14"
+    And I submit the question
+    Then I see question edit page
+    And I see numerical correct answer "14"
+
+  Scenario: Switch multiple choice to numerical
+    * I mark the question as multiple choice
+    * I enter question "How many regions does Czechia have?"
+    * I enter answers
+      | 13 | * |
+      | 14 | * |
+    When I mark the question as numerical choice
+    Then the question is numerical choice
+    And I see numerical answer field
+    And I do not see answer fields
+    And I do not see Add Answer button
+    And easy mode is not available
+
+    When I enter numerical correct answer "14"
+    And I submit the question
+    Then I see question edit page
+    And I see numerical correct answer "14"

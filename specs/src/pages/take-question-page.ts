@@ -39,6 +39,11 @@ export class TakeQuestionPage {
     submitAnswerButtonLocator = () => this.page.locator('#submit-answer')
     fillNumericalAnswer = async (answer: string) => {
         await this.numericalInputLocator().fill(answer)
-        await this.submitAnswerButtonLocator().click()
+        const legacySubmitVisible = await this.submitAnswerButtonLocator().isVisible()
+        if (legacySubmitVisible) {
+            await this.submitAnswerButtonLocator().click()
+            return
+        }
+        await this.submit()
     }
 }

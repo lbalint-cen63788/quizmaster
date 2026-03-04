@@ -1,5 +1,5 @@
 import './question-form.scss'
-import type { AnswerIdxs, Question } from 'model/question.ts'
+import { isNumericalQuestion, type AnswerIdxs, type Question } from 'model/question.ts'
 import React from 'react'
 import {
     Answer,
@@ -23,6 +23,7 @@ export interface QuestionFormProps {
 
 export const QuestionForm = (props: QuestionFormProps) => {
     const { correctAnswers, easyMode, answers, questionExplanation } = props.question
+    const isNumerical = isNumericalQuestion(props.question)
 
     const state = useQuestionTakeState(props)
     const feedback = useQuestionFeedbackState(state, props.question)
@@ -33,6 +34,7 @@ export const QuestionForm = (props: QuestionFormProps) => {
     }, [state.selectedAnswerIdxs, props])
 
     React.useEffect(() => {
+        if (isNumerical) return
         const onKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
                 if (state.selectedAnswerIdxs.length > 0) {
@@ -59,16 +61,16 @@ export const QuestionForm = (props: QuestionFormProps) => {
 
         window.addEventListener('keydown', onKeyDown)
         return () => window.removeEventListener('keydown', onKeyDown)
-    }, [answers.length, state, props])
+    }, [answers.length, isNumerical, state, props])
 
     const handleSubmit = () => {
-        if (state.selectedAnswerIdxs.length > 0) {
+        if (state.hasAnswer) {
             state.submit()
             props.onSubmitted?.(state.selectedAnswerIdxs)
         }
     }
 
-    const isAnswerChecked = state.selectedAnswerIdxs.length > 0
+    const isAnswerChecked = state.hasAnswer
 
     const correctAnswersCount = correctAnswers.length
 
@@ -105,22 +107,35 @@ export const QuestionForm = (props: QuestionFormProps) => {
                     />
                 )}
 
-                <ul className="answers">
-                    {answers.map((answer, idx) => (
-                        <Answer
-                            key={answer}
-                            isMultipleChoice={state.isMultipleChoice}
-                            idx={idx}
-                            questionId={props.question.id}
-                            answer={answer}
-                            isCorrect={correctAnswers.includes(idx)}
-                            explanation={props.question.explanations ? props.question.explanations[idx] : 'not defined'}
-                            showFeedback={state.submitted && feedback.showFeedback(idx) && props.mode === 'learn'}
-                            onAnswerChange={state.onSelectedAnswerChange}
-                            isAnswerChecked={state.isAnswerChecked}
+                {isNumerical ? (
+                    <div className="answers">
+                        <input
+                            type="number"
+                            id="numerical-answer"
+                            value={state.numericalAnswer}
+                            onChange={e => state.onNumericalAnswerChange(e.target.value)}
                         />
-                    ))}
-                </ul>
+                    </div>
+                ) : (
+                    <ul className="answers">
+                        {answers.map((answer, idx) => (
+                            <Answer
+                                key={answer}
+                                isMultipleChoice={state.isMultipleChoice}
+                                idx={idx}
+                                questionId={props.question.id}
+                                answer={answer}
+                                isCorrect={correctAnswers.includes(idx)}
+                                explanation={
+                                    props.question.explanations ? props.question.explanations[idx] : 'not defined'
+                                }
+                                showFeedback={state.submitted && feedback.showFeedback(idx) && props.mode === 'learn'}
+                                onAnswerChange={state.onSelectedAnswerChange}
+                                isAnswerChecked={state.isAnswerChecked}
+                            />
+                        ))}
+                    </ul>
+                )}
 
                 {!state.submitted && (
                     <input type="submit" value="Submit" className="submit-btn" disabled={!isAnswerChecked} />
