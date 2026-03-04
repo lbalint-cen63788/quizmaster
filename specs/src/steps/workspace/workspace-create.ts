@@ -19,6 +19,10 @@ Given('I start creating a workspace', async function () {
     await openCreateWorkspacePage(this)
 })
 
+Given('home page', async function () {
+    await this.homePage.goto()
+})
+
 Given('workspace {string}', async function (name: string) {
     await createWorkspace(this, name)
 })
@@ -47,8 +51,21 @@ When('I enter workspace name {string}', async function (name: string) {
     await this.workspaceCreatePage.enterWorkspaceName(name)
 })
 
+When('I start creating a new workspace', async function () {
+    await this.homePage.createWorkspaceLink().click()
+})
+
 When('I submit the workspace', async function () {
     await this.workspaceCreatePage.submit()
+})
+
+When('I go back to the home page', async function () {
+    await this.workspaceCreatePage.back()
+})
+
+Then('I see the workspace creation page', async function () {
+    const isCreatePageVisible = await this.workspaceCreatePage.isCreatePage()
+    expect(isCreatePageVisible).toBe(true)
 })
 
 Then('I see an error message on workspace page stating title must be mandatory', async function () {

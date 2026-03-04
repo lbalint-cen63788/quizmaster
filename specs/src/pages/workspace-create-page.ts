@@ -4,6 +4,7 @@ export class WorkspaceCreatePage {
     constructor(private page: Page) {}
 
     gotoNew = () => this.page.goto('/workspace/new')
+    isCreatePage = () => this.page.locator('#create-workspace-page').isVisible()
 
     private workspaceTitleLocator = () => this.page.locator('#workspace-title')
     private workspaceGuidValue = ''
@@ -17,6 +18,8 @@ export class WorkspaceCreatePage {
 
         this.workspaceGuidValue = this.page.url().split('/').pop() ?? ''
     }
+
+    back = () => this.page.locator('button#back').click()
 
     errorMessage = () => this.page.textContent('#error-message')
 }

@@ -18,9 +18,13 @@ export function WorkspaceCreatePage() {
             navigate(`/workspace/${response.guid}`)
         })
 
+    const onBack = () => {
+        navigate('/')
+    }
+
     return (
-        <Page title="Create Workspace">
-            <WorkspaceCreateForm onSubmit={onSubmit} />
+        <Page title="Create Workspace" id="create-workspace-page">
+            <WorkspaceCreateForm onSubmit={onSubmit} onBack={onBack} />
             {errorMessage && <Alert type="error">{errorMessage}</Alert>}
         </Page>
     )

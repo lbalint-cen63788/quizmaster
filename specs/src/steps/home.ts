@@ -7,6 +7,10 @@ Given('I am on the home page', async function (this: QuizmasterWorld) {
     await this.homePage.waitForLoaded()
 })
 
+Then('I see the home page', async function (this: QuizmasterWorld) {
+    await this.homePage.waitForLoaded()
+})
+
 Then('I can create a new question', async function (this: QuizmasterWorld) {
     const hasLink = await this.homePage.hasCreateQuestionLink()
     expect(hasLink).toBeTruthy()
