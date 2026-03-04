@@ -11,7 +11,7 @@ export const TimeOutReachedModal = ({ onConfirm }: TimeOutReachedModalProps) => 
         if (dialogRef.current) {
             dialogRef.current.showModal()
         }
-    })
+    }, [])
 
     return (
         <dialog ref={dialogRef}>
