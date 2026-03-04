@@ -43,22 +43,32 @@ public class WorkspaceController {
 
     @Transactional(readOnly = true)
     @GetMapping("/{guid}/questions")
-    public List<QuestionListItem> getWorkspaceQuestions(@PathVariable String guid) {
+    public ResponseEntity<List<QuestionListItem>> getWorkspaceQuestions(@PathVariable String guid) {
+        if (!workspaceRepository.existsById(guid))
+            return ResponseEntity.notFound().build();
+
         List<Question> questions = questionRepository.findByWorkspaceGuid(guid);
         Set<Integer> questionIdsInQuizzes = quizRepository.findQuestionIdsInQuizzesByWorkspaceGuid(guid);
 
-        return questions.stream()
+        var items = questions.stream()
             .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), q.getEditId(), questionIdsInQuizzes.contains(q.getId())))
             .toList();
+
+        return ResponseEntity.ok(items);
     }
 
     @Transactional(readOnly = true)
     @GetMapping("/{guid}/quizzes")
-    public List<QuizListItem> getWorkspaceQuizzes(@PathVariable String guid) {
+    public ResponseEntity<List<QuizListItem>> getWorkspaceQuizzes(@PathVariable String guid) {
+        if (!workspaceRepository.existsById(guid))
+            return ResponseEntity.notFound().build();
+
         List<Quiz> quizzes = quizRepository.findByWorkspaceGuid(guid);
 
-        return quizzes.stream()
+        var items = quizzes.stream()
             .map(quiz -> new QuizListItem(quiz.getId(), quiz.getTitle()))
             .toList();
+
+        return ResponseEntity.ok(items);
     }
 }

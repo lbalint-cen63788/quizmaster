@@ -51,6 +51,18 @@ public class WorkspaceControllerTest {
     }
 
     @Test
+    public void getWorkspaceQuestionsNotFound() throws Exception {
+        mockMvc.perform(get("/api/workspaces/{guid}/questions", "non-existent-guid"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getWorkspaceQuizzesNotFound() throws Exception {
+        mockMvc.perform(get("/api/workspaces/{guid}/quizzes", "non-existent-guid"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void getWorkspaceQuestions() throws Exception {
         Workspace workspace = fixtures.save(fixtures.workspace());
         Question question1 = fixtures.save(fixtures.questionIn(workspace));
