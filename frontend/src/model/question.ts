@@ -19,8 +19,17 @@ export interface Answers {
     readonly questionExplanation: string
 }
 
-export const isNumericalQuestion = (question: Question) =>
-    question.answers.length === 1 && question.correctAnswers.length === 1 && question.correctAnswers[0] === 0
+export const isNumericalQuestion = (question: Question) => {
+    const hasSingleCorrectAtZero = question.correctAnswers.length === 1 && question.correctAnswers[0] === 0
+    if (!hasSingleCorrectAtZero) return false
+
+    const normalizedAnswers = question.answers.map(answer => answer.trim())
+    const firstAnswer = normalizedAnswers[0] ?? ''
+    const hasNumericPrimaryAnswer = /^-?\d+$/.test(firstAnswer)
+    const hasOnlyEmptySecondaryAnswers = normalizedAnswers.slice(1).every(answer => answer === '')
+
+    return hasNumericPrimaryAnswer && hasOnlyEmptySecondaryAnswers
+}
 
 export const isAnsweredCorrectly = (selectedAnswerIdxs: AnswerIdxs, correctAnswers: AnswerIdxs): boolean => {
     if (selectedAnswerIdxs) {

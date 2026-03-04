@@ -75,6 +75,8 @@ export async function submitQuestion(this: QuizmasterWorld) {
 
 export const saveQuestion = async (world: QuizmasterWorld, bookmark: string) => {
     await submitQuestion.bind(world)()
+    await world.page.waitForSelector('#question-link')
+    await world.page.waitForSelector('#question-edit-link')
     world.questionWip.url = (await world.questionEditPage.questionUrl()) || ''
     world.questionWip.editUrl = (await world.questionEditPage.questionEditUrl()) || ''
     world.questionBookmarks[bookmark] = world.questionWip

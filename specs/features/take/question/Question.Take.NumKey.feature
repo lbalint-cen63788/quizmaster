@@ -8,6 +8,7 @@ Background:
       | bookmark  | question                              | answers                           |
       | Single    | Which country is in Europe?           | Italy (*), Mexico, Morocco, USA, Canada, Iran, China, Japan, Israel, Kuwait |
       | Multiple  | Which countries are in Europe?        | Italy (*), Mexico, Germany (*), USA, Canada, Iran, China, Japan, Israel, Kuwait |
+  And a numerical question "How many regions does Czechia have?" with correct answer "14" bookmarked as "Numerical"
 
 
   Scenario Outline: Single choice question - numeric key selects an answer
@@ -33,5 +34,17 @@ Scenario Outline: Multiple choice question - numeric key selects an answer
       | 1,2   | Incorrect! |
       | 2,3   | Incorrect! |
       | 2,4   | Incorrect! |
+
+Scenario Outline: Numerical question - numeric input submits an answer
+    When I take question "Numerical"
+    Then I see a number input
+    And I enter "<answer>"
+    And I press enter to submit
+    Then I see feedback "<feedback>"
+
+    Examples:
+      | answer | feedback   |
+      | 48     | Incorrect! |
+      | 14     | Correct!   |
 
 

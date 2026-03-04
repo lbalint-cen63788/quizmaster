@@ -24,6 +24,7 @@ export interface QuestionFormProps {
 export const QuestionForm = (props: QuestionFormProps) => {
     const { correctAnswers, easyMode, answers, questionExplanation } = props.question
     const isNumerical = isNumericalQuestion(props.question)
+    const numericalInputRef = React.useRef<HTMLInputElement>(null)
 
     const state = useQuestionTakeState(props)
     const feedback = useQuestionFeedbackState(state, props.question)
@@ -62,6 +63,27 @@ export const QuestionForm = (props: QuestionFormProps) => {
         window.addEventListener('keydown', onKeyDown)
         return () => window.removeEventListener('keydown', onKeyDown)
     }, [answers.length, isNumerical, state, props])
+
+    React.useEffect(() => {
+        if (!isNumerical) return
+        const focusInput = () => numericalInputRef.current?.focus()
+        focusInput()
+        const timeoutId = window.setTimeout(focusInput, 0)
+        const frameId = window.requestAnimationFrame(focusInput)
+        const intervalId = window.setInterval(() => {
+            const input = numericalInputRef.current
+            if (!input) return
+            input.focus()
+        }, 50)
+        const stopIntervalTimeoutId = window.setTimeout(() => window.clearInterval(intervalId), 10000)
+
+        return () => {
+            window.clearTimeout(timeoutId)
+            window.cancelAnimationFrame(frameId)
+            window.clearInterval(intervalId)
+            window.clearTimeout(stopIntervalTimeoutId)
+        }
+    }, [isNumerical, props.question.id])
 
     const handleSubmit = () => {
         if (state.hasAnswer) {
@@ -112,6 +134,8 @@ export const QuestionForm = (props: QuestionFormProps) => {
                         <input
                             type="number"
                             id="numerical-answer"
+                            autoFocus
+                            ref={numericalInputRef}
                             value={state.numericalAnswer}
                             onChange={e => state.onNumericalAnswerChange(e.target.value)}
                         />
