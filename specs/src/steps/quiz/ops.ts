@@ -119,6 +119,31 @@ export const takeQuizWithAnswersTimed = async (
     await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
 }
 
+export const takeQuizWithoutCompletingInTimeLimit = async (
+    world: QuizmasterWorld,
+    quizName: string,
+    data: DataTable,
+) => {
+    await world.page.clock.install({ time: new Date() })
+    await world.workspacePage.takeQuiz(quizName)
+
+    const timeLimitSeconds = await world.quizWelcomePage.timeLimit()
+    await world.quizWelcomePage.start()
+
+    for (const [, rawAnswer] of Array.from(data.rows())) {
+        const answer = rawAnswer?.trim()
+        if (!answer) {
+            break
+        }
+
+        await world.takeQuestionPage.selectAnswer(answer)
+        await world.questionPage.submit()
+    }
+
+    await world.page.clock.fastForward((timeLimitSeconds + 1) * 1000)
+    await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
+}
+
 export const progressThroughQuestions = async (world: QuizmasterWorld) => {
     const textToBookmark: Record<string, string> = {}
     for (const [bookmark, question] of Object.entries(world.questionBookmarks)) {

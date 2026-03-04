@@ -83,3 +83,21 @@ Scenario: Show stats page with summary for successfully answered quiz
       | Attempts |       |
       | Duration | Score |
       |          |   100 |
+
+@Skip
+  Scenario: Show stats page with summary for timed out quiz
+    Given workspace "Stats Success" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" which I do not complete in time limit
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  |         |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see summary stats table
+      | Summary  |          |           |
+      | Started  | Finished | Timed out |
+      |       1  |        0 |         1 |
