@@ -95,12 +95,16 @@ export const useQuestionFormState = (question?: Question) => {
         setExplanations([...explanations, ''])
     }
 
-    const applyAiSingleChoice = (question: string, correctAnswer: string, incorrectAnswer: string) => {
-        setQuestionText(question)
+    const applyAiResponse = (response: {
+        question: string
+        answers: readonly string[]
+        correctAnswers: readonly number[]
+    }) => {
+        setQuestionText(response.question)
         setQuestionType('single')
-        setAnswers([correctAnswer, incorrectAnswer])
-        setExplanations(['', ''])
-        setCorrectAnswers([0])
+        setAnswers(response.answers)
+        setExplanations(response.answers.map(() => ''))
+        setCorrectAnswers(Array.from(response.correctAnswers))
         setShowExplanations(false)
         setNumericalAnswer('')
         setEasyMode(false)
@@ -153,7 +157,7 @@ export const useQuestionFormState = (question?: Question) => {
         setWorkspaceGuid,
         setShowExplanations,
         setImageUrl,
-        applyAiSingleChoice,
+        applyAiResponse,
     }
 }
 

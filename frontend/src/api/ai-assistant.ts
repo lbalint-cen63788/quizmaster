@@ -6,9 +6,8 @@ interface AiAssistantRequest {
 
 export interface AiAssistantResponse {
     readonly question: string
-    readonly correctAnswerText: string
-    readonly incorrectAnswerText: string
-    readonly correctAnswer?: 'answer1' | 'answer2'
+    readonly answers: readonly string[]
+    readonly correctAnswers: readonly number[]
 }
 
 export const postAiAssistant = async (question: string) =>

@@ -42,12 +42,7 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                 return
             }
             const response = await postAiAssistant(state.questionText)
-            const correctFirst = response.correctAnswer !== 'answer2'
-            state.applyAiSingleChoice(
-                response.question,
-                correctFirst ? response.correctAnswerText : response.incorrectAnswerText,
-                correctFirst ? response.incorrectAnswerText : response.correctAnswerText,
-            )
+            state.applyAiResponse(response)
             setAiGenerated(true)
         } catch (error) {
             const message = error instanceof Error ? error.message : 'AI assistant request failed.'
