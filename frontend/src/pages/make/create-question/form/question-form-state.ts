@@ -153,7 +153,7 @@ export const useQuestionFormState = (question?: Question) => {
         setWorkspaceGuid,
         setShowExplanations,
         setImageUrl,
-        applyAiSingleChoice
+        applyAiSingleChoice,
     }
 }
 

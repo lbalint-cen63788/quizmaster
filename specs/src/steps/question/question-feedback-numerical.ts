@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test'
 
-import { Given, Then, When } from 'steps/fixture.ts'
-import { emptyQuestion } from 'steps/world'
+import { Then, When } from 'steps/fixture.ts'
 
 // Given(
 //     'numerical question {string} with correct answer {string}',
