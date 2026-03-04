@@ -37,10 +37,7 @@ export class WorkspacePage {
     statsQuiz = this.clickQuizButtonLocator('.stats-quiz-button button')
 
     private createQuestionButtonLocator = () => this.page.locator('#create-question')
-    createNewQuestion = async () => {
-        await this.createQuestionButtonLocator().click()
-        await this.page.waitForSelector('#question-create-form')
-    }
+    createNewQuestion = async () => this.createQuestionButtonLocator().click()
 
     addExistingQuestion = async () => this.page.locator('#add-existing-question').click()
     fillInQuestion = async (question: string) => this.page.locator('#question-input-field').fill(question)

@@ -34,15 +34,7 @@ export const QuestionForm = (props: QuestionProps) => {
         answer(selectedAnswerIdxs)
         if (!nav.isLastQuestion) {
             nav.next()
-            return
         }
-
-        const updatedQuizAnswers: QuizAnswers = {
-            firstAnswers: quizAnswers.firstAnswers,
-            finalAnswers: updated(quizAnswers.finalAnswers, nav.currentQuestionIdx, selectedAnswerIdxs),
-        }
-
-        props.onEvaluate(updatedQuizAnswers, false)
     }
 
     const bookmark = () => bookmarks.toggle(nav.currentQuestionIdx)

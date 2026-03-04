@@ -9,7 +9,7 @@ export class QuestionEditPage {
     isEditPage = () => this.page.locator('#edit-question-page').isVisible()
     isCreatePage = () => this.page.locator('#create-question-page').isVisible()
 
-    private questionLocator = () => this.page.locator('#question-create-form #question-text')
+    private questionLocator = () => this.page.locator('#question-text')
     enterQuestion = (question: string) => this.questionLocator().fill(question)
     questionValue = () => this.questionLocator().inputValue()
 

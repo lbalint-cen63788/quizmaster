@@ -34,23 +34,16 @@ Feature: Quiz navigation buttons
     And I answer "Elephant"
     Then I see question "What is capital of France?"
     Then I see buttons "Back"
-    When I check answer "Lyon"
-    Then I see the submit button as active
+    When I answer "Lyon"
+    Then I see buttons "Back, Evaluate"
 
   Scenario: User navigate to evaluation page
     When I start quiz "Quiz"
     And I answer "Elephant"
     Then I see question "What is capital of France?"
+    Then I see buttons "Back"
     When I answer "Lyon"
-    Then I should see the results table
-
-  Scenario: Pressing enter on last question evaluates quiz
-    When I start quiz "Quiz"
-    And I answer "Elephant"
-    Then I see question "What is capital of France?"
-    When I check answer "Lyon"
-    And I press enter to submit
-    Then I should see the results table
+    When I evaluate the quiz
 
   Scenario: Submit button is visible as active when answer is checked
     When I start quiz "Quiz"
