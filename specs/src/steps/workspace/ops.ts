@@ -1,5 +1,11 @@
 import type { TableOf } from 'steps/common.ts'
-import { addAnswers, type AnswerRaw, enterQuestion, enterQuestionExplanation } from 'steps/question/ops.ts'
+import {
+    addAnswers,
+    type AnswerRaw,
+    enterImageUrl,
+    enterQuestion,
+    enterQuestionExplanation,
+} from 'steps/question/ops.ts'
 import { emptyQuestion, type QuizmasterWorld } from 'steps/world'
 
 export const openCreateWorkspacePage = async (world: QuizmasterWorld) => {
@@ -19,6 +25,7 @@ export const createQuestionInWorkspace = async (
     answerRawTable: TableOf<AnswerRaw>,
     isEasy?: boolean,
     explanation?: string,
+    imageUrl?: string,
 ) => {
     await world.workspacePage.createNewQuestion()
     world.questionWip = emptyQuestion()
@@ -29,6 +36,9 @@ export const createQuestionInWorkspace = async (
     }
     if (explanation) {
         await enterQuestionExplanation(world, explanation)
+    }
+    if (imageUrl) {
+        await enterImageUrl(world, imageUrl)
     }
     world.questionBookmarks[bookmark] = world.questionWip
     await world.questionEditPage.submit()

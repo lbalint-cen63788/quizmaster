@@ -56,6 +56,14 @@ Then(/I copy the (take|edit) URL for question "(.+)"/, async function (page: str
     else if (page === 'edit') await this.workspacePage.copyEditQuestion(question)
 })
 
+Then('I see image thumbnail for question {string}', async function (question: string) {
+    await expect(this.workspacePage.questionThumbnail(question)).toBeVisible()
+})
+
+Then('I do not see image thumbnail for question {string}', async function (question: string) {
+    await expect(this.workspacePage.questionThumbnail(question)).not.toBeVisible()
+})
+
 Then('I see the quiz {string} in the workspace', async function (quizName: string) {
     await this.workspacePage.hasQuiz(quizName)
 })

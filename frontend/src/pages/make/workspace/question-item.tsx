@@ -22,6 +22,14 @@ export const QuestionItem: React.FC<Props> = ({
 }) => {
     return (
         <div className="question-item">
+            {question.imageUrl && (
+                <img
+                    src={question.imageUrl}
+                    alt=""
+                    className="question-thumbnail"
+                    style={{ width: 40, height: 40, objectFit: 'cover', marginRight: '0.5rem' }}
+                />
+            )}
             {index !== undefined && <span className="question-index">Q{index + 1}. </span>}
             <span id="question-text">{question.question}</span>
             <div className="edit-button">

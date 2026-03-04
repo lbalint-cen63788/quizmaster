@@ -46,4 +46,6 @@ export class WorkspacePage {
     createNewQuiz = () => this.page.locator('#create-quiz').click()
 
     hasQuiz = (quiz: string) => this.quizLocator(quiz).isVisible()
+
+    questionThumbnail = (question: string) => this.questionLocator(question).locator('img.question-thumbnail')
 }

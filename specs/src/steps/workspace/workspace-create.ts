@@ -27,7 +27,15 @@ Given('workspace {string} with questions', async function (name: string, data: D
         const answerRawTable = parseAnswers(row.answers)
         const isEasy = row.easy === 'true'
 
-        await createQuestionInWorkspace(this, bookmark, row.question, answerRawTable, isEasy, row.explanation)
+        await createQuestionInWorkspace(
+            this,
+            bookmark,
+            row.question,
+            answerRawTable,
+            isEasy,
+            row.explanation,
+            row.image,
+        )
     }
 })
 
