@@ -84,7 +84,7 @@ Scenario: Show stats page with summary for successfully answered quiz
       | Duration | Score |
       |          |   100 |
 
-@Skip
+@skip
   Scenario: Show stats page with summary for timed out quiz
     Given workspace "Stats Success" with questions
       | question              | answers         |
