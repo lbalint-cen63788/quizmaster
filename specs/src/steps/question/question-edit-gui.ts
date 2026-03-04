@@ -228,9 +228,8 @@ Given('AI assistant returns generated question {string}', async function (genera
             contentType: 'application/json',
             body: JSON.stringify({
                 question: generatedQuestion,
-                correctAnswerText: this.aiAssistantGeneratedCorrectAnswer,
-                incorrectAnswerText: this.aiAssistantGeneratedIncorrectAnswer,
-                correctAnswer: 'answer1',
+                answers: [this.aiAssistantGeneratedCorrectAnswer, this.aiAssistantGeneratedIncorrectAnswer],
+                correctAnswers: [0],
             }),
         })
     })
@@ -251,9 +250,8 @@ const mockDefaultAiAssistant = async (world: QuizmasterWorld) => {
             contentType: 'application/json',
             body: JSON.stringify({
                 question: world.aiAssistantGeneratedAnswer,
-                correctAnswerText: world.aiAssistantGeneratedCorrectAnswer,
-                incorrectAnswerText: world.aiAssistantGeneratedIncorrectAnswer,
-                correctAnswer: 'answer1',
+                answers: [world.aiAssistantGeneratedCorrectAnswer, world.aiAssistantGeneratedIncorrectAnswer],
+                correctAnswers: [0],
             }),
         })
     })
