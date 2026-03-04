@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { HomePage } from 'pages/make/home'
 import { QuestionTakePage } from 'pages/take/question-take'
-import { TestNumericalQuestionPage } from 'pages/take/question-take/test-numerical-question.tsx'
 import { QuizTakePage } from 'pages/take/quiz-take/quiz-take-page.tsx'
 
 import { QuizWelcomePage } from 'pages/take/quiz-take/quiz-welcome/quiz-welcome-page'
@@ -18,7 +17,6 @@ import { QuizEditPage } from 'pages/make/quiz-create/quiz-edit-page'
 export const App = () => (
     <BrowserRouter>
         <Routes>
-            <Route path="/test-numerical-question" element={<TestNumericalQuestionPage />} />
             <Route path="/question/new" element={<CreateQuestionPage />} />
             <Route path="/workspace/new" element={<WorkspaceCreatePage />} />
             <Route path="/workspace/:id" element={<WorkspaceContainer />} />
