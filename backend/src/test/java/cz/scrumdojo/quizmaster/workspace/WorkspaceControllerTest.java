@@ -5,61 +5,83 @@ import cz.scrumdojo.quizmaster.question.Question;
 import cz.scrumdojo.quizmaster.quiz.Quiz;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@AutoConfigureMockMvc
 public class WorkspaceControllerTest {
 
     @Autowired
-    private WorkspaceController workspaceController;
+    private MockMvc mockMvc;
 
     @Autowired
     private TestFixtures fixtures;
 
     @Test
-    public void saveAndGetWorkspace() {
-        var response = workspaceController.saveWorkspace(fixtures.workspace().title("Test Workspace").build()).getBody();
-        assertNotNull(response);
-        assertNotNull(response.guid());
+    public void saveAndGetWorkspace() throws Exception {
+        var result = mockMvc.perform(post("/api/workspaces")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {"title": "Test Workspace"}
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.guid").isNotEmpty())
+            .andReturn();
 
-        Workspace workspace = workspaceController.getWorkspace(response.guid()).getBody();
-        assertNotNull(workspace);
-        assertEquals("Test Workspace", workspace.getTitle());
+        String guid = com.jayway.jsonpath.JsonPath
+            .read(result.getResponse().getContentAsString(), "$.guid");
+
+        mockMvc.perform(get("/api/workspaces/{guid}", guid))
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {"guid": "%s", "title": "Test Workspace"}
+                """.formatted(guid)));
     }
 
     @Test
-    public void getWorkspaceQuestions() {
+    public void getWorkspaceNotFound() throws Exception {
+        mockMvc.perform(get("/api/workspaces/{guid}", "non-existent-guid"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getWorkspaceQuestions() throws Exception {
         Workspace workspace = fixtures.save(fixtures.workspace());
         Question question1 = fixtures.save(fixtures.questionIn(workspace));
         Question question2 = fixtures.save(fixtures.questionIn(workspace));
         Quiz quiz = fixtures.quiz(question2).workspaceGuid(workspace.getGuid()).build();
         fixtures.save(quiz);
 
-        List<QuestionListItem> result = workspaceController.getWorkspaceQuestions(workspace.getGuid());
-
-        assertEquals(2, result.size());
-        assertEquals(question1.getId(), result.get(0).id());
-        assertEquals(question2.getId(), result.get(1).id());
-        assertFalse(result.get(0).isInAnyQuiz());
-        assertTrue(result.get(1).isInAnyQuiz());
+        mockMvc.perform(get("/api/workspaces/{guid}/questions", workspace.getGuid()))
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                [
+                    {"id": %d, "isInAnyQuiz": false},
+                    {"id": %d, "isInAnyQuiz": true}
+                ]
+                """.formatted(question1.getId(), question2.getId())));
     }
 
     @Test
-    public void getWorkspaceQuizzes() {
+    public void getWorkspaceQuizzes() throws Exception {
         Workspace workspace = fixtures.save(fixtures.workspace());
-
         Quiz quiz1 = fixtures.save(fixtures.quizIn(workspace));
         Quiz quiz2 = fixtures.save(fixtures.quizIn(workspace));
         fixtures.save(fixtures.quiz()); // Quiz without workspace
 
-        List<QuizListItem> quizzes = workspaceController.getWorkspaceQuizzes(workspace.getGuid());
-
-        assertEquals(2, quizzes.size());
-        assertEquals(quiz1.getId(), quizzes.get(0).id());
-        assertEquals(quiz2.getId(), quizzes.get(1).id());
+        mockMvc.perform(get("/api/workspaces/{guid}/quizzes", workspace.getGuid()))
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                [
+                    {"id": %d, "title": "Test Quiz"},
+                    {"id": %d, "title": "Test Quiz"}
+                ]
+                """.formatted(quiz1.getId(), quiz2.getId())));
     }
 }
