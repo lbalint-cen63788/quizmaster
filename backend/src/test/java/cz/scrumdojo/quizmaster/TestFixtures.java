@@ -49,7 +49,9 @@ public class TestFixtures {
             null,
             false,
             null,
-            null
+            null,
+            false,
+            "single"
         );
     }
 
@@ -62,7 +64,9 @@ public class TestFixtures {
             null,
             false,
             null,
-            null
+            null,
+            false,
+            "multiple"
         );
     }
 
@@ -75,7 +79,9 @@ public class TestFixtures {
             null,
             false,
             null,
-            imageUrl
+            imageUrl,
+            false,
+            "single"
         );
     }
 

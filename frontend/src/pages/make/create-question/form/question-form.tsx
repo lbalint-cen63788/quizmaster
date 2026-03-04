@@ -20,14 +20,21 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
     const state = useQuestionFormState(question)
     const [aiLoading, setAiLoading] = useState(false)
     const [aiError, setAiError] = useState('')
+    const [aiGenerated, setAiGenerated] = useState(false)
 
     const validator = createValidator(() => validateQuestionFormState(state), errorMessage)
 
-    const handleSubmit = () => onSubmit(stateToQuestionApiData(state))
+    const handleSubmit = () =>
+        onSubmit({
+            ...stateToQuestionApiData(state),
+            aiGenerated,
+            questionType: state.questionType,
+        })
 
     const handleAiAssistantClick = async () => {
         setAiError('')
         setAiLoading(true)
+        setAiGenerated(false)
 
         try {
             if (onAiAssistantClick) {
@@ -35,7 +42,13 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                 return
             }
             const response = await postAiAssistant(state.questionText)
-            state.setQuestionText(response.answer)
+            const correctFirst = response.correctAnswer !== 'answer2'
+            state.applyAiSingleChoice(
+                response.question,
+                correctFirst ? response.correctAnswerText : response.incorrectAnswerText,
+                correctFirst ? response.incorrectAnswerText : response.correctAnswerText,
+            )
+            setAiGenerated(true)
         } catch (error) {
             const message = error instanceof Error ? error.message : 'AI assistant request failed.'
             setAiError(message || 'AI assistant request failed.')

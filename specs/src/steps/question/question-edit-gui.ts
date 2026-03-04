@@ -3,6 +3,7 @@ import { expect } from '@playwright/test'
 
 import type { TableOf } from 'steps/common.ts'
 import { Given, Then, When } from 'steps/fixture.ts'
+import type { QuizmasterWorld } from 'steps/world'
 import {
     addAnswers,
     type AnswerRaw,
@@ -26,6 +27,10 @@ import {
     expectErrorCount,
     expectErrorMessages,
 } from 'steps/question/expects.ts'
+
+const DEFAULT_AI_QUESTION = 'Které město je hlavní město České republiky?'
+const DEFAULT_AI_CORRECT_ANSWER = 'Praha'
+const DEFAULT_AI_INCORRECT_ANSWER = 'Brno'
 
 Given('I start creating a question', async function () {
     await openCreatePage(this)
@@ -210,6 +215,8 @@ Then('I see prefilled valid AI question', async function () {
 
 Given('AI assistant returns generated question {string}', async function (generatedQuestion: string) {
     this.aiAssistantGeneratedAnswer = generatedQuestion
+    this.aiAssistantGeneratedCorrectAnswer = DEFAULT_AI_CORRECT_ANSWER
+    this.aiAssistantGeneratedIncorrectAnswer = DEFAULT_AI_INCORRECT_ANSWER
     this.aiAssistantRequestQuestion = ''
 
     await this.page.route('**/api/ai-assistant', async route => {
@@ -219,10 +226,38 @@ Given('AI assistant returns generated question {string}', async function (genera
         await route.fulfill({
             status: 200,
             contentType: 'application/json',
-            body: JSON.stringify({ answer: generatedQuestion }),
+            body: JSON.stringify({
+                question: generatedQuestion,
+                correctAnswerText: this.aiAssistantGeneratedCorrectAnswer,
+                incorrectAnswerText: this.aiAssistantGeneratedIncorrectAnswer,
+                correctAnswer: 'answer1',
+            }),
         })
     })
 })
+
+const mockDefaultAiAssistant = async (world: QuizmasterWorld) => {
+    world.aiAssistantGeneratedAnswer = DEFAULT_AI_QUESTION
+    world.aiAssistantGeneratedCorrectAnswer = DEFAULT_AI_CORRECT_ANSWER
+    world.aiAssistantGeneratedIncorrectAnswer = DEFAULT_AI_INCORRECT_ANSWER
+    world.aiAssistantRequestQuestion = ''
+
+    await world.page.route('**/api/ai-assistant', async route => {
+        const requestBody = (await route.request().postDataJSON()) as { question?: string } | null
+        world.aiAssistantRequestQuestion = requestBody?.question ?? ''
+
+        await route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({
+                question: world.aiAssistantGeneratedAnswer,
+                correctAnswerText: world.aiAssistantGeneratedCorrectAnswer,
+                incorrectAnswerText: world.aiAssistantGeneratedIncorrectAnswer,
+                correctAnswer: 'answer1',
+            }),
+        })
+    })
+}
 
 Then('request to AI assistant contains question {string}', async function (expectedQuestion: string) {
     expect(this.aiAssistantRequestQuestion).toBe(expectedQuestion)
@@ -230,6 +265,41 @@ Then('request to AI assistant contains question {string}', async function (expec
 
 Then('question field is updated to {string}', async function (expectedQuestion: string) {
     expect(await this.questionEditPage.questionValue()).toBe(expectedQuestion)
+})
+
+Then('AI assistant returns generated question', async function () {
+    expect(await this.questionEditPage.questionValue()).toBe(this.aiAssistantGeneratedAnswer)
+})
+
+Then('AI assistant returns generated answers with only one correct answer', async function () {
+    expect(await this.questionEditPage.answerText(0)).toBe(this.aiAssistantGeneratedCorrectAnswer)
+    expect(await this.questionEditPage.answerText(1)).toBe(this.aiAssistantGeneratedIncorrectAnswer)
+    expect(await this.questionEditPage.isAnswerCorrect(0)).toBe(true)
+    expect(await this.questionEditPage.isAnswerCorrect(1)).toBe(false)
+})
+
+Then('Question type is set to {string}', async function (value: string) {
+    const normalized = value.toLowerCase()
+    const expected = normalized.includes('single')
+        ? 'single'
+        : normalized.includes('multiple')
+          ? 'multiple'
+          : 'numerical'
+    expect(await this.questionEditPage.questionType()).toBe(expected)
+})
+
+Then('Question field is updated to AI generated question', async function () {
+    expect(await this.questionEditPage.questionValue()).toBe(this.aiAssistantGeneratedAnswer)
+})
+
+Then('answer1 field is filled with AI generated correct answer', async function () {
+    expect(await this.questionEditPage.answerText(0)).toBe(this.aiAssistantGeneratedCorrectAnswer)
+    expect(await this.questionEditPage.isAnswerCorrect(0)).toBe(true)
+})
+
+Then('answer2 field is filled with AI generated incorrect answer', async function () {
+    expect(await this.questionEditPage.answerText(1)).toBe(this.aiAssistantGeneratedIncorrectAnswer)
+    expect(await this.questionEditPage.isAnswerCorrect(1)).toBe(false)
 })
 
 // Field edits
@@ -242,8 +312,15 @@ When('I enter AI instructions into field Question: {string}', async function (in
     await enterQuestion(this, instructions)
 })
 
+When('I enter text into field Question: {string}', async function (instructions: string) {
+    await enterQuestion(this, instructions)
+})
+
 When('I click on button {string}', async function (buttonName: string) {
     if (buttonName === 'AI assist') {
+        if (!this.aiAssistantGeneratedAnswer) {
+            await mockDefaultAiAssistant(this)
+        }
         await this.questionEditPage.clickAiAssist()
         return
     }

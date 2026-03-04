@@ -15,7 +15,10 @@ export const deleteQuestion = async (questionId: string) => await callDelete(`/a
 
 export const fetchQuestionByEditId = async (editId: string) => await fetchJson<Question>(`/api/question/${editId}/edit`)
 
-export type QuestionApiData = Omit<Question, 'id'>
+export type QuestionApiData = Omit<Question, 'id'> & {
+    readonly aiGenerated?: boolean
+    readonly questionType?: 'single' | 'multiple' | 'numerical'
+}
 
 export interface QuestionWriteResponse {
     readonly id: number

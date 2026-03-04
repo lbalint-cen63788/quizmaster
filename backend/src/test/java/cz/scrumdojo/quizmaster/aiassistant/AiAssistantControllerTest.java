@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -27,7 +29,12 @@ public class AiAssistantControllerTest {
     @Test
     public void generateAnswer() throws Exception {
         when(aiAssistantService.generateQuestion("Vygeneruj otázku do quizu"))
-            .thenReturn("AI generated question");
+            .thenReturn(new AiAssistantResponse(
+                "AI generated question",
+                "Prague",
+                "Berlin",
+                "answer1"
+            ));
 
         mockMvc.perform(post("/api/ai-assistant")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -36,9 +43,32 @@ public class AiAssistantControllerTest {
                     """))
             .andExpect(status().isOk())
             .andExpect(content().json("""
-                {"answer": "AI generated question"}
+                                {
+                                    "question": "AI generated question",
+                                    "correctAnswerText": "Prague",
+                                    "incorrectAnswerText": "Berlin",
+                                    "correctAnswer": "answer1"
+                                }
                 """));
+
+                            verify(aiAssistantService, times(1)).generateQuestion("Vygeneruj otázku do quizu");
     }
+
+                        @Test
+                        public void missingQuestionFieldReturnsBadRequest() throws Exception {
+                            when(aiAssistantService.generateQuestion(null))
+                                .thenThrow(new AiAssistantException(HttpStatus.BAD_REQUEST, "Question must not be empty."));
+
+                            mockMvc.perform(post("/api/ai-assistant")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content("""
+                                        {}
+                                        """))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.message").value("Question must not be empty."));
+
+                            verify(aiAssistantService, times(1)).generateQuestion(null);
+                        }
 
     @Test
     public void emptyInputReturnsBadRequest() throws Exception {

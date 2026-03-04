@@ -95,6 +95,17 @@ export const useQuestionFormState = (question?: Question) => {
         setExplanations([...explanations, ''])
     }
 
+    const applyAiSingleChoice = (question: string, correctAnswer: string, incorrectAnswer: string) => {
+        setQuestionText(question)
+        setQuestionType('single')
+        setAnswers([correctAnswer, incorrectAnswer])
+        setExplanations(['', ''])
+        setCorrectAnswers([0])
+        setShowExplanations(false)
+        setNumericalAnswer('')
+        setEasyMode(false)
+    }
+
     const removeAnswer = (idx: number) => {
         setAnswers([...answers.filter((_, i) => i !== idx)])
         setExplanations([...explanations.filter((_, i) => i !== idx)])
@@ -142,6 +153,7 @@ export const useQuestionFormState = (question?: Question) => {
         setWorkspaceGuid,
         setShowExplanations,
         setImageUrl,
+        applyAiSingleChoice
     }
 }
 

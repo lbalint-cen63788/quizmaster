@@ -8,7 +8,9 @@ public record QuestionRequest(
     String questionExplanation,
     boolean easyMode,
     String workspaceGuid,
-    String imageUrl
+    String imageUrl,
+    Boolean aiGenerated,
+    String questionType
 ) {
     public Question toEntity() {
         return Question.builder()

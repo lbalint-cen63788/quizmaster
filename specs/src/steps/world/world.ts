@@ -59,6 +59,8 @@ export class QuizmasterWorld {
     correctAnswersCounts: Record<string, string> = {}
     aiAssistantRequestQuestion = ''
     aiAssistantGeneratedAnswer = ''
+    aiAssistantGeneratedCorrectAnswer = ''
+    aiAssistantGeneratedIncorrectAnswer = ''
 
     parseAnswers(answersString: string) {
         return answersString.split(',').map(answer => answer.trim())

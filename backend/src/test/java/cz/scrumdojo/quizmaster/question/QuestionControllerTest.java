@@ -106,4 +106,43 @@ public class QuestionControllerTest {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+
+    @Test
+    public void saveAiGeneratedQuestionValidSingleChoice() {
+        var request = new QuestionRequest(
+            "What is the capital of Czech Republic?",
+            new String[]{"Prague", "Brno"},
+            new int[]{0},
+            new String[]{"", ""},
+            null,
+            false,
+            null,
+            null,
+            true,
+            "single"
+        );
+
+        var response = questionController.saveQuestion(request);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void saveAiGeneratedQuestionInvalidWhenTwoCorrectAnswers() {
+        var request = new QuestionRequest(
+            "What is the capital of Czech Republic?",
+            new String[]{"Prague", "Brno"},
+            new int[]{0, 1},
+            new String[]{"", ""},
+            null,
+            false,
+            null,
+            null,
+            true,
+            "single"
+        );
+
+        var response = questionController.saveQuestion(request);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
 }

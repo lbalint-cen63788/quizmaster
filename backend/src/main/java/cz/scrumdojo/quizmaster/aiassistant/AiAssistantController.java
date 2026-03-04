@@ -21,8 +21,8 @@ public class AiAssistantController {
         String question = request == null ? null : request.question();
 
         try {
-            String answer = aiAssistantService.generateQuestion(question);
-            return ResponseEntity.ok(new AiAssistantResponse(answer));
+            AiAssistantResponse response = aiAssistantService.generateQuestion(question);
+            return ResponseEntity.ok(response);
         } catch (AiAssistantException e) {
             return ResponseEntity.status(e.getStatus())
                 .body(new AiAssistantErrorResponse(e.getMessage()));
