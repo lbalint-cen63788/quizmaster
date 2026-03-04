@@ -186,6 +186,30 @@ Then('I see prefilled valid AI question', async function () {
     expect(correctAnswerCount).toBeGreaterThanOrEqual(1)
 })
 
+Given('AI assistant returns generated question {string}', async function (generatedQuestion: string) {
+    this.aiAssistantGeneratedAnswer = generatedQuestion
+    this.aiAssistantRequestQuestion = ''
+
+    await this.page.route('**/api/ai-assistant', async route => {
+        const requestBody = (await route.request().postDataJSON()) as { question?: string } | null
+        this.aiAssistantRequestQuestion = requestBody?.question ?? ''
+
+        await route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ answer: generatedQuestion }),
+        })
+    })
+})
+
+Then('request to AI assistant contains question {string}', async function (expectedQuestion: string) {
+    expect(this.aiAssistantRequestQuestion).toBe(expectedQuestion)
+})
+
+Then('question field is updated to {string}', async function (expectedQuestion: string) {
+    expect(await this.questionEditPage.questionValue()).toBe(expectedQuestion)
+})
+
 // Field edits
 
 When('I enter question {string}', async function (question: string) {

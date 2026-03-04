@@ -1,4 +1,7 @@
-import { SubmitButton, Form, Field, TextArea, CheckField, Row, Button } from 'pages/components'
+import { useState } from 'react'
+
+import { postAiAssistant } from 'api/ai-assistant.ts'
+import { SubmitButton, Form, Field, TextArea, CheckField, Row, Button, Alert } from 'pages/components'
 import { AnswersEdit, stateToQuestionApiData } from 'pages/make/create-question/form'
 import { useQuestionFormState } from './question-form-state'
 import { validateQuestionFormState, errorMessage } from './validators.ts'
@@ -9,16 +12,31 @@ import { ErrorMessage, createValidator } from 'pages/components/forms/validation
 interface QuestionEditProps {
     readonly question?: Question
     readonly onSubmit: (questionData: QuestionApiData) => void
-    readonly onAiAssistantClick?: (instructions: string) => void
 }
 
-export const QuestionEditForm = ({ question, onSubmit, onAiAssistantClick }: QuestionEditProps) => {
+export const QuestionEditForm = ({ question, onSubmit }: QuestionEditProps) => {
     const state = useQuestionFormState(question)
+    const [aiLoading, setAiLoading] = useState(false)
+    const [aiError, setAiError] = useState('')
 
     const validator = createValidator(() => validateQuestionFormState(state), errorMessage)
 
     const handleSubmit = () => onSubmit(stateToQuestionApiData(state))
-    const handleAiAssistantClick = () => onAiAssistantClick?.(state.questionText)
+
+    const handleAiAssistantClick = async () => {
+        setAiError('')
+        setAiLoading(true)
+
+        try {
+            const response = await postAiAssistant(state.questionText)
+            state.setQuestionText(response.answer)
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'AI assistant request failed.'
+            setAiError(message || 'AI assistant request failed.')
+        } finally {
+            setAiLoading(false)
+        }
+    }
 
     return (
         <Form id="question-create-form" validator={validator} onSubmit={handleSubmit}>
@@ -34,11 +52,13 @@ export const QuestionEditForm = ({ question, onSubmit, onAiAssistantClick }: Que
                         id="question-ai-assistant-button"
                         className="secondary button question-ai-assistant-button"
                         onClick={handleAiAssistantClick}
+                        disabled={aiLoading}
                     >
-                        AI Assistant
+                        {aiLoading ? 'Loading...' : 'AI Assistant'}
                     </Button>
                 </div>
                 <ErrorMessage errorCode="empty-question" />
+                {aiError && <Alert type="error">{aiError}</Alert>}
             </Field>
             <Row>
                 <Field label="Question type" required>
