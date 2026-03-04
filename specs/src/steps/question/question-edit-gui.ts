@@ -159,10 +159,50 @@ Then('I see question explanation {string}', async function (explanation: string)
     expect(explanationValue).toBe(explanation)
 })
 
+Then('I see prefilled valid AI question', async function () {
+    const questionValue = await this.questionEditPage.questionValue()
+    expect(questionValue.trim().length).toBeGreaterThan(0)
+
+    const isNumerical = await this.questionEditPage.isNumericalChoice()
+    if (isNumerical) {
+        const numericalAnswer = await this.questionEditPage.numericalCorrectAnswerValue()
+        expect(numericalAnswer.trim()).toMatch(/^-?\d+$/)
+        return
+    }
+
+    const answerCount = await this.questionEditPage.answerRowCount()
+    expect(answerCount).toBeGreaterThanOrEqual(2)
+
+    let correctAnswerCount = 0
+    for (let i = 0; i < answerCount; i++) {
+        const answerText = await this.questionEditPage.answerText(i)
+        expect(answerText.trim().length).toBeGreaterThan(0)
+
+        if (await this.questionEditPage.isAnswerCorrect(i)) {
+            correctAnswerCount++
+        }
+    }
+
+    expect(correctAnswerCount).toBeGreaterThanOrEqual(1)
+})
+
 // Field edits
 
 When('I enter question {string}', async function (question: string) {
     await enterQuestion(this, question)
+})
+
+When('I enter AI instructions into field Question: {string}', async function (instructions: string) {
+    await enterQuestion(this, instructions)
+})
+
+When('I click on button {string}', async function (buttonName: string) {
+    if (buttonName === 'AI assist') {
+        await this.questionEditPage.clickAiAssist()
+        return
+    }
+
+    throw new Error(`Unsupported button name: ${buttonName}`)
 })
 
 When(/I mark the question as (single|multiple|numerical) choice/, async function (choice: string) {

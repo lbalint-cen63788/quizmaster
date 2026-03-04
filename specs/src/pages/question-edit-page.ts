@@ -12,6 +12,9 @@ export class QuestionEditPage {
     enterQuestion = (question: string) => this.questionLocator().fill(question)
     questionValue = () => this.questionLocator().inputValue()
 
+    private aiAssistButtonLocator = () => this.page.getByRole('button', { name: 'AI assist' })
+    clickAiAssist = () => this.aiAssistButtonLocator().click()
+
     private showExplanationLocator = () => this.page.locator('#show-explanation')
     explanationsEnabled = () => this.showExplanationLocator().isChecked()
     enableExplanations = () => this.showExplanationLocator().check()
