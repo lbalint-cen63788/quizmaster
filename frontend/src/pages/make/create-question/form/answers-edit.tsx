@@ -1,7 +1,7 @@
 import { Button, Field, TextInput, Row, CheckField } from 'pages/components'
 import type { AnswerState } from './question-form-state.ts'
 import { ErrorMessage } from 'pages/components/forms/validations.tsx'
-import DeleteAnswerButton from './delete-answer-button.tsx'
+import TrashButton from 'pages/components/trash-button.tsx'
 
 interface AnswerRowProps {
     readonly state: AnswerState
@@ -29,7 +29,7 @@ export const AnswerRow = ({ state, isMultipleChoice, onDelete, deleteDisabled, s
                 />
             )}
         </div>
-        <DeleteAnswerButton className="answer-delete-button" onClick={onDelete} disabled={deleteDisabled} />
+        <TrashButton onClick={onDelete} disabled={deleteDisabled} />
     </div>
 )
 

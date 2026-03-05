@@ -96,7 +96,7 @@ export class QuestionEditPage {
     errorsLocator = () => this.page.locator('.alert.error')
     hasError = (error: string) => this.page.getByTestId(error).waitFor({ state: 'visible' })
 
-    answerDeleteButtonsLocator = () => this.page.locator('.answer-delete-button')
+    answerDeleteButtonsLocator = () => this.page.locator('.trash-button')
     private answerDeleteButtonLocator = (idx: number) => this.answerDeleteButtonsLocator().nth(idx)
     deleteAnswer = (index: number) => this.answerDeleteButtonLocator(index).click()
 

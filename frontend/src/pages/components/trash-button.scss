@@ -1,0 +1,14 @@
+.trash-button {
+    padding: 0.5rem;
+    border: 0 !important;
+    background-color: transparent;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+
+        &:active {
+            transform: scale(1);
+        }
+    }
+}
