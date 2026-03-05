@@ -23,22 +23,11 @@ export class WorkspacePage {
 
     // ── Question actions ─────────────────────────────
 
-    private questionButton = (selector: string) => (question: string) => this.questionLocator(question).locator(`${selector} button`)
-    private click = (locator: (question: string) => ReturnType<typeof this.questionLocator>) => (question: string) => locator(question).click()
+    takeQuestion = (question: string) => this.questionLocator(question).getByRole('link', { name: 'Take' }).click()
+    editQuestion = (question: string) => this.questionLocator(question).getByRole('link', { name: 'Edit' }).click()
 
-    private takeButtonLocator = this.questionButton('.take-button')
-    takeQuestion = this.click(this.takeButtonLocator)
-
-    private editButtonLocator = this.questionButton('.edit-button')
-    editQuestion = this.click(this.editButtonLocator)
-
-    private copyTakeButtonLocator = this.questionButton('.copy-take-button')
-    copyTakeQuestion = this.click(this.copyTakeButtonLocator)
-
-    private copyEditButtonLocator = this.questionButton('.copy-edit-button')
-    copyEditQuestion = this.click(this.copyEditButtonLocator)
-
-    private deleteButtonLocator = this.questionButton('.delete-button')
+    private deleteButtonLocator = (question: string) =>
+        this.questionLocator(question).getByRole('button', { name: 'Delete' })
     deleteQuestion = async (question: string) => {
         await this.deleteButtonLocator(question).click()
         await this.questionLocator(question).waitFor({ state: 'hidden' })
@@ -55,24 +44,16 @@ export class WorkspacePage {
 
     // ── Create new question / quiz ───────────────────
 
-    private createQuestionButtonLocator = () => this.page.locator('#create-question')
-    createNewQuestion = () => this.createQuestionButtonLocator().click()
-
-    private createQuizButtonLocator = () => this.page.locator('#create-quiz')
-    createNewQuiz = () => this.createQuizButtonLocator().click()
+    createNewQuestion = () => this.page.locator('#create-question').click()
+    createNewQuiz = () => this.page.locator('#create-quiz').click()
 
     // ── Quiz list ────────────────────────────────────
 
     private quizLocator = (quiz: string) => this.page.locator('.quiz-item').filter({ hasText: quiz })
 
-    private takeQuizButtonLocator = (quiz: string) => this.quizLocator(quiz).locator('.take-quiz-button button')
-    takeQuiz = (quiz: string) => this.takeQuizButtonLocator(quiz).click()
-
-    private editQuizButtonLocator = (quiz: string) => this.quizLocator(quiz).locator('.edit-quiz-button button')
-    editQuiz = (quiz: string) => this.editQuizButtonLocator(quiz).click()
-
-    private statsQuizButtonLocator = (quiz: string) => this.quizLocator(quiz).locator('.stats-quiz-button button')
-    statsQuiz = (quiz: string) => this.statsQuizButtonLocator(quiz).click()
+    takeQuiz = (quiz: string) => this.quizLocator(quiz).getByRole('link', { name: 'Take' }).click()
+    editQuiz = (quiz: string) => this.quizLocator(quiz).getByRole('link', { name: 'Edit' }).click()
+    statsQuiz = (quiz: string) => this.quizLocator(quiz).getByRole('link', { name: 'Statistics' }).click()
 
     expectQuizVisible = (quiz: string) => expect(this.quizLocator(quiz)).toBeVisible()
 }

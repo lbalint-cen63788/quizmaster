@@ -2,7 +2,6 @@ Feature: Workspace page management
   The workspace page is the central hub for managing questions and quizzes.
   From here, a quiz maker can:
   - Take, edit, or delete individual questions
-  - Copy shareable take-question and edit-question URLs
   - View updated question text after edits
   Questions used in a quiz cannot be deleted.
 
@@ -35,14 +34,6 @@ Feature: Workspace page management
     Then I see the quiz "Math Quiz" in the workspace
     Then I cannot delete question "Jaký nábytek má Ikea?"
 
-  Scenario: Copy a take question URL
-    Given workspace "Workspace" with questions
-      | question  | answers  |
-      | 2 + 2 = ? | 4 (*), 5 |
-    When I copy the take URL for question "2 + 2 = ?"
-    And I follow the copied URL
-    Then I see the question and the answers
-
   Scenario: Edit question in a workspace
     Given workspace "Workspace" with questions
       | question  | answers  |
@@ -51,14 +42,6 @@ Feature: Workspace page management
     When I edit question "2 + 2 = ?" from the list
     Then I see question edit page
     And I see question text "2 + 2 = ?"
-
-  Scenario: Copy an edit question URL
-    Given workspace "Workspace" with questions
-      | question  | answers  |
-      | 2 + 2 = ? | 4 (*), 5 |
-    When I copy the edit URL for question "2 + 2 = ?"
-    And I follow the copied URL
-    Then I see question edit page
 
   Scenario: Show edited question in a workspace
     Given workspace "Workspace" with questions

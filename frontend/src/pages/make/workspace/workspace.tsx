@@ -1,137 +1,63 @@
-import { Button, type WithOnClick } from 'pages/components/button'
-import { useNavigate } from 'react-router-dom'
-import copyClipboardIcon from 'assets/icons/copy-clipboard.svg'
-import { QuestionItem } from './question-item'
 import './workspace.scss'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 import type { QuestionListItem } from 'model/question-list-item'
-import type { Workspace } from 'model/workspace'
 import type { QuizListItem } from 'model/quiz-list-item'
-import { QuizItem } from '../quiz-create/quiz-item'
+import type { Workspace } from 'model/workspace'
 
-interface WorkspaceProps {
-    readonly workspace: Workspace
-    readonly questions: readonly QuestionListItem[]
-    readonly quizzes: readonly QuizListItem[]
-    readonly onDeleteQuestion: (id: string) => void
-}
+import { useApi } from 'api/hooks'
+import { fetchWorkspace, fetchWorkspaceQuestions, fetchWorkspaceQuizzes } from 'api/workspace'
+import { deleteQuestion } from 'api/question'
 
-type EditQuestionButtonProps = { id: string; editId: string; onClick: () => void }
-type TakeQuestionButtonProps = { id: string; editId: string; onClick: () => void }
-type CopyQuestionButtonProps = { id: string; kind: string; editId: string; onClick: () => void }
-type DeleteQuestionButtonProps = { id: string; editId: string; onClick: () => void }
+import { ItemList, LinkButton } from 'pages/components'
+import { QuestionItem } from './question-item'
+import { QuizItem } from './quiz-item'
 
-export const CreateQuestionButton = ({ onClick }: WithOnClick) => (
-    <Button id="create-question" onClick={onClick}>
-        Create New Question
-    </Button>
-)
+export function WorkspacePage() {
+    const params = useParams()
 
-export const EditQuestionButton = ({ id, onClick }: EditQuestionButtonProps) => (
-    <Button id={id} className="edit-question" onClick={onClick}>
-        Edit
-    </Button>
-)
+    const [workspace, setWorkspace] = useState<Workspace>({ guid: params.id || '', title: '' })
+    const [questions, setQuestions] = useState<readonly QuestionListItem[]>([])
+    const [quizzes, setQuizzes] = useState<readonly QuizListItem[]>([])
 
-export const TakeQuestionButton = ({ id, onClick }: TakeQuestionButtonProps) => (
-    <Button id={id} className="take-question" onClick={onClick}>
-        Take
-    </Button>
-)
+    useApi(params.id, fetchWorkspace, setWorkspace)
+    useApi(params.id, fetchWorkspaceQuestions, setQuestions)
+    useApi(params.id, fetchWorkspaceQuizzes, setQuizzes)
 
-export const DeleteQuestionButton = ({ id, onClick }: DeleteQuestionButtonProps) => (
-    <Button id={id} className="delete-question" onClick={onClick}>
-        Delete
-    </Button>
-)
-
-export const CopyQuestionButton = ({ id, kind, onClick }: CopyQuestionButtonProps) => (
-    <Button id={id} className="copy-question" onClick={onClick}>
-        <img
-            id={`image${kind}${id}`}
-            src={copyClipboardIcon}
-            alt={`Copy the ${kind} url to clipboard`}
-            title={`Copy the ${kind} url to clipboard`}
-            className="copy-icon"
-            onError={e => {
-                e.currentTarget.style.display = 'none'
-            }}
-        />
-    </Button>
-)
-
-export const CreateQuizButton = ({ onClick }: WithOnClick) => (
-    <Button id="create-quiz" onClick={onClick} className="primary button">
-        Create Quiz
-    </Button>
-)
-
-export function WorkspaceComponent({ workspace, questions, quizzes, onDeleteQuestion }: WorkspaceProps) {
-    const navigate = useNavigate()
-
-    const onCreateNewQuestion = () => {
-        navigate(`/question/new?workspaceguid=${workspace?.guid}`)
-    }
-
-    const onEditQuestion = (editId: string) => {
-        navigate(`/question/${editId}/edit`)
-    }
-
-    const onTakeQuestion = (id: number) => {
-        navigate(`/question/${id}`)
-    }
-
-    const onCopyTakeQuestion = async (id: number) => {
-        const link = `${window.location.origin}/question/${id}`
-        await navigator.clipboard.writeText(link)
-    }
-
-    const onCopyEditQuestion = async (editId: string) => {
-        const link = `${window.location.origin}/question/${editId}/edit`
-        try {
-            await navigator.clipboard.writeText(link)
-            window.alert('link copied')
-        } catch (err) {
-            window.alert('Failed to copy link')
+    const onDeleteQuestion = async (id: number) => {
+        await deleteQuestion(`${id}`)
+        if (params.id) {
+            setQuestions(await fetchWorkspaceQuestions(params.id))
         }
-    }
-
-    const onCreateQuiz = () => {
-        navigate(`/quiz-create/new?workspaceguid=${workspace.guid}`)
     }
 
     return (
         <div className="workspace-page">
-            {workspace.title && (
-                <h1 id="question-title-header" data-testid="workspace-title">
-                    {workspace.title}
-                </h1>
-            )}
-            <div className="create-button">
-                <CreateQuestionButton onClick={onCreateNewQuestion} />
+            {workspace.title && <h1 data-testid="workspace-title">{workspace.title}</h1>}
+            <div className="create-buttons">
+                <LinkButton id="create-question" to={`/question/new?workspaceguid=${workspace.guid}`}>
+                    Create Question
+                </LinkButton>
+                <LinkButton id="create-quiz" to={`/quiz-create/new?workspaceguid=${workspace.guid}`}>
+                    Create Quiz
+                </LinkButton>
             </div>
-            <h3>My Questions</h3>
-            <div className="question-holder">
+            <ItemList title="My Questions">
                 {questions.map((q, index) => (
                     <QuestionItem
                         key={q.id || index}
                         question={q}
                         index={index}
-                        onEditQuestion={() => onEditQuestion(q.editId)}
-                        onCopyEditQuestion={() => onCopyEditQuestion(q.editId)}
-                        onTakeQuestion={() => onTakeQuestion(q.id)}
-                        onCopyTakeQuestion={() => onCopyTakeQuestion(q.id)}
-                        onDeleteQuestion={() => onDeleteQuestion(`${q.id}`)}
+                        onDeleteQuestion={() => onDeleteQuestion(q.id)}
                     />
                 ))}
-            </div>
-
-            <CreateQuizButton onClick={onCreateQuiz} />
-            <h3>My quizzes</h3>
-            <div>
+            </ItemList>
+            <ItemList title="My quizzes">
                 {quizzes.map(quiz => (
-                    <QuizItem key={quiz.id} quiz={quiz} workspaceguid={workspace?.guid} />
+                    <QuizItem key={quiz.id} quiz={quiz} workspaceguid={workspace.guid} />
                 ))}
-            </div>
+            </ItemList>
         </div>
     )
 }

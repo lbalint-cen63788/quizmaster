@@ -9,7 +9,7 @@ import { QuizWelcomePage } from 'pages/take/quiz-take/quiz-welcome/quiz-welcome-
 import { WorkspaceCreatePage } from 'pages/make/create-workspace/workspace-create-page'
 import { CreateQuestionPage } from 'pages/make/create-question/create-question-page'
 import { EditQuestionPage } from 'pages/make/create-question/edit-question-page'
-import { WorkspaceContainer } from 'pages/make/workspace/workspace-container'
+import { WorkspacePage } from 'pages/make/workspace/workspace'
 import { QuizCreatePage } from 'pages/make/quiz-create/quiz-create-page.tsx'
 import { QuizStatsPage } from 'pages/make/quiz-stats/quiz-stats-page'
 import { QuizEditPage } from 'pages/make/quiz-create/quiz-edit-page'
@@ -19,7 +19,7 @@ export const App = () => (
         <Routes>
             <Route path="/question/new" element={<CreateQuestionPage />} />
             <Route path="/workspace/new" element={<WorkspaceCreatePage />} />
-            <Route path="/workspace/:id" element={<WorkspaceContainer />} />
+            <Route path="/workspace/:id" element={<WorkspacePage />} />
             <Route path="/quiz/:id" element={<QuizWelcomePage />} />
             <Route path="/quiz/:id/questions/:questionId?" element={<QuizTakePage />} />
             <Route path="/quiz-create/new" element={<QuizCreatePage />} />
