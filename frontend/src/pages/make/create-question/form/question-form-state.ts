@@ -67,14 +67,6 @@ export const useQuestionFormState = (question?: Question) => {
         setQuestionType(nextType)
     }
 
-    const toggleMultipleChoice = () => {
-        selectQuestionType(isMultipleChoice ? 'single' : 'multiple')
-    }
-
-    const toggleNumerical = (value: boolean) => {
-        selectQuestionType(value ? 'numerical' : 'single')
-    }
-
     const setAnswer = (index: number, answer: string) => setAnswers(updated(answers, index, answer))
 
     const setExplanation = (index: number, explanation: string) =>
@@ -150,8 +142,6 @@ export const useQuestionFormState = (question?: Question) => {
         removeAnswer,
         setQuestionExplanation,
         selectQuestionType,
-        toggleMultipleChoice,
-        toggleNumerical,
         setNumericalAnswer,
         setEasyMode,
         setWorkspaceGuid,
