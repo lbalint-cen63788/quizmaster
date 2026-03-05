@@ -5,6 +5,7 @@ import { urls, useWorkspaceId } from 'urls.ts'
 import { Field, Form, NumberInput, RadioSet, Row, SubmitButton, TextArea, TextInput } from 'pages/components'
 import { QuestionCountInfo } from './components/question-count-info.tsx'
 import { QuestionSelect } from './components/question-select.tsx'
+import { RandomSubsetSection } from './components/random-subset-section.tsx'
 import { ErrorMessage, createValidator } from 'pages/components/forms/validations.tsx'
 import { validateQuizForm, errorMessage } from './validations.ts'
 import { useQuizFormState, stateToQuizApiData, type QuizEditFormData } from './quiz-form-state.ts'
@@ -66,7 +67,7 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
                 />
             </Field>
             <div className="label">Select quiz questions</div>
-            <Field label="Filter">
+            <Field label="Search questions">
                 <TextInput id="question-filter" value={state.filter} onChange={state.setFilter} />
             </Field>
             <QuestionSelect
@@ -78,30 +79,12 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
 
             <QuestionCountInfo selectedCount={state.selectedIds.size} totalCount={questions.length} />
 
-            <span className="inline-label">
-                <input
-                    type="checkbox"
-                    id="isRandomized"
-                    onChange={e => state.setCheckRandomize(e.target.checked)}
-                    checked={state.checkRandomize}
-                />
-                <label htmlFor="isRandomized" className="randomize-label">
-                    Randomize questions in the quiz
-                </label>
-            </span>
-            {state.checkRandomize && (
-                <span className="inline-label">
-                    <div className="random-count-input">
-                        <NumberInput
-                            id="quiz-randomQuestionCount"
-                            value={state.randomQuestionCount}
-                            onChange={state.setRandomQuestionCount}
-                        />
-                    </div>
-                    random questions
-                </span>
-            )}
-            <ErrorMessage errorCode="too-many-randomized-questions" />
+            <RandomSubsetSection
+                enabled={state.checkRandomize}
+                onEnabledChange={state.setCheckRandomize}
+                count={state.randomQuestionCount}
+                onCountChange={state.setRandomQuestionCount}
+            />
             <div className="flex-container">
                 <button id="back" type="button" className="primary button" onClick={onBack}>
                     Back
