@@ -1,6 +1,3 @@
-import { expect } from '@playwright/test'
-
-import { expectTextToContain } from 'steps/common.ts'
 import { Given, Then, When } from 'steps/fixture.ts'
 import type { QuizmasterWorld } from 'steps/world'
 
@@ -23,7 +20,7 @@ Then('I see an empty workspace', async function () {
 })
 
 Then('I see question in list {string}', async function (question: string) {
-    await expectTextToContain(this.page.getByText(question), question)
+    await this.workspacePage.expectQuestionVisible(question)
 })
 
 Then('I see workspace title {string}', async function (title: string) {
@@ -57,15 +54,15 @@ Then(/I copy the (take|edit) URL for question "(.+)"/, async function (page: str
 })
 
 Then('I see image thumbnail for question {string}', async function (question: string) {
-    await expect(this.workspacePage.questionThumbnail(question)).toBeVisible()
+    await this.workspacePage.expectQuestionThumbnailVisible(question)
 })
 
 Then('I do not see image thumbnail for question {string}', async function (question: string) {
-    await expect(this.workspacePage.questionThumbnail(question)).not.toBeVisible()
+    await this.workspacePage.expectQuestionThumbnailNotVisible(question)
 })
 
 Then('I see the quiz {string} in the workspace', async function (quizName: string) {
-    await this.workspacePage.hasQuiz(quizName)
+    await this.workspacePage.expectQuizVisible(quizName)
 })
 
 Then('I take quiz {string}', async function (quiz: string) {
