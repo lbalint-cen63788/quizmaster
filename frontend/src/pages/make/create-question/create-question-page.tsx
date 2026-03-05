@@ -4,26 +4,22 @@ import { type QuestionApiData, saveQuestion } from 'api/question.ts'
 
 import { Page } from 'pages/components/page.tsx'
 import { QuestionEditForm } from './form/question-form.tsx'
-import { useWorkspaceGuid } from 'urls.ts'
+import { urls, useWorkspaceId } from 'urls.ts'
 
 export function CreateQuestionPage() {
-    const workspaceGuid = useWorkspaceGuid()
+    const workspaceId = useWorkspaceId()
     const navigate = useNavigate()
 
     const handleSubmit = (questionData: QuestionApiData) => {
-        const apiData = { ...questionData, workspaceGuid: workspaceGuid || null }
+        const apiData = { ...questionData, workspaceGuid: workspaceId || null }
         saveQuestion(apiData).then(response => {
-            const url = workspaceGuid !== '' ? `/workspace/${workspaceGuid}` : `/question/${response.editId}/edit`
+            const url = workspaceId ? urls.workspace(workspaceId) : urls.questionEditStandalone(response.editId)
             navigate(url)
         })
     }
 
     const handleBack = () => {
-        if (workspaceGuid) {
-            navigate(`/workspace/${workspaceGuid}`)
-            return
-        }
-        navigate('/')
+        navigate(workspaceId ? urls.workspace(workspaceId) : urls.home())
     }
 
     return (

@@ -1,6 +1,5 @@
 import './workspace.scss'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
 
 import type { QuestionListItem } from 'model/question-list-item'
 import type { QuizListItem } from 'model/quiz-list-item'
@@ -10,26 +9,25 @@ import { useApi } from 'api/hooks'
 import { fetchWorkspace, fetchWorkspaceQuestions, fetchWorkspaceQuizzes } from 'api/workspace'
 import { deleteQuestion } from 'api/question'
 
+import { urls, useWorkspaceId } from 'urls.ts'
 import { ItemList, LinkButton } from 'pages/components'
 import { QuestionItem } from './question-item'
 import { QuizItem } from './quiz-item'
 
 export function WorkspacePage() {
-    const params = useParams()
+    const workspaceId = useWorkspaceId()
 
-    const [workspace, setWorkspace] = useState<Workspace>({ guid: params.id || '', title: '' })
+    const [workspace, setWorkspace] = useState<Workspace>({ guid: workspaceId, title: '' })
     const [questions, setQuestions] = useState<readonly QuestionListItem[]>([])
     const [quizzes, setQuizzes] = useState<readonly QuizListItem[]>([])
 
-    useApi(params.id, fetchWorkspace, setWorkspace)
-    useApi(params.id, fetchWorkspaceQuestions, setQuestions)
-    useApi(params.id, fetchWorkspaceQuizzes, setQuizzes)
+    useApi(workspaceId, fetchWorkspace, setWorkspace)
+    useApi(workspaceId, fetchWorkspaceQuestions, setQuestions)
+    useApi(workspaceId, fetchWorkspaceQuizzes, setQuizzes)
 
     const onDeleteQuestion = async (id: number) => {
         await deleteQuestion(`${id}`)
-        if (params.id) {
-            setQuestions(await fetchWorkspaceQuestions(params.id))
-        }
+        setQuestions(await fetchWorkspaceQuestions(workspaceId))
     }
 
     return (
@@ -39,13 +37,9 @@ export function WorkspacePage() {
                 <LinkButton
                     label="Create Question"
                     id="create-question"
-                    to={`/question/new?workspaceguid=${workspace.guid}`}
+                    to={urls.workspaceQuestionNew(workspace.guid)}
                 />
-                <LinkButton
-                    label="Create Quiz"
-                    id="create-quiz"
-                    to={`/quiz-create/new?workspaceguid=${workspace.guid}`}
-                />
+                <LinkButton label="Create Quiz" id="create-quiz" to={urls.workspaceQuizNew(workspace.guid)} />
             </div>
             <ItemList title="My Questions">
                 {questions.map((q, index) => (
@@ -59,7 +53,7 @@ export function WorkspacePage() {
             </ItemList>
             <ItemList title="My quizzes">
                 {quizzes.map(quiz => (
-                    <QuizItem key={quiz.id} quiz={quiz} workspaceguid={workspace.guid} />
+                    <QuizItem key={quiz.id} quiz={quiz} />
                 ))}
             </ItemList>
         </div>

@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
+import { urls } from 'urls.ts'
 
 export const HomePage = () => {
     return (
         <>
             <h1>Welcome to Quizmaster! You rock.</h1>
-            <Link to="/question/new">Create new question</Link>
+            <Link to={urls.questionNew()}>Create new question</Link>
             <br />
-            <Link to="/workspace/new">Create new workspace</Link>
+            <Link to={urls.workspaceNew()}>Create new workspace</Link>
         </>
     )
 }

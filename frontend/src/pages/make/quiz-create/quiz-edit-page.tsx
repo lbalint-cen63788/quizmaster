@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { useApi } from 'api/hooks'
 import { fetchWorkspaceQuestions } from 'api/workspace'
-import { useWorkspaceGuid } from 'urls.ts'
+import { urls, useWorkspaceId } from 'urls.ts'
 
 import type { QuestionListItem } from 'model/question-list-item.ts'
 import { QuizEditForm } from './quiz-edit-form'
@@ -13,7 +13,7 @@ import { fetchQuiz, putQuiz, type QuizCreateRequest } from 'api/quiz'
 import { Alert, Page } from 'pages/components'
 
 export const QuizEditPage = () => {
-    const workspaceGuid = useWorkspaceGuid()
+    const workspaceId = useWorkspaceId()
     const navigate = useNavigate()
     const { id: quizId } = useParams()
 
@@ -22,7 +22,7 @@ export const QuizEditPage = () => {
     const [loading, setLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState<string>('')
 
-    useApi(workspaceGuid, fetchWorkspaceQuestions, setWorkspaceQuestions)
+    useApi(workspaceId, fetchWorkspaceQuestions, setWorkspaceQuestions)
 
     useEffect(() => {
         if (!quizId) {
@@ -43,7 +43,7 @@ export const QuizEditPage = () => {
             return
         }
         putQuiz(quizData, quizId).then(() => {
-            navigate(`/workspace/${workspaceGuid}`)
+            navigate(urls.workspace(workspaceId))
         })
     }
 
@@ -52,7 +52,12 @@ export const QuizEditPage = () => {
             {loading ? (
                 <div>Loading quiz...</div>
             ) : quiz ? (
-                <QuizEditForm questions={workspaceQuestions} quiz={quiz} onSubmit={handleSubmit} />
+                <QuizEditForm
+                    questions={workspaceQuestions}
+                    quiz={quiz}
+                    workspaceId={workspaceId}
+                    onSubmit={handleSubmit}
+                />
             ) : null}
             {errorMessage && <Alert type="error">{errorMessage}</Alert>}
         </Page>

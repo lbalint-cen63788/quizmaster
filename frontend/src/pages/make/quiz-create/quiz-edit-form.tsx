@@ -1,11 +1,12 @@
 import './quiz-edit-form.scss'
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useStateSet } from 'helpers'
 import type { QuestionListItem } from 'model/question-list-item.ts'
 import type { QuizCreateRequest } from 'api/quiz.ts'
 
+import { urls } from 'urls.ts'
 import { Field, Form, NumberInput, RadioSet, Row, SubmitButton, TextArea, TextInput } from 'pages/components'
 import { QuestionSelect } from './components/question-select.tsx'
 import { ErrorMessage, createValidator } from 'pages/components/forms/validations.tsx'
@@ -19,10 +20,11 @@ import type { Quiz } from 'model/quiz.ts'
 interface QuizEditFormProps {
     readonly questions: readonly QuestionListItem[]
     readonly onSubmit: (data: QuizEditFormData) => void
+    readonly workspaceId: string
     readonly quiz?: Quiz
 }
 
-export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) => {
+export const QuizEditForm = ({ questions, onSubmit, workspaceId, quiz }: QuizEditFormProps) => {
     const navigate = useNavigate()
     const [title, setTitle] = useState<string>('')
     const [description, setDescription] = useState<string>('')
@@ -31,7 +33,6 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
     const [randomQuestionCount, setRandomQuestionCount] = useState<number>(0)
     const [passScore, setPassScore] = useState<number>(80)
     const [filter, setFilter] = useState<string>('')
-    const [searchParams] = useSearchParams()
     const [checkRandomize, setCheckRandomize] = useState(false)
     const [filteredQuestions, setFilteredQuestions] = useState<readonly QuestionListItem[]>(questions)
     const [feedbackMode, setFeedbackMode] = useState<QuizMode>('exam')
@@ -69,17 +70,12 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
         difficulty,
         passScore,
         timeLimit,
-        workspaceGuid: searchParams.get('workspaceguid') || null,
+        workspaceGuid: workspaceId,
         randomQuestionCount,
     })
 
     const onBack = () => {
-        const workspaceGuid = searchParams.get('workspaceguid')
-        if (workspaceGuid) {
-            navigate(`/workspace/${workspaceGuid}`)
-            return
-        }
-        navigate('/')
+        navigate(urls.workspace(workspaceId))
     }
 
     useEffect(() => {

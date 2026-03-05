@@ -13,21 +13,32 @@ import { WorkspacePage } from 'pages/make/workspace/workspace'
 import { QuizCreatePage } from 'pages/make/quiz-create/quiz-create-page.tsx'
 import { QuizStatsPage } from 'pages/make/quiz-stats/quiz-stats-page'
 import { QuizEditPage } from 'pages/make/quiz-create/quiz-edit-page'
+import { ROUTES } from 'urls.ts'
 
 export const App = () => (
     <BrowserRouter>
         <Routes>
-            <Route path="/question/new" element={<CreateQuestionPage />} />
-            <Route path="/workspace/new" element={<WorkspaceCreatePage />} />
-            <Route path="/workspace/:id" element={<WorkspacePage />} />
-            <Route path="/quiz/:id" element={<QuizWelcomePage />} />
-            <Route path="/quiz/:id/questions/:questionId?" element={<QuizTakePage />} />
-            <Route path="/quiz-create/new" element={<QuizCreatePage />} />
-            <Route path="/quiz/:id/edit" element={<QuizEditPage />} />
-            <Route path="/question/:id/edit" element={<EditQuestionPage />} />
-            <Route path="/question/:id" element={<QuestionTakePage />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/quiz/:id/stats" element={<QuizStatsPage />} />
+            <Route path={ROUTES.home} element={<HomePage />} />
+
+            {/* Legacy standalone question */}
+            <Route path={ROUTES.questionNew} element={<CreateQuestionPage />} />
+            <Route path={ROUTES.questionEditStandalone} element={<EditQuestionPage />} />
+            <Route path={ROUTES.questionTake} element={<QuestionTakePage />} />
+
+            {/* Workspace */}
+            <Route path={ROUTES.workspaceNew} element={<WorkspaceCreatePage />} />
+            <Route path={ROUTES.workspace} element={<WorkspacePage />} />
+            <Route path={ROUTES.workspaceQuestionNew} element={<CreateQuestionPage />} />
+            <Route path={ROUTES.workspaceQuestionEdit} element={<EditQuestionPage />} />
+
+            {/* Quiz management (workspace-scoped) */}
+            <Route path={ROUTES.workspaceQuizNew} element={<QuizCreatePage />} />
+            <Route path={ROUTES.workspaceQuizEdit} element={<QuizEditPage />} />
+            <Route path={ROUTES.workspaceQuizStats} element={<QuizStatsPage />} />
+
+            {/* Quiz taking (public) */}
+            <Route path={ROUTES.quizWelcome} element={<QuizWelcomePage />} />
+            <Route path={ROUTES.quizTake} element={<QuizTakePage />} />
         </Routes>
     </BrowserRouter>
 )
