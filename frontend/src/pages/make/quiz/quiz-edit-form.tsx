@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { urls, useWorkspaceId } from 'urls.ts'
 import { Field, Form, NumberInput, RadioSet, Row, SubmitButton, TextArea, TextInput } from 'pages/components'
+import { QuestionCountInfo } from './components/question-count-info.tsx'
 import { QuestionSelect } from './components/question-select.tsx'
 import { ErrorMessage, createValidator } from 'pages/components/forms/validations.tsx'
 import { validateQuizForm, errorMessage } from './validations.ts'
@@ -75,22 +76,7 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
             />
             <ErrorMessage errorCode="few-questions" />
 
-            <div className="question-count-info">
-                <span className="inline-label">
-                    <div className="bold-count" id="selected-question-count-for-quiz">
-                        {state.selectedIds.size}
-                    </div>
-                    selected question(s)
-                </span>
-            </div>
-            <div className="question-count-info">
-                <span className="inline-label">
-                    <div className="bold-count" id="total-question-count-for-quiz">
-                        {questions.length}
-                    </div>
-                    total questions available
-                </span>
-            </div>
+            <QuestionCountInfo selectedCount={state.selectedIds.size} totalCount={questions.length} />
 
             <span className="inline-label">
                 <input
