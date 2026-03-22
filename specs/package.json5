@@ -23,7 +23,7 @@
         "coverage:report": "node src/coverage/report.js",
 
         "ci:install:fe": "cd ../frontend && pnpm install",
-        "ci:install:specs": "pnpm install && playwright install --with-deps",
+        "ci:install:specs": "pnpm install && playwright install chromium",
         "ci:install": "pnpm ci:install:fe && pnpm ci:install:specs",
 
         "ci:code:fe": "cd ../frontend && tsc -b && biome ci",

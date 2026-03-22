@@ -1,0 +1,25 @@
+services:
+    quizmaster:
+        image: ghcr.io/scrumdojo/dev-quizmaster:v3
+        hostname: quizmaster
+        environment:
+            GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+            OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+            SSH_START: "true"
+            SSH_PUBKEY: ${SSH_PUBKEY:-}
+        volumes:
+            - devhome:/home/dev
+
+    postgres:
+        image: postgres:16
+        hostname: postgres
+        environment:
+            POSTGRES_USER: quizmaster
+            POSTGRES_PASSWORD: quizmaster
+            POSTGRES_DB: quizmaster
+        volumes:
+            - db:/var/lib/postgresql/data
+
+volumes:
+    devhome:
+    db:
