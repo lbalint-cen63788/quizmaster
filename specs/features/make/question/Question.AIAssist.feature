@@ -11,5 +11,3 @@ Feature: Generate question and answers using AI
     And Question field is updated to AI generated question
     And answer1 field is filled with AI generated correct answer
     And answer2 field is filled with AI generated incorrect answer
-    When I save the question
-    Then I see question-take URL and question-edit URL

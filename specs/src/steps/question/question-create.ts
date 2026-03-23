@@ -2,49 +2,34 @@ import type { DataTable } from '@cucumber/cucumber'
 
 import type { TableOf } from 'steps/common.ts'
 import { Given } from 'steps/fixture.ts'
+import { addAnswers, enterImageUrl, enterQuestion, type AnswerRaw } from 'steps/question/ops.ts'
 import {
-    addAnswers,
-    createQuestion,
-    enterImageUrl,
-    enterQuestion,
-    openCreatePage,
-    saveQuestion,
-    type AnswerRaw,
-} from 'steps/question/ops.ts'
+    createQuestionInAutoWorkspace,
+    createNumericalQuestionInAutoWorkspace,
+    ensureWorkspace,
+    navigateToWorkspace,
+} from 'steps/workspace/ops.ts'
+import { emptyQuestion } from 'steps/world'
 
 Given('a question {string}', async function (question: string) {
-    await openCreatePage(this)
+    await ensureWorkspace(this)
+    await navigateToWorkspace(this)
+    await this.workspacePage.createNewQuestion()
+    this.questionWip = emptyQuestion()
     await enterQuestion(this, question)
 })
 
 Given(
-    'a question {string} bookmarked as {string}',
-    async function (question: string, bookmark: string, answerRawTable: TableOf<AnswerRaw>) {
-        await createQuestion(this, bookmark, question, false, answerRawTable)
-    },
-)
-
-Given(
     'a numerical question {string} with correct answer {string} bookmarked as {string}',
     async function (question: string, correctAnswer: string, bookmark: string) {
-        await openCreatePage(this)
-        await enterQuestion(this, question)
-        await this.questionEditPage.setNumericalChoice()
-        await this.questionEditPage.enterNumericalCorrectAnswer(correctAnswer)
-        await saveQuestion(this, bookmark)
+        await createNumericalQuestionInAutoWorkspace(this, bookmark, question, correctAnswer)
     },
 )
 
 Given(
     'a numerical question {string} with correct answer {string} bookmarked as {string} with explanation {string}',
     async function (question: string, correctAnswer: string, bookmark: string, explanation: string) {
-        await openCreatePage(this)
-        await enterQuestion(this, question)
-        await this.questionEditPage.setNumericalChoice()
-        await this.questionEditPage.enterNumericalCorrectAnswer(correctAnswer)
-        await this.questionEditPage.enterQuestionExplanation(explanation)
-        this.questionWip.explanation = explanation
-        await saveQuestion(this, bookmark)
+        await createNumericalQuestionInAutoWorkspace(this, bookmark, question, correctAnswer, explanation)
     },
 )
 
@@ -60,7 +45,7 @@ Given('questions', async function (data: DataTable) {
                 }),
         } as TableOf<AnswerRaw>
 
-        await createQuestion(this, bookmark, question, isEasy, answerRawTable, explanation)
+        await createQuestionInAutoWorkspace(this, bookmark, question, answerRawTable, isEasy, explanation)
     }
 })
 
@@ -86,5 +71,9 @@ Given('marked as easy mode', async function () {
 })
 
 Given('saved and bookmarked as {string}', async function (bookmark) {
-    await saveQuestion(this, bookmark)
+    this.questionBookmarks[bookmark] = this.questionWip
+    this.activeQuestionBookmark = bookmark
+    await this.questionEditPage.submit()
+    await this.workspacePage.goto(this.workspaceGuid)
+    await this.workspacePage.editQuestion(this.questionWip.question)
 })

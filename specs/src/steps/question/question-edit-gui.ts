@@ -15,9 +15,6 @@ import {
     enterQuestionExplanation,
     markQuestionAsPartiallyScored,
     markAnswerCorrectness,
-    openCreatePage,
-    openEditPage,
-    saveQuestion,
     submitQuestion,
 } from 'steps/question/ops.ts'
 import {
@@ -27,13 +24,18 @@ import {
     expectErrorCount,
     expectErrorMessages,
 } from 'steps/question/expects.ts'
+import { ensureWorkspace, navigateToWorkspace } from 'steps/workspace/ops.ts'
+import { emptyQuestion } from 'steps/world'
 
 const DEFAULT_AI_QUESTION = 'Které město je hlavní město České republiky?'
 const DEFAULT_AI_CORRECT_ANSWER = 'Praha'
 const DEFAULT_AI_INCORRECT_ANSWER = 'Brno'
 
 Given('I start creating a question', async function () {
-    await openCreatePage(this)
+    await ensureWorkspace(this)
+    await navigateToWorkspace(this)
+    await this.workspacePage.createNewQuestion()
+    this.questionWip = emptyQuestion()
 })
 
 Given('page {string}', async () => {
@@ -45,7 +47,9 @@ When('I start creating a new question', async function () {
 })
 
 Given('I start editing question {string}', async function (bookmark: string) {
-    await openEditPage(this, bookmark)
+    await this.workspacePage.goto(this.workspaceGuid)
+    await this.workspacePage.editQuestion(this.questionBookmarks[bookmark].question)
+    this.activeQuestionBookmark = bookmark
 })
 
 When('I enable explanations', async function () {
@@ -392,21 +396,12 @@ Then('I do not see image preview', async function () {
 // Save question
 
 When('I attempt to submit the question', submitQuestion)
-When('I submit the question', submitQuestion)
-
-When('I save the question', async function () {
-    await saveQuestion(this, 'manual')
-})
-
-Then('I see question-take URL and question-edit URL', async function () {
-    const takeUrl = await this.questionEditPage.questionUrl()
-    const editUrl = await this.questionEditPage.questionEditUrl()
-
-    expect(takeUrl).toBeDefined()
-    expect(editUrl).toBeDefined()
-
-    expect(editUrl).toContain('/edit')
-    expect(editUrl).not.toContain('/undefined')
+When('I submit the question', async function () {
+    await this.questionEditPage.submit()
+    if (this.workspaceGuid && this.questionWip.question) {
+        await this.workspacePage.goto(this.workspaceGuid)
+        await this.workspacePage.editQuestion(this.questionWip.question)
+    }
 })
 
 // Error messages assertions

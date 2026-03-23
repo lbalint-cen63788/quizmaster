@@ -3,9 +3,6 @@ import { expect, type Page } from '@playwright/test'
 export class QuestionEditPage {
     constructor(private page: Page) {}
 
-    gotoNew = () => this.page.goto('/question/new', { waitUntil: 'networkidle' })
-    gotoEdit = (url: string) => this.page.goto(url, { waitUntil: 'networkidle' })
-
     private editPageLocator = () => this.page.locator('#edit-question-page')
     private createPageLocator = () => this.page.locator('#create-question-page')
     isEditPage = () => this.editPageLocator().isVisible()
@@ -86,12 +83,6 @@ export class QuestionEditPage {
 
     private backButtonLocator = () => this.page.locator('button#back')
     back = () => this.backButtonLocator().click()
-
-    private questionUrlLocator = () => this.page.locator('#question-link')
-    questionUrl = () => this.questionUrlLocator().textContent()
-
-    private questionEditUrlLocator = () => this.page.locator('#question-edit-link')
-    questionEditUrl = () => this.questionEditUrlLocator().textContent()
 
     errorsLocator = () => this.page.locator('.alert.error')
     hasError = (error: string) => this.page.getByTestId(error).waitFor({ state: 'visible' })

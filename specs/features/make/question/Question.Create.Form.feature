@@ -13,21 +13,6 @@ Feature: Create question form
     * I see 2 default empty answers
     * I see empty question explanation
 
-  Scenario: Question take and question edit URLs
-    Successfully created question has two URLs:
-    - question take URL the quiz maker can share with quiz takers
-    - private edit URL (with UUID editId) for future edits
-
-    Given I start creating a question
-    * I enter question "2 + 2 = ?"
-    * I enter answers
-      | 4 | * |
-      | 5 |   |
-
-    When I submit the question
-    Then I see question edit page
-    And I see question-take URL and question-edit URL
-
   Scenario: Delete second answer out of three
     Given I start creating a question
     * I enter answers

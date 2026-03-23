@@ -1,20 +1,10 @@
 import type { TableOf } from 'steps/common.ts'
-import { type Answer, emptyAnswer, emptyQuestion, type QuizmasterWorld } from 'steps/world'
+import { type Answer, emptyAnswer, type QuizmasterWorld } from 'steps/world'
 
 export type AnswerRaw = [string, '*' | '', string | undefined]
 
 // if change this value, also change in frontend/src/pages/create-question/create-question.tsx
 const NUM_ANSWERS = 2
-
-export const openCreatePage = async (world: QuizmasterWorld) => {
-    await world.questionEditPage.gotoNew()
-    world.questionWip = emptyQuestion()
-}
-
-export const openEditPage = async (world: QuizmasterWorld, bookmark: string) => {
-    await world.questionEditPage.gotoEdit(world.questionBookmarks[bookmark].editUrl)
-    world.activeQuestionBookmark = bookmark
-}
 
 export const enterQuestion = async (world: QuizmasterWorld, question: string) => {
     await world.questionEditPage.enterQuestion(question)
@@ -73,15 +63,6 @@ export async function submitQuestion(this: QuizmasterWorld) {
     await this.questionEditPage.submit()
 }
 
-export const saveQuestion = async (world: QuizmasterWorld, bookmark: string) => {
-    await submitQuestion.bind(world)()
-    await world.page.waitForSelector('#question-link')
-    await world.page.waitForSelector('#question-edit-link')
-    world.questionWip.url = (await world.questionEditPage.questionUrl()) || ''
-    world.questionWip.editUrl = (await world.questionEditPage.questionEditUrl()) || ''
-    world.questionBookmarks[bookmark] = world.questionWip
-}
-
 export const addAnswers = async (world: QuizmasterWorld, answerRawTable: TableOf<AnswerRaw>) => {
     const editPage = world.questionEditPage
     const raw = answerRawTable.raw()
@@ -103,24 +84,4 @@ export const answerQuestion = async (world: QuizmasterWorld, answerList: string)
         await world.takeQuestionPage.selectAnswer(answer)
     }
     await world.takeQuestionPage.submit()
-}
-
-export const createQuestion = async (
-    world: QuizmasterWorld,
-    bookmark: string,
-    question: string,
-    isEasy: boolean,
-    answerRawTable: TableOf<AnswerRaw>,
-    explanation?: string,
-) => {
-    await openCreatePage(world)
-    await enterQuestion(world, question)
-    await addAnswers(world, answerRawTable)
-    if (isEasy) {
-        await world.questionEditPage.setEasyMode()
-    }
-    if (explanation) {
-        await enterQuestionExplanation(world, explanation)
-    }
-    await saveQuestion(world, bookmark)
 }

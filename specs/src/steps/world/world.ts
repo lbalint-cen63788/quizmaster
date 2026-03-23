@@ -43,6 +43,7 @@ export class QuizmasterWorld {
     readonly quizCreatePage: QuizCreatePage
     readonly homePage: HomePage
 
+    workspaceGuid = ''
     quizId = ''
 
     questionWip: Question = emptyQuestion()

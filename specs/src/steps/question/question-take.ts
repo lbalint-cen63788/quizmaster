@@ -7,7 +7,8 @@ import { expectColorFeedback, expectQuestion } from 'steps/question/expects.ts'
 import { answerQuestion } from 'steps/question/ops.ts'
 
 When('I take question {string}', async function (bookmark: string) {
-    await this.page.goto(this.questionBookmarks[bookmark].url)
+    await this.workspacePage.goto(this.workspaceGuid)
+    await this.workspacePage.takeQuestion(this.questionBookmarks[bookmark].question)
     this.activeQuestionBookmark = bookmark
 })
 

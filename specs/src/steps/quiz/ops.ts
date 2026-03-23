@@ -86,7 +86,7 @@ export const createQuizViaUI = async (
     const quizUrl = new URL(world.page.url()).pathname
     world.quizBookmarks[quizName] = { ...emptyQuizBookmark(), url: quizUrl, title: quizName }
     world.activeQuizBookmark = quizName
-    await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
+    await world.workspacePage.goto(world.workspaceGuid)
 }
 
 export const takeQuizWithAnswers = async (world: QuizmasterWorld, quizName: string, data: DataTable) => {
@@ -97,7 +97,7 @@ export const takeQuizWithAnswers = async (world: QuizmasterWorld, quizName: stri
         await world.questionPage.submit()
     }
     await world.questionPage.evaluate()
-    await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
+    await world.workspacePage.goto(world.workspaceGuid)
 }
 
 export const takeQuizWithAnswersTimed = async (
@@ -117,7 +117,7 @@ export const takeQuizWithAnswersTimed = async (
     const elapsedTime = Date.now() - startTime
     await world.page.clock.fastForward(timer * 1000 - elapsedTime)
     await world.questionPage.evaluate()
-    await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
+    await world.workspacePage.goto(world.workspaceGuid)
 }
 
 export const takeQuizWithoutCompletingInTimeLimit = async (
@@ -142,7 +142,7 @@ export const takeQuizWithoutCompletingInTimeLimit = async (
     }
 
     await world.page.clock.fastForward((timeLimitSeconds + 1) * 1000)
-    await world.workspacePage.goto(world.workspaceCreatePage.workspaceGuid())
+    await world.workspacePage.goto(world.workspaceGuid)
 }
 
 export const progressThroughQuestions = async (world: QuizmasterWorld) => {
