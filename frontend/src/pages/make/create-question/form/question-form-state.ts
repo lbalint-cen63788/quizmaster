@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { updated } from 'helpers.ts'
 import type { Question } from 'model/question.ts'
 import type { QuestionApiData } from 'api/question.ts'
 
 export interface AnswerState {
+    readonly id: number
     readonly answer: string
     readonly explanation: string
     readonly isCorrect: boolean
@@ -46,6 +47,11 @@ export const useQuestionFormState = (question?: Question) => {
     const [showExplanations, setShowExplanations] = useState(
         question?.explanations?.some(explanation => !!explanation) ?? false,
     )
+    const nextId = useRef(0)
+    const genId = () => nextId.current++
+    const [answerIds, setAnswerIds] = useState<readonly number[]>(() =>
+        (question?.answers || ['', '']).map(() => genId()),
+    )
     const [answers, setAnswers] = useState<readonly string[]>(question?.answers || ['', ''])
     const [explanations, setExplanations] = useState<readonly string[]>(question?.explanations || ['', ''])
     const [correctAnswers, setCorrectAnswers] = useState<readonly number[]>(question?.correctAnswers || [])
@@ -85,6 +91,7 @@ export const useQuestionFormState = (question?: Question) => {
     const addAnswer = () => {
         setAnswers([...answers, ''])
         setExplanations([...explanations, ''])
+        setAnswerIds([...answerIds, genId()])
     }
 
     const applyAiResponse = (response: {
@@ -100,11 +107,13 @@ export const useQuestionFormState = (question?: Question) => {
         setShowExplanations(false)
         setNumericalAnswer('')
         setEasyMode(false)
+        setAnswerIds(response.answers.map(() => genId()))
     }
 
     const removeAnswer = (idx: number) => {
         setAnswers([...answers.filter((_, i) => i !== idx)])
         setExplanations([...explanations.filter((_, i) => i !== idx)])
+        setAnswerIds([...answerIds.filter((_, i) => i !== idx)])
 
         const sortedCorrectAnswers = [...correctAnswers]
             .sort((a, b) => a - b)
@@ -114,6 +123,7 @@ export const useQuestionFormState = (question?: Question) => {
     }
 
     const answerStates: readonly AnswerState[] = answers.map((answer, index) => ({
+        id: answerIds[index],
         answer,
         explanation: explanations[index] || '',
         isCorrect: correctAnswers.includes(index),
