@@ -10,3 +10,19 @@ Feature: Generate question and answers using AI
     And Question field is updated to AI generated question
     And answer1 field is filled with AI generated correct answer
     And answer2 field is filled with AI generated incorrect answer
+
+  Scenario: AI prompt section is visible when creating question
+    When I start creating a question
+    Then I see AI section
+
+  @skip
+  Scenario: AI prompt section is hidden when editing question
+    Given a question "What is the capital of Czech Republic?"
+      * with answers:
+        | Brno   |   | No Brno |
+        | Prague | * | Yes     |
+        | Berlin |   | Germany |
+      * with explanation "Czechia is a country in Europe. Czechs love beer."
+      * saved and bookmarked as "Czechia"
+    When I enter question "What is the capital of Slovakia?"
+    Then I do not see AI section

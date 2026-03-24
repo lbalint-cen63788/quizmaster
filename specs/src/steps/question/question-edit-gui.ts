@@ -138,6 +138,14 @@ Then(/easy mode is (available|not available)/, async function (value: string) {
     }
 })
 
+Then('I see AI section', async function () {
+    await this.questionEditPage.expectAiBlockVisible()
+})
+
+Then('I do not see AI section', async function () {
+    await this.questionEditPage.expectAiBlockNotVisible()
+})
+
 Then('I see explanation fields', async function () {
     await this.questionEditPage.expectExplanationFieldsExist()
 })

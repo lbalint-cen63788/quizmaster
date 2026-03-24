@@ -111,6 +111,9 @@ export class QuestionEditPage {
     expectEasyModeVisible = () => expect(this.easyModeLocator()).toBeVisible()
     expectEasyModeNotVisible = () => expect(this.easyModeLocator()).not.toBeVisible()
     expectExplanationFieldsExist = () => expect(this.explanationFieldsLocator().first()).toBeVisible()
+
+    expectAiBlockVisible = () => expect(this.aiPromptLocator().first()).toBeVisible()
+    expectAiBlockNotVisible = () => expect(this.aiPromptLocator().first()).not.toBeVisible()
     expectNoExplanationFields = () => expect(this.explanationFieldsLocator()).toHaveCount(0)
     expectAnswerRowCount = (count: number) => expect(this.answerRowsLocator()).toHaveCount(count)
     expectAnswerText = (index: number, value: string) => expect(this.answerTextLocator(index)).toHaveValue(value)
