@@ -40,6 +40,13 @@ export const useQuestionTakeState = (props: QuestionFormProps): QuestionTakeStat
         else removeSelectedAnswerIdx(idx)
     }
 
+   // Extract tolerance from question text: "text (tolerance XXX)"
+   const extractTolerance = (questionText: string): number => {
+       const match = questionText.match(/\(tolerance\s+(\d+)\)/i)
+       return match ? parseInt(match[1], 10) : 0
+   }
+   const tolerance = extractTolerance(question.question)
+
     const onNumericalAnswerChange = (value: string) => {
         setSubmitted(false)
         setNumericalAnswer(value)
@@ -50,7 +57,10 @@ export const useQuestionTakeState = (props: QuestionFormProps): QuestionTakeStat
             return
         }
 
-        if (normalizedValue === correctNumericalAnswer) {
+        const userAnswer = parseInt(normalizedValue, 10)
+        const correctAnswer = parseInt(correctNumericalAnswer, 10)
+
+        if (Math.abs(userAnswer - correctAnswer) <= tolerance) {
             setSelectedAnswerIdxs([0])
             return
         }
