@@ -100,3 +100,25 @@ Feature: Show stats
       | Summary  |          |           |
       | Started  | Finished | Timeout   |
       |       1  |        0 |         1 |
+
+  @skip
+  Scenario: Show stats page with score 100/100
+    Given workspace "Stats Perfect Score" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Talíř   |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see summary stats table
+      | Summary |          |
+      | Started | Finished |
+      |       1 |        1 |
+    And I see attempt stats table
+      | Attempts |         |
+      | Duration | Score   |
+      |          | 100/100 |
