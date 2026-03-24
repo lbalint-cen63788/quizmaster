@@ -38,7 +38,7 @@ const parseTimeLimitToSeconds = (value: string): number => {
         return Number(onlySeconds[1])
     }
 
-    return NaN
+    return Number.NaN
 }
 
 interface QuizEditFormProps {
@@ -59,7 +59,6 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
     }
 
     const onTimeLimitTextChange = (value: string) => {
-
         const inputIsValid = TIME_LIMIT_PARTIAL_REGEX.test(value)
         if (!inputIsValid) {
             return

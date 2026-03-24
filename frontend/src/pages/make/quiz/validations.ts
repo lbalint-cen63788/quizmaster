@@ -23,7 +23,7 @@ export function validateQuizForm(state: QuizFormState): Set<ErrorCode> {
 
     if (!state.title) errors.add('empty-title')
     if (state.timeLimit > 21600) errors.add('time-limit-above-max')
-    if (isNaN(state.timeLimit)) errors.add('time-limit-invalid-format')
+    if (Number.isNaN(state.timeLimit)) errors.add('time-limit-invalid-format')
     if (state.passScore > 100) errors.add('score-above-max')
     if (state.selectedIds.size < 2) errors.add('few-questions')
     if (state.randomQuestionCount > 0 && state.randomQuestionCount > state.selectedIds.size)

@@ -1,5 +1,5 @@
 export function formatTimeLimit(timeLimit: number) {
-    if (timeLimit === undefined || timeLimit === null || isNaN(timeLimit)) {
+    if (timeLimit === undefined || timeLimit === null || Number.isNaN(timeLimit)) {
         return 'Not valid format'
     }
     const hours = Math.floor(timeLimit / 3600)
