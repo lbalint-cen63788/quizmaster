@@ -76,7 +76,7 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                     />
                 )}
             </Row>
-            {!isEditing && (
+            {!isEditing && !state.isNumerical && (
                 <Field label="AI Prompt">
                     <div className="question-input-with-action">
                         <TextArea

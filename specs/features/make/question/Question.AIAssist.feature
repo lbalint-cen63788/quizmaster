@@ -12,8 +12,17 @@ Feature: Generate question and answers using AI
     And answer2 field is filled with AI generated incorrect answer
 
   Scenario: AI prompt section is visible when creating question
-    When I start creating a question
+    Given I start creating a question
+    When the question is single choice
     Then I see AI section
+
+    When I mark the question as multiple choice
+    Then the question is multiple choice
+    And I see AI section
+
+    When I mark the question as numerical choice
+    Then the question is numerical choice
+    And I do not see AI section
 
   Scenario: AI prompt section is hidden when editing question
     Given a question "What is the capital of Czech Republic?"
