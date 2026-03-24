@@ -14,40 +14,26 @@ Feature: Show stats
     When I open stats for quiz "Quiz"
     And I see stats page for quiz "Quiz"
 
-  Scenario: Show stats page for successfully answered quiz
-    Given workspace "Stats Success" with questions
+  # Duration (individual): full, half, zero
+  Scenario: Duration for full correct attempt
+    Given workspace "Stats Duration Full" with questions
       | question              | answers         |
       | Jaký nábytek má Ikea? | Stůl (*), Auto  |
       | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
     And a quiz "Stats Quiz" with all questions
-    And I take quiz "Stats Quiz" with answers
+    When I take quiz "Stats Quiz" with answers in 10 seconds
       | question              | answers |
       | Jaký nábytek má Ikea? | Stůl    |
       | Jaké nádobí má Ikea?  | Talíř   |
-    When I open stats for quiz "Stats Quiz"
+    And I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
-    And I see stats table
-      | Duration | Score |
-      |          |   100 |
+    And I see attempt stats table
+      | Attempts   |          |                 |                   |       |
+      | Duration   |          |                 |                   |       |
+      | 10 seconds |          |                 |                   |       |
 
-  Scenario: Show stats page for unsuccessfully answered quiz
-    Given workspace "Stats Failure" with questions
-      | question              | answers         |
-      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
-      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
-    And a quiz "Stats Quiz" with all questions
-    And I take quiz "Stats Quiz" with answers
-      | question              | answers |
-      | Jaký nábytek má Ikea? | Auto    |
-      | Jaké nádobí má Ikea?  | Kolo    |
-    When I open stats for quiz "Stats Quiz"
-    Then I see stats page for quiz "Stats Quiz"
-    And I see stats table
-      | Duration | Score |
-      |          |     0 |
-
-  Scenario: Duration is calculated correctly
-    Given workspace "Stats Duration" with questions
+  Scenario: Duration for half correct attempt
+    Given workspace "Stats Duration Half" with questions
       | question              | answers         |
       | Jaký nábytek má Ikea? | Stůl (*), Auto  |
       | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
@@ -58,52 +44,31 @@ Feature: Show stats
       | Jaké nádobí má Ikea?  | Kolo    |
     And I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
-    And I see stats table
-      | Duration      |    |
-      | 10 seconds    |    |
+    And I see attempt stats table
+      | Attempts   |          |                 |                   |       |
+      | Duration   |          |                 |                   |       |
+      | 10 seconds |          |                 |                   |       |
 
-
-  Scenario: Show stats page with summary for successfully answered quiz
-      Given workspace "Stats Success" with questions
-        | question              | answers         |
-        | Jaký nábytek má Ikea? | Stůl (*), Auto  |
-        | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
-      And a quiz "Stats Quiz" with all questions
-      And I take quiz "Stats Quiz" with answers
-        | question              | answers |
-        | Jaký nábytek má Ikea? | Stůl    |
-        | Jaké nádobí má Ikea?  | Talíř   |
-      When I open stats for quiz "Stats Quiz"
-      Then I see stats page for quiz "Stats Quiz"
-      And I see summary stats table
-        | Summary  |          |
-        | Started  | Finished |
-        |       1  |        1 |
-      And I see attempt stats table
-        | Attempts |       |
-        | Duration | Score |
-        |          |   100 |
-
-  Scenario: Show stats page with summary for timed out quiz
-    Given workspace "Stats Success" with questions
+  Scenario: Duration for zero correct attempt
+    Given workspace "Stats Duration Zero" with questions
       | question              | answers         |
       | Jaký nábytek má Ikea? | Stůl (*), Auto  |
       | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
     And a quiz "Stats Quiz" with all questions
-    And I take quiz "Stats Quiz" which I do not complete in time limit
+    When I take quiz "Stats Quiz" with answers in 10 seconds
       | question              | answers |
-      | Jaký nábytek má Ikea? | Stůl    |
-      | Jaké nádobí má Ikea?  |         |
-    When I open stats for quiz "Stats Quiz"
+      | Jaký nábytek má Ikea? | Auto    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    And I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
-    And I see summary stats table
-      | Summary  |          |           |
-      | Started  | Finished | Timeout   |
-      |       1  |        0 |         1 |
+    And I see attempt stats table
+      | Attempts   |          |                 |                   |       |
+      | Duration   |          |                 |                   |       |
+      | 10 seconds |          |                 |                   |       |
 
-  @skip
-  Scenario: Show stats page with score 100/100
-    Given workspace "Stats Perfect Score" with questions
+  # Points (individual): full, half, zero
+  Scenario: Points full 2/2
+    Given workspace "Stats Points Full" with questions
       | question              | answers         |
       | Jaký nábytek má Ikea? | Stůl (*), Auto  |
       | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
@@ -114,11 +79,197 @@ Feature: Show stats
       | Jaké nádobí má Ikea?  | Talíř   |
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
-    And I see summary stats table
-      | Summary |          |
-      | Started | Finished |
-      |       1 |        1 |
     And I see attempt stats table
-      | Attempts |         |
-      | Duration | Score   |
-      |          | 100/100 |
+      | Attempts |          |                 |                   |       |
+      |          | Points   |                 |                   |       |
+      |          | 2/2      |                 |                   |       |
+
+  Scenario: Points half 1/2
+    Given workspace "Stats Points Half" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          | Points   |                 |                   |       |
+      |          | 1/2      |                 |                   |       |
+
+  Scenario: Points zero 0/2
+    Given workspace "Stats Points Zero" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Auto    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          | Points   |                 |                   |       |
+      |          | 0/2      |                 |                   |       |
+
+  # Correct Answers (individual): full, half, zero
+  Scenario: Correct Answers full 2 (100%)
+    Given workspace "Stats Correct Full" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Talíř   |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          | Correct Answers |                   |       |
+      |          |          | 2 (100%)        |                   |       |
+
+  Scenario: Correct Answers half 1 (50%)
+    Given workspace "Stats Correct Half" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          | Correct Answers |                   |       |
+      |          |          | 1 (50%)         |                   |       |
+
+  Scenario: Correct Answers zero 0 (0%)
+    Given workspace "Stats Correct Zero" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Auto    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          | Correct Answers |                   |       |
+      |          |          | 0 (0%)          |                   |       |
+
+  # Incorrect Answers (individual): full, half, zero
+  Scenario: Incorrect Answers full 2 (100%)
+    Given workspace "Stats Incorrect Full" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Auto    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          |                 | Incorrect Answers |       |
+      |          |          |                 | 2 (100%)          |       |
+
+  Scenario: Incorrect Answers half 1 (50%)
+    Given workspace "Stats Incorrect Half" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          |                 | Incorrect Answers |       |
+      |          |          |                 | 1 (50%)           |       |
+
+  Scenario: Incorrect Answers zero 0 (0%)
+    Given workspace "Stats Incorrect Zero" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Talíř   |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          |                 | Incorrect Answers |       |
+      |          |          |                 | 0 (0%)            |       |
+
+  # Score (individual): full, half, zero
+  Scenario: Score full 100
+    Given workspace "Stats Score Full" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Talíř   |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          |                 |                   | Score |
+      |          |          |                 |                   | 100   |
+
+  Scenario: Score half 50
+    Given workspace "Stats Score Half" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          |                 |                   | Score |
+      |          |          |                 |                   | 50    |
+
+  Scenario: Score zero 0
+    Given workspace "Stats Score Zero" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Auto    |
+      | Jaké nádobí má Ikea?  | Kolo    |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |          |                 |                   |       |
+      |          |          |                 |                   | Score |
+      |          |          |                 |                   | 0     |

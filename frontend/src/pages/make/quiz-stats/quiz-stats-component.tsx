@@ -51,6 +51,12 @@ const formatDuration = (started: string, finished: string): string => {
 export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
     const timedOutCount = stats.filter(stat => stat.timedOut ?? !stat.finished).length
 
+    const calculatePoints = (score: number, maxScore: number): number => Math.round((score / 100) * maxScore)
+    const calculatePercentage = (count: number, total: number): number =>
+        total > 0 ? Math.round((count / total) * 100) : 0
+    const formatCountWithPercentage = (count: number, total: number): string =>
+        `${count} (${calculatePercentage(count, total)}%)`
+
     const summary: SummaryStats = {
         started: stats.length,
         finished: stats.length - timedOutCount,
@@ -82,14 +88,29 @@ export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
                 <thead>
                     <tr>
                         <th>Duration</th>
+                        <th>Points</th>
+                        <th>Correct Answers</th>
+                        <th>Incorrect Answers</th>
                         <th>Score</th>
                     </tr>
                 </thead>
                 <tbody>
                     {stats.map(stat => (
                         <tr key={stat.id}>
-                            <td>{formatDuration(stat.started, stat.finished)}</td>
-                            <td>{stat.score}</td>
+                            {(() => {
+                                const points = calculatePoints(stat.score, stat.maxScore)
+                                const incorrectPoints = Math.max(stat.maxScore - points, 0)
+
+                                return (
+                                    <>
+                                        <td>{formatDuration(stat.started, stat.finished)}</td>
+                                        <td>{`${points}/${stat.maxScore}`}</td>
+                                        <td>{formatCountWithPercentage(points, stat.maxScore)}</td>
+                                        <td>{formatCountWithPercentage(incorrectPoints, stat.maxScore)}</td>
+                                        <td>{stat.score}</td>
+                                    </>
+                                )
+                            })()}
                         </tr>
                     ))}
                 </tbody>

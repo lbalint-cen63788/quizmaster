@@ -36,10 +36,12 @@ export const QuizTakePage = () => {
 
         const score =
             quiz && answers ? Math.round((evaluate(quiz, answers).score / evaluate(quiz, answers).total) * 100) : 0
+        const maxScore = quiz && answers ? evaluate(quiz, answers).total : 0
         putStats(String(quiz?.id), getQuizRunId(), {
             finished: new Date().toISOString(),
             score,
             timedOut,
+            maxScore
         })
     }
 

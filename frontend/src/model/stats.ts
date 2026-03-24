@@ -4,6 +4,7 @@ export interface StatsRecord {
     readonly finished: string
     readonly score: number
     readonly timedOut?: boolean
+    readonly maxScore: number
 }
 
 export type Stats = readonly StatsRecord[]
