@@ -82,7 +82,7 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                         <TextArea
                             id="ai-prompt-text"
                             className="question-textarea-with-action"
-                            placeholder="AI Prompt..."
+                            placeholder="What do you want ask?"
                             value={state.aiPromptText}
                             onChange={state.setAiPromptText}
                         />
@@ -92,9 +92,10 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                             onClick={handleAiAssistantClick}
                             disabled={aiLoading}
                         >
-                            {aiLoading ? 'Loading...' : 'AI Assistant'}
+                            {aiLoading ? 'Loading...' : 'Generate'}
                         </Button>
                     </div>
+                    <span className="example">Example: "What is the capital of France? Generate 6 answers."</span>
                     {aiError && <Alert type="error">{aiError}</Alert>}
                 </Field>
             )}
