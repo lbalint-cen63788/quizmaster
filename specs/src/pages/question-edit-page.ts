@@ -36,6 +36,10 @@ export class QuestionEditPage {
     enterNumericalCorrectAnswer = (value: string) => this.numericalCorrectAnswerLocator().fill(value)
     numericalCorrectAnswerValue = () => this.numericalCorrectAnswerLocator().inputValue()
 
+    private numericalToleranceLocator = () => this.page.locator('#numerical-tolerance')
+    enterNumericalTolerance = (value: string) => this.numericalToleranceLocator().fill(value)
+    numericalToleranceValue = () => this.numericalToleranceLocator().inputValue()
+
     private easyModeLocator = () => this.page.locator('#easy-mode')
     isEasyMode = () => this.easyModeLocator().isChecked()
     setEasyMode = () => this.easyModeLocator().check()
@@ -106,6 +110,7 @@ export class QuestionEditPage {
     expectNumericalAnswerVisible = () => expect(this.numericalCorrectAnswerLocator()).toBeVisible()
     expectNumericalAnswerNotVisible = () => expect(this.numericalCorrectAnswerLocator()).not.toBeVisible()
     expectNumericalCorrectAnswer = (value: string) => expect(this.numericalCorrectAnswerLocator()).toHaveValue(value)
+    expectNumericalTolerance = (value: string) => expect(this.numericalToleranceLocator()).toHaveValue(value)
     expectEasyModeChecked = () => expect(this.easyModeLocator()).toBeChecked()
     expectEasyModeUnchecked = () => expect(this.easyModeLocator()).not.toBeChecked()
     expectEasyModeVisible = () => expect(this.easyModeLocator()).toBeVisible()

@@ -122,6 +122,10 @@ Then('I see numerical correct answer {string}', async function (value: string) {
     await this.questionEditPage.expectNumericalCorrectAnswer(value)
 })
 
+Then('I see tolerance {string}', async function (value: string) {
+    await this.questionEditPage.expectNumericalTolerance(value)
+})
+
 Then(/easy mode is (on|off)/, async function (value: string) {
     if (value === 'on') {
         await this.questionEditPage.expectEasyModeChecked()
@@ -337,6 +341,10 @@ When(/I mark the question as (single|multiple|numerical) choice/, async function
 
 When('I enter numerical correct answer {string}', async function (value: string) {
     await this.questionEditPage.enterNumericalCorrectAnswer(value)
+})
+
+When('I set tolerance to {string}', async function (value: string) {
+    await this.questionEditPage.enterNumericalTolerance(value)
 })
 
 When('I enter answer {int} text {string}', async function (index: number, answer: string) {

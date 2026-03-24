@@ -16,7 +16,7 @@ Feature: Take a numerical question
       | 14     | Correct!   |
 
   Scenario Outline: Numerical question with tolerance accepts values inside range
-    Given a numerical question "What is the boiling point of water in Celsius? (tolerance 10)" with correct answer "100" bookmarked as "boiling-point"
+    Given a numerical question "What is the boiling point of water in Celsius?" with correct answer "100" and tolerance "10" bookmarked as "boiling-point"
     When I take question "boiling-point"
     Then I see a number input
     When I enter "<answer>"

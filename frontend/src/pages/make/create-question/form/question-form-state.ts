@@ -20,6 +20,7 @@ export interface QuestionFormState {
     readonly correctAnswers: readonly number[]
     readonly questionType: QuestionType
     readonly numericalAnswer: string
+    readonly tolerance: string
     readonly isNumerical: boolean
     readonly isMultipleChoice: boolean
     readonly easyMode: boolean
@@ -44,6 +45,7 @@ export const useQuestionFormState = (question?: Question) => {
         isQuestionNumerical ? 'numerical' : (question?.correctAnswers?.length || 0) > 1 ? 'multiple' : 'single',
     )
     const [numericalAnswer, setNumericalAnswer] = useState(isQuestionNumerical ? (question?.answers?.[0] ?? '') : '')
+    const [tolerance, setTolerance] = useState(question?.tolerance != null ? String(question.tolerance) : '')
     const [easyMode, setEasyMode] = useState(question?.easyMode || false)
     const [showExplanations, setShowExplanations] = useState(
         question?.explanations?.some(explanation => !!explanation) ?? false,
@@ -107,6 +109,7 @@ export const useQuestionFormState = (question?: Question) => {
         setCorrectAnswers(Array.from(response.correctAnswers))
         setShowExplanations(false)
         setNumericalAnswer('')
+        setTolerance('')
         setEasyMode(false)
         setAnswerIds(response.answers.map(() => genId()))
     }
@@ -142,6 +145,7 @@ export const useQuestionFormState = (question?: Question) => {
         correctAnswers,
         questionType,
         numericalAnswer,
+        tolerance,
         isNumerical,
         questionExplanation,
         isMultipleChoice,
@@ -156,6 +160,7 @@ export const useQuestionFormState = (question?: Question) => {
         setQuestionExplanation,
         selectQuestionType,
         setNumericalAnswer,
+        setTolerance,
         setEasyMode,
         setWorkspaceGuid,
         setShowExplanations,
@@ -166,6 +171,8 @@ export const useQuestionFormState = (question?: Question) => {
 
 export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiData => {
     if (state.isNumerical) {
+        const normalizedTolerance = state.tolerance.trim()
+        const parsedTolerance = normalizedTolerance === '' ? undefined : Number.parseInt(normalizedTolerance, 10)
         return {
             question: state.questionText,
             editId: '',
@@ -175,6 +182,7 @@ export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiDat
             explanations: [''],
             questionExplanation: state.questionExplanation,
             easyMode: false,
+            tolerance: Number.isNaN(parsedTolerance) ? undefined : parsedTolerance,
         }
     }
 

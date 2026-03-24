@@ -111,16 +111,28 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                 {state.imageUrl && <img src={state.imageUrl} alt="preview" className="image-preview" />}
             </Field>
             {state.isNumerical ? (
-                <Field label="Correct numerical answer" required>
-                    <input
-                        type="number"
-                        id="numerical-correct-answer"
-                        value={state.numericalAnswer}
-                        onChange={e => state.setNumericalAnswer(e.target.value)}
-                    />
-                    <ErrorMessage errorCode="empty-numerical-answer" />
-                    <ErrorMessage errorCode="invalid-numerical-answer" />
-                </Field>
+                <>
+                    <Field label="Correct numerical answer" required>
+                        <input
+                            type="number"
+                            id="numerical-correct-answer"
+                            value={state.numericalAnswer}
+                            onChange={e => state.setNumericalAnswer(e.target.value)}
+                        />
+                        <ErrorMessage errorCode="empty-numerical-answer" />
+                        <ErrorMessage errorCode="invalid-numerical-answer" />
+                    </Field>
+                    <Field label="Tolerance">
+                        <input
+                            type="number"
+                            id="numerical-tolerance"
+                            min="0"
+                            step="1"
+                            value={state.tolerance}
+                            onChange={e => state.setTolerance(e.target.value)}
+                        />
+                    </Field>
+                </>
             ) : (
                 <AnswersEdit
                     setShowExplanations={state.setShowExplanations}

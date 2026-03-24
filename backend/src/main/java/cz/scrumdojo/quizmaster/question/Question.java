@@ -47,4 +47,7 @@ public class Question {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "tolerance")
+    private Integer tolerance;
 }

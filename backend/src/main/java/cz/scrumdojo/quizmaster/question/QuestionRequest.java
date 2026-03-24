@@ -10,7 +10,8 @@ public record QuestionRequest(
     String workspaceGuid,
     String imageUrl,
     Boolean aiGenerated,
-    String questionType
+    String questionType,
+    Integer tolerance
 ) {
     public Question toEntity() {
         return Question.builder()
@@ -22,6 +23,7 @@ public record QuestionRequest(
             .isEasyMode(easyMode)
             .workspaceGuid(workspaceGuid)
             .imageUrl(imageUrl)
+            .tolerance(tolerance)
             .build();
     }
 }

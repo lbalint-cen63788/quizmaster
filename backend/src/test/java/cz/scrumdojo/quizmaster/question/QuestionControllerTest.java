@@ -119,7 +119,8 @@ public class QuestionControllerTest {
             null,
             null,
             true,
-            "single"
+            "single",
+            null
         );
 
         var response = questionController.saveQuestion(request);
@@ -139,7 +140,8 @@ public class QuestionControllerTest {
             null,
             null,
             true,
-            "single"
+            "single",
+            null
         );
 
         var response = questionController.saveQuestion(request);

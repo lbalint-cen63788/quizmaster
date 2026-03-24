@@ -130,7 +130,6 @@ Feature: Create question - single/multiple choice
     Then I see question edit page
     And I see numerical correct answer "14"
 
-  @skip
   Scenario: Add tolerance to numerical question
     When I mark the question as numerical choice
     When I enter question "How many regions does Czechia have?"
