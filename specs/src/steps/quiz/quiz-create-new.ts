@@ -131,7 +131,7 @@ Then('I see question is not marked {string}', async function (question: string) 
 
 Then('form reacts correctly to all given inputs', async function (data: DataTable) {
     for (const row of data.hashes()) {
-            await this.quizCreatePage.timeLimitInput().fill(row.timeLimit)
-            await expect(this.quizCreatePage.formattedTimeLimitLabel()).toHaveText(row.formattedTimeLimit)
-        }
+        await this.quizCreatePage.timeLimitInput().fill(row.timeLimit)
+        await expect(this.quizCreatePage.formattedTimeLimitLabel()).toHaveText(row.formattedTimeLimit)
+    }
 })
