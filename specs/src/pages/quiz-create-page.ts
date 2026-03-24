@@ -4,6 +4,7 @@ import type { QuizMode, Difficulty } from '../steps/world/quiz.ts'
 export class QuizCreatePage {
     constructor(private page: Page) {}
     timeLimitInput = () => this.page.locator('#time-limit')
+    formattedTimeLimitLabel = () => this.page.locator('#formatted-time-limit')
     passScoreInput = () => this.page.locator('#pass-score')
     questionsInList = () => this.page.locator('.create-quiz > .question-item')
     getQuestion = (question: string) => this.page.locator('label', { hasText: question })

@@ -80,3 +80,19 @@ Scenario: Test backButton
   And I see the quiz creation page
   And I go back to the workspace "Testworkspace"
   Then I see the workspace "Testworkspace"
+
+@skip
+Scenario Outline: Quiz time limit formatting
+  Given workspace "Testworkspace"
+  And page "Quiz Creation"
+  When I start creating a new quiz
+  And I see the quiz creation page
+  And I set quiz time limit to "<timeLimit>"
+  Then I see formatted quiz time limit "<formattedTimeLimit>"
+
+  Examples:
+      | timeLimit | formattedTimeLimit |
+      | 10        | 00h 00m 10s        |
+      | 120       | 00h 02m 00s        |
+      | 170       | 00h 02m 50s        |
+      | 4182      | 01h 09m 42s        |
