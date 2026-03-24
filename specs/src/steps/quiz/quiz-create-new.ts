@@ -11,6 +11,7 @@ When('I start creating a new quiz', async function () {
 })
 
 Then('I see the quiz creation page', async function () {
+    await this.page.waitForSelector('#create-quiz-page')
     const isVisible = await this.page.locator('#create-quiz-page').isVisible()
     expect(isVisible).toBe(true)
 })

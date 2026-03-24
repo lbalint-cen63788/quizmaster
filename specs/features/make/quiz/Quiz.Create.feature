@@ -81,7 +81,6 @@ Scenario: Test backButton
   And I go back to the workspace "Testworkspace"
   Then I see the workspace "Testworkspace"
 
-@skip
 Scenario Outline: Quiz time limit formatting
   Given workspace "Testworkspace"
   And page "Quiz Creation"
@@ -92,7 +91,7 @@ Scenario Outline: Quiz time limit formatting
 
   Examples:
       | timeLimit | formattedTimeLimit |
-      | 10        | 00h 00m 10s        |
-      | 120       | 00h 02m 00s        |
-      | 170       | 00h 02m 50s        |
-      | 4182      | 01h 09m 42s        |
+      | 10        | 0h 0m 10s          |
+      | 120       | 0h 2m 0s           |
+      | 170       | 0h 2m 50s          |
+      | 4182      | 1h 9m 42s          |

@@ -12,13 +12,13 @@ import { useQuizFormState, stateToQuizApiData, type QuizEditFormData } from './q
 
 import type { QuestionListItem } from 'model/question-list-item.ts'
 import type { Quiz } from 'model/quiz.ts'
+import { formatTimeLimit } from './utils/formatTimeLimit.ts'
 
 interface QuizEditFormProps {
     readonly questions: readonly QuestionListItem[]
     readonly onSubmit: (data: QuizEditFormData) => void
     readonly quiz?: Quiz
 }
-
 export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) => {
     const workspaceId = useWorkspaceId()
     const navigate = useNavigate()
@@ -45,7 +45,10 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
                     <ErrorMessage errorCode="score-above-max" />
                 </Field>
                 <Field label="Time limit (in sec)">
-                    <NumberInput id="time-limit" value={state.timeLimit} onChange={state.setTimeLimit} />
+                    <Row>
+                        <NumberInput id="time-limit" value={state.timeLimit} onChange={state.setTimeLimit} />
+                        <span id="formatted-time-limit" className="bold-count">{formatTimeLimit(state.timeLimit)}</span>
+                    </Row>
                     <ErrorMessage errorCode="negative-time-limit" />
                     <ErrorMessage errorCode="time-limit-above-max" />
                 </Field>
