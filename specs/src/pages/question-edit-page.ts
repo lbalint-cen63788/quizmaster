@@ -16,7 +16,7 @@ export class QuestionEditPage {
     enterAIPrompt = (prompt: string) => this.aiPromptLocator().fill(prompt)
     questionValue = () => this.questionLocator().inputValue()
 
-    private aiAssistButtonLocator = () => this.page.getByRole('button', { name: /AI assist(ant)?/i })
+    private aiAssistButtonLocator = () => this.page.getByRole('button', { name: /Generate/i })
     clickAiAssist = () => this.aiAssistButtonLocator().click()
 
     private showExplanationLocator = () => this.page.locator('#show-explanation')
