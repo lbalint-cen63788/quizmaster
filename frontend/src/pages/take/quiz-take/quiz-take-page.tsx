@@ -41,7 +41,7 @@ export const QuizTakePage = () => {
             finished: new Date().toISOString(),
             score,
             timedOut,
-            maxScore
+            maxScore,
         })
     }
 
