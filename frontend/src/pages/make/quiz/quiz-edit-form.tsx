@@ -47,7 +47,9 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
                 <Field label="Time limit (in sec)">
                     <Row>
                         <NumberInput id="time-limit" value={state.timeLimit} onChange={state.setTimeLimit} />
-                        <span id="formatted-time-limit" className="bold-count">{formatTimeLimit(state.timeLimit)}</span>
+                        <span id="formatted-time-limit" className="bold-count">
+                            {formatTimeLimit(state.timeLimit)}
+                        </span>
                     </Row>
                     <ErrorMessage errorCode="negative-time-limit" />
                     <ErrorMessage errorCode="time-limit-above-max" />
