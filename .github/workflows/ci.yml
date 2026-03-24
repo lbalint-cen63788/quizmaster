@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/scrumdojo/dev-quizmaster:v3
+      image: ghcr.io/scrumdojo/dev-quizmaster:v4
       env:
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
@@ -29,9 +29,6 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Fix container permissions for Actions temp
-        run: chmod -R 777 /__w/_temp
-
       - name: Checkout code
         uses: actions/checkout@v5
 

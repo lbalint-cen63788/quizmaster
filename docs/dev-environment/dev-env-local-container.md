@@ -29,7 +29,7 @@ Prefer opening the repository directly in a dev container using your IDE via "De
 
 The devcontainer uses two services via Compose:
 
-- `ghcr.io/scrumdojo/dev-quizmaster:v3` for Java/Node/Playwright development tooling
+- `ghcr.io/scrumdojo/dev-quizmaster:v4` for Java/Node/Playwright development tooling
 - `postgres:16` for the database
 
 ### Others

@@ -1,6 +1,6 @@
 services:
     quizmaster:
-        image: ghcr.io/scrumdojo/dev-quizmaster:v3
+        image: ghcr.io/scrumdojo/dev-quizmaster:v4
         hostname: quizmaster
         environment:
             GITHUB_TOKEN: ${GITHUB_TOKEN:-}
