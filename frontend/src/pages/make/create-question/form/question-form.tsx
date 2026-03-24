@@ -114,7 +114,11 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
             </Field>
             <Field label="Image URL">
                 <TextInput id="image-url" value={state.imageUrl} onChange={state.setImageUrl} />
-                {hasInvalidImageUrl && <Alert type="error" dataTestId="invalid-image-url">{errorMessage['invalid-image-url']}</Alert>}
+                {hasInvalidImageUrl && (
+                    <Alert type="error" dataTestId="invalid-image-url">
+                        {errorMessage['invalid-image-url']}
+                    </Alert>
+                )}
                 {hasImagePreview && <img src={state.imageUrl} alt="preview" className="image-preview" />}
             </Field>
             {state.isNumerical ? (
