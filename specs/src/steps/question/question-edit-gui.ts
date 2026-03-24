@@ -283,8 +283,8 @@ Then('Question type is set to {string}', async function (value: string) {
     const expected = normalized.includes('single')
         ? 'single'
         : normalized.includes('multiple')
-            ? 'multiple'
-            : 'numerical'
+          ? 'multiple'
+          : 'numerical'
     await this.questionEditPage.expectQuestionType(expected)
 })
 
