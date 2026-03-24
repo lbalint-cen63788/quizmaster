@@ -283,8 +283,8 @@ Then('Question type is set to {string}', async function (value: string) {
     const expected = normalized.includes('single')
         ? 'single'
         : normalized.includes('multiple')
-          ? 'multiple'
-          : 'numerical'
+            ? 'multiple'
+            : 'numerical'
     await this.questionEditPage.expectQuestionType(expected)
 })
 
@@ -308,24 +308,12 @@ When('I enter question {string}', async function (question: string) {
     await enterQuestion(this, question)
 })
 
-When('I enter AI instructions into field Question: {string}', async function (instructions: string) {
+When('I ask AI: {string}', async function (instructions: string) {
     await enterQuestion(this, instructions)
-})
-
-When('I enter text into field Question: {string}', async function (instructions: string) {
-    await enterQuestion(this, instructions)
-})
-
-When('I click on button {string}', async function (buttonName: string) {
-    if (buttonName === 'AI assist') {
-        if (!this.aiAssistantGeneratedAnswer) {
-            await mockDefaultAiAssistant(this)
-        }
-        await this.questionEditPage.clickAiAssist()
-        return
+    if (!this.aiAssistantGeneratedAnswer) {
+        await mockDefaultAiAssistant(this)
     }
-
-    throw new Error(`Unsupported button name: ${buttonName}`)
+    await this.questionEditPage.clickAiAssist()
 })
 
 When(/I mark the question as (single|multiple|numerical) choice/, async function (choice: string) {
