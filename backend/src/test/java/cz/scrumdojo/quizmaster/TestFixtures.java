@@ -1,5 +1,9 @@
 package cz.scrumdojo.quizmaster;
 
+import cz.scrumdojo.quizmaster.attempt.Attempt;
+import cz.scrumdojo.quizmaster.attempt.AttemptRepository;
+import cz.scrumdojo.quizmaster.attempt.AttemptRequest;
+import cz.scrumdojo.quizmaster.attempt.AttemptStatus;
 import cz.scrumdojo.quizmaster.question.Question;
 import cz.scrumdojo.quizmaster.question.QuestionRepository;
 import cz.scrumdojo.quizmaster.question.QuestionRequest;
@@ -13,6 +17,8 @@ import cz.scrumdojo.quizmaster.workspace.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
@@ -26,6 +32,9 @@ public class TestFixtures {
 
     @Autowired
     private WorkspaceRepository workspaceRepository;
+
+    @Autowired
+    private AttemptRepository attemptRepository;
 
     public Question.QuestionBuilder question() {
         return Question.builder()
@@ -161,5 +170,62 @@ public class TestFixtures {
 
     public Workspace save(Workspace workspace) {
         return workspaceRepository.save(workspace);
+    }
+
+    public Attempt.AttemptBuilder attempt(Quiz quiz) {
+        return Attempt.builder()
+            .quizId(quiz.getId())
+            .durationSeconds(120)
+            .points(new BigDecimal("2.5"))
+            .score(new BigDecimal("83.33"))
+            .status(AttemptStatus.FINISHED)
+            .maxScore(3)
+            .startedAt(LocalDateTime.now().minusMinutes(2))
+            .finishedAt(LocalDateTime.now());
+    }
+
+    public Attempt.AttemptBuilder attemptInProgress(Quiz quiz) {
+        return Attempt.builder()
+            .quizId(quiz.getId())
+            .durationSeconds(0)
+            .points(BigDecimal.ZERO)
+            .score(BigDecimal.ZERO)
+            .status(AttemptStatus.IN_PROGRESS)
+            .maxScore(0)
+            .startedAt(LocalDateTime.now())
+            .finishedAt(null);
+    }
+
+    public Attempt.AttemptBuilder attemptTimedOut(Quiz quiz) {
+        return Attempt.builder()
+            .quizId(quiz.getId())
+            .durationSeconds(300)
+            .points(new BigDecimal("1.0"))
+            .score(new BigDecimal("33.33"))
+            .status(AttemptStatus.TIMEOUT)
+            .maxScore(3)
+            .startedAt(LocalDateTime.now().minusMinutes(5))
+            .finishedAt(LocalDateTime.now());
+    }
+
+    public AttemptRequest attemptRequest(Quiz quiz) {
+        return new AttemptRequest(
+            quiz.getId(),
+            120,
+            new BigDecimal("2.5"),
+            new BigDecimal("83.33"),
+            AttemptStatus.FINISHED,
+            3,
+            LocalDateTime.now().minusMinutes(2),
+            LocalDateTime.now()
+        );
+    }
+
+    public Attempt save(Attempt.AttemptBuilder builder) {
+        return attemptRepository.save(builder.build());
+    }
+
+    public Attempt save(Attempt attempt) {
+        return attemptRepository.save(attempt);
     }
 }
