@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { updated } from 'helpers.ts'
 import type { Question } from 'model/question.ts'
 import type { QuestionApiData } from 'api/question.ts'
+import type { AiAssistantResponse } from '../../../../api/ai-assistant.ts'
 
 export interface AnswerState {
     readonly id: number
@@ -97,13 +98,9 @@ export const useQuestionFormState = (question?: Question) => {
         setAnswerIds([...answerIds, genId()])
     }
 
-    const applyAiResponse = (response: {
-        question: string
-        answers: readonly string[]
-        correctAnswers: readonly number[]
-    }) => {
+    const applyAiResponse = (response: AiAssistantResponse) => {
         setQuestionText(response.question)
-        setQuestionType('single')
+        setQuestionType(response.type)
         setAnswers(response.answers)
         setExplanations(response.answers.map(() => ''))
         setCorrectAnswers(Array.from(response.correctAnswers))

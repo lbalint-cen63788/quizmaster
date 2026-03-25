@@ -46,8 +46,8 @@ export class QuestionEditPage {
 
     private explanationFieldsLocator = () => this.page.locator('input.explanation')
 
-    private answerRowsLocator = () => this.page.locator('.answer-row')
-    answerRowCount = () => this.answerRowsLocator().count()
+    private answerRowsLocator = async () => this.page.locator('.answer-row')
+    answerRowCount = async () => (await this.answerRowsLocator()).count()
 
     private answerRowLocator = (index: number) => this.page.locator('.answer-row').nth(index)
     private answerTextLocator = (index: number) => this.answerRowLocator(index).locator('input.text')
@@ -105,6 +105,7 @@ export class QuestionEditPage {
     expectEditPageVisible = () => expect(this.editPageLocator()).toBeVisible()
     expectCreatePageVisible = () => expect(this.createPageLocator()).toBeVisible()
     expectQuestionValue = (value: string) => expect(this.questionLocator()).toHaveValue(value)
+    expectQuestionValueNotEmpty = () => expect(this.questionLocator()).not.toBeEmpty({ timeout: 60000 })
     expectQuestionType = (type: string) => expect(this.questionTypeLocator()).toHaveValue(type)
     expectExplanationsChecked = () => expect(this.showExplanationLocator()).toBeChecked()
     expectExplanationsUnchecked = () => expect(this.showExplanationLocator()).not.toBeChecked()
@@ -120,8 +121,11 @@ export class QuestionEditPage {
 
     expectAiBlockVisible = () => expect(this.aiPromptLocator().first()).toBeVisible()
     expectAiBlockNotVisible = () => expect(this.aiPromptLocator().first()).not.toBeVisible()
+    expectAiPromptValue = (text: string) => expect(this.aiPromptLocator()).toContainText(text)
     expectNoExplanationFields = () => expect(this.explanationFieldsLocator()).toHaveCount(0)
-    expectAnswerRowCount = (count: number) => expect(this.answerRowsLocator()).toHaveCount(count)
+    expectAnswerRowCount = async (count: number) => expect(await this.answerRowsLocator()).toHaveCount(count)
+    expectAnswerRowCountGreaterThanOrEqual = async (count: number) =>
+        expect(await (await this.answerRowsLocator()).count()).toBeGreaterThanOrEqual(count)
     expectAnswerText = (index: number, value: string) => expect(this.answerTextLocator(index)).toHaveValue(value)
     expectAnswerCorrect = (index: number) => expect(this.answerIsCorrectLocator(index)).toBeChecked()
     expectAnswerIncorrect = (index: number) => expect(this.answerIsCorrectLocator(index)).not.toBeChecked()
@@ -130,4 +134,12 @@ export class QuestionEditPage {
     expectQuestionExplanation = (value: string) => expect(this.questionExplanationLocator()).toHaveValue(value)
     expectAddAnswerNotVisible = () => expect(this.addAnswerButtonLocator()).not.toBeVisible()
     expectErrorCount = (n: number) => expect(this.errorsLocator()).toHaveCount(n)
+
+    private checkedAnswersLocator = async () =>
+        (await this.answerRowsLocator()).locator('input[type="checkbox"]:checked, input[type="radio"]:checked')
+
+    expectExactlyOneCorrectAnswer = async () => expect(await this.checkedAnswersLocator()).toHaveCount(1)
+
+    expectCorrectAnswerCountGreaterThanOrEqual = async (count: number) =>
+        expect(await (await this.checkedAnswersLocator()).count()).toBeGreaterThanOrEqual(count)
 }

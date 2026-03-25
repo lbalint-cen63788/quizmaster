@@ -58,10 +58,6 @@ export class QuizmasterWorld {
     quizBookmarks: Record<string, QuizBookmark> = {}
     activeQuizBookmark = ''
     correctAnswersCounts: Record<string, string> = {}
-    aiAssistantRequestQuestion = ''
-    aiAssistantGeneratedAnswer = ''
-    aiAssistantGeneratedCorrectAnswer = ''
-    aiAssistantGeneratedIncorrectAnswer = ''
 
     parseAnswers(answersString: string) {
         return answersString.split(',').map(answer => answer.trim())

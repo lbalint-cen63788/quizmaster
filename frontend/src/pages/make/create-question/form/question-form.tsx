@@ -45,7 +45,7 @@ export const QuestionEditForm = ({ question, onSubmit, onBack, onAiAssistantClic
                 onAiAssistantClick(state.aiPromptText)
                 return
             }
-            const response = await postAiAssistant(state.aiPromptText)
+            const response = await postAiAssistant(state.questionType, state.aiPromptText)
             state.applyAiResponse(response)
             setAiGenerated(true)
         } catch (error) {

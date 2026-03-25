@@ -1,15 +1,25 @@
 Feature: Generate question and answers using AI
 
+  @slow
   Scenario: Generate single-choice question and answers using AI assist
     Given I start creating a question
     When I ask AI: "Vygeneruj mi otázku na téma: Hlavní město nějakého státu"
     Then request to AI assistant contains question "Vygeneruj mi otázku na téma: Hlavní město nějakého státu"
-    And AI assistant returns generated question
+    And Question field is not empty
+    And the question is single choice
+    And AI assistant returns at least 2 generated answers
     And AI assistant returns generated answers with only one correct answer
-    And Question type is set to "Single choice"
-    And Question field is updated to AI generated question
-    And answer1 field is filled with AI generated correct answer
-    And answer2 field is filled with AI generated incorrect answer
+
+  @slow
+  Scenario: Generate multiple-choice question and answers using AI assist
+    Given I start creating a question
+    When I mark the question as multiple choice
+    And I ask AI: "Vygeneruj mi otázku na téma: Hlavní města v Evropě"
+    Then request to AI assistant contains question "Vygeneruj mi otázku na téma: Hlavní města v Evropě"
+    And the question is multiple choice
+    And Question field is not empty
+    And AI assistant returns at least 2 generated answers
+    And AI assistant returns at least 2 correct answers
 
   Scenario: AI prompt section is visible when creating question
     Given I start creating a question
@@ -34,11 +44,3 @@ Feature: Generate question and answers using AI
       * saved and bookmarked as "Czechia"
     When I enter question "What is the capital of Slovakia?"
     Then I do not see AI section
-
-  @skip
-  Scenario: Question type doesn't change after AI assistent generate question
-    Given I start creating a question
-    When I mark the question as multiple choice
-    And I ask AI: "Vygeneruj mi otázku na téma: Hlavní město nějakého státu"
-    Then the question is multiple choice
-

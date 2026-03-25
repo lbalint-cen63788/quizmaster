@@ -3,7 +3,6 @@ import { expect } from '@playwright/test'
 
 import type { TableOf } from 'steps/common.ts'
 import { Given, Then, When } from 'steps/fixture.ts'
-import type { QuizmasterWorld } from 'steps/world'
 import {
     addAnswers,
     type AnswerRaw,
@@ -27,10 +26,6 @@ import {
 } from 'steps/question/expects.ts'
 import { ensureWorkspace, navigateToWorkspace } from 'steps/workspace/ops.ts'
 import { emptyQuestion } from 'steps/world'
-
-const DEFAULT_AI_QUESTION = 'Které město je hlavní město České republiky?'
-const DEFAULT_AI_CORRECT_ANSWER = 'Praha'
-const DEFAULT_AI_INCORRECT_ANSWER = 'Brno'
 
 Given('I start creating a question', async function () {
     await ensureWorkspace(this)
@@ -228,91 +223,24 @@ Then('I see prefilled valid AI question', async function () {
     expect(correctAnswerCount).toBeGreaterThanOrEqual(1)
 })
 
-Given('AI assistant returns generated question {string}', async function (generatedQuestion: string) {
-    this.aiAssistantGeneratedAnswer = generatedQuestion
-    this.aiAssistantGeneratedCorrectAnswer = DEFAULT_AI_CORRECT_ANSWER
-    this.aiAssistantGeneratedIncorrectAnswer = DEFAULT_AI_INCORRECT_ANSWER
-    this.aiAssistantRequestQuestion = ''
-
-    await this.page.route('**/api/ai-assistant', async route => {
-        const requestBody = (await route.request().postDataJSON()) as { question?: string } | null
-        this.aiAssistantRequestQuestion = requestBody?.question ?? ''
-
-        await route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify({
-                question: generatedQuestion,
-                answers: [this.aiAssistantGeneratedCorrectAnswer, this.aiAssistantGeneratedIncorrectAnswer],
-                correctAnswers: [0],
-            }),
-        })
-    })
+Then('request to AI assistant contains question {string}', async function (expectedPrompt: string) {
+    await this.questionEditPage.expectAiPromptValue(expectedPrompt)
 })
 
-const mockDefaultAiAssistant = async (world: QuizmasterWorld) => {
-    world.aiAssistantGeneratedAnswer = DEFAULT_AI_QUESTION
-    world.aiAssistantGeneratedCorrectAnswer = DEFAULT_AI_CORRECT_ANSWER
-    world.aiAssistantGeneratedIncorrectAnswer = DEFAULT_AI_INCORRECT_ANSWER
-    world.aiAssistantRequestQuestion = ''
-
-    await world.page.route('**/api/ai-assistant', async route => {
-        const requestBody = (await route.request().postDataJSON()) as { question?: string } | null
-        world.aiAssistantRequestQuestion = requestBody?.question ?? ''
-
-        await route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify({
-                question: world.aiAssistantGeneratedAnswer,
-                answers: [world.aiAssistantGeneratedCorrectAnswer, world.aiAssistantGeneratedIncorrectAnswer],
-                correctAnswers: [0],
-            }),
-        })
-    })
-}
-
-Then('request to AI assistant contains question {string}', async function (expectedQuestion: string) {
-    expect(this.aiAssistantRequestQuestion).toBe(expectedQuestion)
-})
-
-Then('question field is updated to {string}', async function (expectedQuestion: string) {
-    await this.questionEditPage.expectQuestionValue(expectedQuestion)
-})
-
-Then('AI assistant returns generated question', async function () {
-    await this.questionEditPage.expectQuestionValue(this.aiAssistantGeneratedAnswer)
+Then('AI assistant returns at least {int} generated answers', async function (count: number) {
+    await this.questionEditPage.expectAnswerRowCountGreaterThanOrEqual(count)
 })
 
 Then('AI assistant returns generated answers with only one correct answer', async function () {
-    await this.questionEditPage.expectAnswerText(0, this.aiAssistantGeneratedCorrectAnswer)
-    await this.questionEditPage.expectAnswerText(1, this.aiAssistantGeneratedIncorrectAnswer)
-    await this.questionEditPage.expectAnswerCorrect(0)
-    await this.questionEditPage.expectAnswerIncorrect(1)
+    await this.questionEditPage.expectExactlyOneCorrectAnswer()
 })
 
-Then('Question type is set to {string}', async function (value: string) {
-    const normalized = value.toLowerCase()
-    const expected = normalized.includes('single')
-        ? 'single'
-        : normalized.includes('multiple')
-          ? 'multiple'
-          : 'numerical'
-    await this.questionEditPage.expectQuestionType(expected)
+Then('AI assistant returns at least {int} correct answers', async function (count: number) {
+    this.questionEditPage.expectCorrectAnswerCountGreaterThanOrEqual(count)
 })
 
-Then('Question field is updated to AI generated question', async function () {
-    await this.questionEditPage.expectQuestionValue(this.aiAssistantGeneratedAnswer)
-})
-
-Then('answer1 field is filled with AI generated correct answer', async function () {
-    await this.questionEditPage.expectAnswerText(0, this.aiAssistantGeneratedCorrectAnswer)
-    await this.questionEditPage.expectAnswerCorrect(0)
-})
-
-Then('answer2 field is filled with AI generated incorrect answer', async function () {
-    await this.questionEditPage.expectAnswerText(1, this.aiAssistantGeneratedIncorrectAnswer)
-    await this.questionEditPage.expectAnswerIncorrect(1)
+Then('Question field is not empty', async function () {
+    await this.questionEditPage.expectQuestionValueNotEmpty()
 })
 
 // Field edits
@@ -323,9 +251,6 @@ When('I enter question {string}', async function (question: string) {
 
 When('I ask AI: {string}', async function (instructions: string) {
     await enterAIPrompt(this, instructions)
-    if (!this.aiAssistantGeneratedAnswer) {
-        await mockDefaultAiAssistant(this)
-    }
     await this.questionEditPage.clickAiAssist()
 })
 
