@@ -17,6 +17,6 @@ public class AiAssistantController {
 
     @PostMapping
     public AiAssistantResponse generate(@RequestBody AiAssistantRequest request) {
-        return aiAssistantService.generateQuestion(request.question());
+        return aiAssistantService.generateQuestion(request.type(), request.question());
     }
 }

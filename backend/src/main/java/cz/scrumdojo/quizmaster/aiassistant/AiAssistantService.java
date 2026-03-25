@@ -2,6 +2,8 @@ package cz.scrumdojo.quizmaster.aiassistant;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,29 +21,6 @@ public class AiAssistantService {
     private static final String OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
     private static final String MODEL = "minimax/minimax-m2.5";
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
-    private static final String SYSTEM_MESSAGE = """
-        You are a quiz question generator.
-
-        The user will provide a TOPIC. Generate:
-        - 1 question related to the topic
-        - 2 answer options
-        - Mark the correct answer by its 0-based index in the answers array
-
-        Return strictly valid JSON with no additional text:
-
-        {
-            "question": "...?",
-            "answers": ["correct answer", "incorrect answer"],
-            "correctAnswers": [0]
-        }
-
-        Rules:
-        - The correct answer must always be at index 0.
-        - The question must be clear, factual, and verifiable.
-        - Both answers should be similar in length and style.
-        - The incorrect option should sound believable but be clearly wrong.
-        - No explanations, comments, or formatting outside the JSON.
-        """;
 
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
@@ -56,7 +35,7 @@ public class AiAssistantService {
         this.httpClient = HttpClient.newBuilder().connectTimeout(TIMEOUT).build();
     }
 
-    public AiAssistantResponse generateQuestion(String prompt) {
+    public AiAssistantResponse generateQuestion(AiAssistantQuestionType type, String prompt) {
         if (prompt == null || prompt.isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Question must not be empty.");
         }
@@ -67,7 +46,7 @@ public class AiAssistantService {
         try {
             String body = objectMapper.writeValueAsString(new ChatRequest(
                 MODEL,
-                new Message[]{new Message("system", SYSTEM_MESSAGE), new Message("user", prompt)}
+                new Message[]{new Message("system", type.getPrompt()), new Message("user", prompt)}
             ));
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -86,8 +65,9 @@ public class AiAssistantService {
 
             JsonNode root = objectMapper.readTree(response.body());
             String content = root.path("choices").path(0).path("message").path("content").asText("").trim();
+            AssistantResponse assistantResponse = objectMapper.readValue(cleanAiResponse(content), AssistantResponse.class);
 
-            return objectMapper.readValue(content, AiAssistantResponse.class);
+            return new AiAssistantResponse(type, assistantResponse.question(), assistantResponse.answers(), assistantResponse.correctAnswers());
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
@@ -95,7 +75,21 @@ public class AiAssistantService {
         }
     }
 
+    public String cleanAiResponse(String content) {
+        if (StringUtils.isNotBlank(content)) {
+            int openJsonBrace = StringUtils.indexOf(content, '{');
+            int closeJsonBrace = StringUtils.lastIndexOf(content, '}');
+            if (openJsonBrace >= 0 && closeJsonBrace >= 0) {
+                return content.substring(openJsonBrace, closeJsonBrace + 1);
+            }
+        }
+
+        throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "AI assistant request failed.");
+    }
+
     private record ChatRequest(String model, Message[] messages) {}
 
     private record Message(String role, String content) {}
+
+    private record AssistantResponse(String question, String[] answers, int[] correctAnswers) {}
 }
