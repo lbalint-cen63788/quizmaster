@@ -51,11 +51,7 @@ const formatDuration = (started: string, finished: string): string => {
 export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
     const timedOutCount = stats.filter(stat => stat.timedOut ?? !stat.finished).length
 
-    const calculatePoints = (score: number, maxScore: number): number => Math.round((score / 100) * maxScore)
-    const calculatePercentage = (count: number, total: number): number =>
-        total > 0 ? Math.round((count / total) * 100) : 0
-    const formatCountWithPercentage = (count: number, total: number): string =>
-        `${count} (${calculatePercentage(count, total)}%)`
+    const calculatePoints = (score: number, maxScore: number): number => (score / 100) * maxScore
 
     const summary: SummaryStats = {
         started: stats.length,
@@ -100,13 +96,22 @@ export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
                             {(() => {
                                 const points = calculatePoints(stat.score, stat.maxScore)
                                 const incorrectPoints = Math.max(stat.maxScore - points, 0)
+                                const formatPoints = (value: number): string => {
+                                    // Round to 1 decimal place and check if it's a whole number
+                                    const rounded = Math.round(value * 10) / 10
+                                    return rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(1)
+                                }
+                                const formatPointsWithPercentage = (value: number, total: number): string => {
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0
+                                    return `${formatPoints(value)} (${percentage}%)`
+                                }
 
                                 return (
                                     <>
                                         <td>{formatDuration(stat.started, stat.finished)}</td>
-                                        <td>{`${points}/${stat.maxScore}`}</td>
-                                        <td>{formatCountWithPercentage(points, stat.maxScore)}</td>
-                                        <td>{formatCountWithPercentage(incorrectPoints, stat.maxScore)}</td>
+                                        <td>{`${formatPoints(points)}/${stat.maxScore}`}</td>
+                                        <td>{formatPointsWithPercentage(points, stat.maxScore)}</td>
+                                        <td>{formatPointsWithPercentage(incorrectPoints, stat.maxScore)}</td>
                                         <td>{stat.score}</td>
                                     </>
                                 )

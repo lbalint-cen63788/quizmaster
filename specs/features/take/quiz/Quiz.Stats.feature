@@ -118,6 +118,7 @@ Feature: Show stats
       |          | Points   |                 |                   |       |
       |          | 0/2      |                 |                   |       |
 
+
   # Correct Answers (individual): full, half, zero
   Scenario: Correct Answers full 2 (100%)
     Given workspace "Stats Correct Full" with questions
@@ -170,6 +171,7 @@ Feature: Show stats
       |          |          | Correct Answers |                   |       |
       |          |          | 0 (0%)          |                   |       |
 
+
   # Incorrect Answers (individual): full, half, zero
   Scenario: Incorrect Answers full 2 (100%)
     Given workspace "Stats Incorrect Full" with questions
@@ -221,6 +223,7 @@ Feature: Show stats
       | Attempts |          |                 |                   |       |
       |          |          |                 | Incorrect Answers |       |
       |          |          |                 | 0 (0%)            |       |
+
 
   # Score (individual): full, half, zero
   Scenario: Score full 100
