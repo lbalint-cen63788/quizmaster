@@ -37,6 +37,7 @@ Feature: Edit question form
 
     And I submit the question
     And I refresh the page
+    And I start editing question "Czechia"
 
     Then I see question text "What is the capital of Slovakia?"
       * the question is single choice
@@ -57,7 +58,7 @@ Feature: Edit question form
       * I mark the question as multiple choice
       * I mark answer 1 as correct
     When I submit the question
-      * I refresh the page
+      * I start editing question "Czechia"
     Then I see answer 1 as correct
       * I see answer 2 as correct
       * I see answer 3 as incorrect

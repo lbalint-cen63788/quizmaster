@@ -421,10 +421,6 @@ Then('I do not see image preview', async function () {
 When('I attempt to submit the question', submitQuestion)
 When('I submit the question', async function () {
     await this.questionEditPage.submit()
-    if (this.workspaceGuid && this.questionWip.question) {
-        await this.page.waitForURL(`**/workspace/${this.workspaceGuid}`)
-        await this.workspacePage.editQuestion(this.questionWip.question)
-    }
 })
 
 // Error messages assertions

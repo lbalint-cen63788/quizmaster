@@ -109,6 +109,7 @@ Feature: Create question - single/multiple choice
 
     When I enter numerical correct answer "14"
     And I submit the question
+    And I edit question "How many regions does Czechia have?" from the list
     Then I see question edit page
     And I see numerical correct answer "14"
 
@@ -127,6 +128,7 @@ Feature: Create question - single/multiple choice
 
     When I enter numerical correct answer "14"
     And I submit the question
+    And I edit question "How many regions does Czechia have?" from the list
     Then I see question edit page
     And I see numerical correct answer "14"
 
@@ -136,6 +138,7 @@ Feature: Create question - single/multiple choice
     When I enter numerical correct answer "14"
     When I set tolerance to "3"
     When I submit the question
+    And I edit question "How many regions does Czechia have?" from the list
     Then I see question edit page
     Then I see tolerance "3"
 
