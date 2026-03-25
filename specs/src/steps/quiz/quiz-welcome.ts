@@ -24,6 +24,6 @@ Then('I see pass score {int} %', async function (passScore: number) {
     await this.quizWelcomePage.expectPassScore(passScore)
 })
 
-Then('I see time limit set to {int} seconds', async function (timeLimit: number) {
+Then('I see time limit set to {string} seconds', async function (timeLimit: string) {
     await this.quizWelcomePage.expectTimeLimit(timeLimit)
 })

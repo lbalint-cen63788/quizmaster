@@ -25,11 +25,11 @@ Feature: Quiz Welcome page
     * I see quiz name "<name>"
     * I see quiz description "<description>"
     * I see question count <count>
-    * I see time limit set to <time limit> seconds
+    * I see time limit set to "<time limit>" seconds
     * I see pass score <score> %
     * I see feedback type "<mode>"
 
     Examples:
       | quiz   | name   | description   | count | score | mode                | time limit |
-      | Quiz A | Quiz A | Description A | 3     | 66    | Feedback at the end | 120s       |
-      | Quiz B | Quiz B | Description B | 4     | 75    | Continuous feedback | 60s        |
+      | Quiz A | Quiz A | Description A | 3     | 66    | Feedback at the end | 120       |
+      | Quiz B | Quiz B | Description B | 4     | 75    | Continuous feedback | 60        |

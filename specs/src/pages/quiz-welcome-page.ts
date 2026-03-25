@@ -18,7 +18,7 @@ export class QuizWelcomePage {
     expectFeedback = (feedback: string) => expect(this.feedbackLocator()).toHaveText(feedback)
     expectPassScore = (score: number) => expect(this.passScoreLocator()).toContainText(String(score))
     timeLimit = async () => Number.parseInt((await this.timeLimitLocator().textContent()) ?? '')
-    expectTimeLimit = (seconds: number) => expect(this.timeLimitLocator()).toContainText(String(seconds))
+    expectTimeLimit = (seconds: string) => expect(this.timeLimitLocator()).toContainText(seconds)
 
     startButton = () => this.page.locator('button#start')
     start = () => this.startButton().click()
