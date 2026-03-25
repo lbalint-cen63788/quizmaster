@@ -91,19 +91,14 @@ public class QuestionController {
         }
 
         var normalizedType = request.questionType() == null ? "" : request.questionType().trim().toLowerCase();
-        if (!"single".equals(normalizedType) && !"single choice".equals(normalizedType)) {
-            return "questionType";
-        }
-
-        if (request.answers() == null || request.answers().length != 2) {
+        if (request.answers() == null || request.answers().length < 2) {
             return "answers";
         }
 
-        if (request.correctAnswers() == null || request.correctAnswers().length != 1) {
-            return "correctAnswers";
-        }
-
-        if (request.correctAnswers()[0] < 0 || request.correctAnswers()[0] > 1) {
+        if (request.correctAnswers() == null
+            || ("multiple".equals(normalizedType) && request.correctAnswers().length < 2)
+            || ("single".equals(normalizedType) && request.correctAnswers().length != 1)
+        ) {
             return "correctAnswers";
         }
 
