@@ -20,7 +20,7 @@ public class AiAssistantService {
 
     private static final String OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
     private static final String MODEL = "minimax/minimax-m2.5";
-    private static final Duration TIMEOUT = Duration.ofSeconds(20);
+    private static final Duration TIMEOUT = Duration.ofSeconds(60);
 
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
