@@ -59,13 +59,13 @@ Feature: Create quiz - validations
     Then I see error messages in quiz form
       | time-limit-above-max |
 
-  @skip
-  Scenario: When time limit is cleared, "0" is automatically set
+  Scenario: When time limit is cleared, I see Not valid format label
     When I start creating a new quiz
     * I enter quiz name "Math Quiz"
     * I clear time limit
-    Then I see no error messages in quiz form
-    * I see time limit "0s" seconds
+    * I submit the quiz
+    Then I see error messages in quiz form
+      | time-limit-invalid-format |
 
   Scenario: When pass score is cleared, "0" is automatically set
     When I start creating a new quiz

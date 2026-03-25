@@ -2,6 +2,7 @@ import type { Question } from './question.ts'
 
 export type QuizMode = 'learn' | 'exam'
 export type Difficulty = 'easy' | 'hard' | 'keep-question'
+export type TimeLimitType = 'quiz' | 'question'
 
 export interface Quiz {
     readonly id: number
@@ -12,5 +13,6 @@ export interface Quiz {
     readonly difficulty?: Difficulty
     readonly passScore: number
     readonly timeLimit: number
+    readonly timeLimitType: TimeLimitType
     readonly randomQuestionCount?: number
 }

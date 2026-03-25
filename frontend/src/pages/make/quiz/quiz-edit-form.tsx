@@ -1,5 +1,5 @@
 import './quiz-edit-form.scss'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { urls, useWorkspaceId } from 'urls.ts'
@@ -68,9 +68,38 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
 
         if (inputIsValid) {
             const parsedTime = parseTimeLimitToSeconds(value)
-            state.setTimeLimit(parsedTime)
+            state.setTimeLimit(parsedTime * (state.timeLimitType === 'question' ? state.selectedIds.size : 1))
         }
     }
+
+    const onTimeLimitTypeChange = (value: string) => {
+        const nextType = value as 'quiz' | 'question'
+        const previousType = state.timeLimitType
+        const selectedCount = state.selectedIds.size
+
+        state.setTimeLimitType(nextType)
+
+        if (previousType === nextType) {
+            return
+        }
+
+        if (previousType === 'quiz' && nextType === 'question') {
+            state.setTimeLimit(state.timeLimit * selectedCount)
+            return
+        }
+
+        if (previousType === 'question' && nextType === 'quiz') {
+            state.setTimeLimit(state.timeLimit / selectedCount)
+        }
+    }
+
+    useEffect(() => {
+        if (state.timeLimitType === 'question') {
+            const timeLimit = parseTimeLimitToSeconds(timeLimitText)
+            state.setTimeLimit(timeLimit * state.selectedIds.size)
+        }
+    }, [state.selectedIds.size])
+
 
     return (
         <Form id="create-quiz" validator={validator} onSubmit={() => onSubmit(stateToQuizApiData(state, workspaceId))}>
@@ -97,14 +126,24 @@ export const QuizEditForm = ({ questions, onSubmit, quiz }: QuizEditFormProps) =
                     <ErrorMessage errorCode="time-limit-invalid-format" />
                 </Field>
             </Row>
-            <Field label="Feedback mode">
-                <RadioSet
-                    name="mode"
-                    value={state.feedbackMode}
-                    onChange={state.setFeedbackMode}
-                    options={{ exam: 'Exam', learn: 'Learning' }}
-                />
-            </Field>
+            <Row>
+                <Field label="Feedback mode">
+                    <RadioSet
+                        name="mode"
+                        value={state.feedbackMode}
+                        onChange={state.setFeedbackMode}
+                        options={{ exam: 'Exam', learn: 'Learning' }}
+                        />
+                </Field>
+                <Field label="Time limit type">
+                    <RadioSet
+                        name="timeLimitType"
+                        value={state.timeLimitType}
+                        onChange={onTimeLimitTypeChange}
+                        options={{ quiz: 'Quiz', question: 'Question' }}
+                        />
+                </Field>
+            </Row>
             <Field label="Difficulty">
                 <RadioSet
                     name="difficulty"

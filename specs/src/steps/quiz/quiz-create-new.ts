@@ -4,7 +4,7 @@ import { expect } from '@playwright/test'
 import { expectedNumberOfChildrenToBe } from 'steps/common.ts'
 import { Then, When } from 'steps/fixture.ts'
 import { expectQuizFormErrors } from 'steps/quiz/expects.ts'
-import type { QuizMode, Difficulty } from 'steps/world/quiz.ts'
+import type { QuizMode, Difficulty, TimeLimitType } from 'steps/world/quiz.ts'
 
 When('I start creating a new quiz', async function () {
     await this.workspacePage.createNewQuiz()
@@ -134,4 +134,20 @@ Then('form reacts correctly to all given inputs', async function (data: DataTabl
         await this.quizCreatePage.timeLimitInput().fill(row.timeLimit)
         await expect(this.quizCreatePage.formattedTimeLimitLabel()).toHaveText(row.formattedTimeLimit)
     }
+})
+
+Then('form reacts correctly to all given inputs with given time limit type', async function (data: DataTable) {
+    for (const row of data.hashes()) {
+        await this.quizCreatePage.timeLimitInput().fill(row.timeLimit)
+        await this.quizCreatePage.selectTimeLimitType(row.timeLimitType as TimeLimitType)
+        await expect(this.quizCreatePage.formattedTimeLimitLabel()).toHaveText(row.formattedTimeLimit)
+    }
+})
+
+When('I select time limit type "question"', async function () {
+    await this.quizCreatePage.selectTimeLimitType('question')
+})
+
+Then('I see formatted time limit {string}', async function (formattedTimeLimit: string) {
+    await expect(this.quizCreatePage.formattedTimeLimitLabel()).toHaveText(formattedTimeLimit)
 })

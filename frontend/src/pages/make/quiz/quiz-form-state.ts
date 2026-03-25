@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 
 import { useStateSet } from 'helpers'
 import type { QuestionListItem } from 'model/question-list-item.ts'
-import type { Quiz } from 'model/quiz.ts'
+import type { Quiz, TimeLimitType } from 'model/quiz.ts'
 import type { QuizMode, Difficulty } from 'model/quiz.ts'
 import type { QuizCreateRequest } from 'api/quiz.ts'
 
@@ -18,6 +18,7 @@ export const useQuizFormState = (questions: readonly QuestionListItem[], quiz?: 
     const [filter, setFilter] = useState('')
     const [checkRandomize, setCheckRandomize] = useState(!!quiz?.randomQuestionCount)
     const [feedbackMode, setFeedbackMode] = useState<QuizMode>(quiz?.mode || 'exam')
+    const [timeLimitType, setTimeLimitType] = useState<TimeLimitType>(quiz?.timeLimitType || 'quiz')
     const [difficulty, setDifficulty] = useState<Difficulty>(quiz?.difficulty || 'keep-question')
 
     const filteredQuestions = useMemo(() => {
@@ -30,6 +31,7 @@ export const useQuizFormState = (questions: readonly QuestionListItem[], quiz?: 
         description,
         selectedIds,
         timeLimit,
+        timeLimitType,
         randomQuestionCount,
         passScore,
         filter,
@@ -47,6 +49,7 @@ export const useQuizFormState = (questions: readonly QuestionListItem[], quiz?: 
         setCheckRandomize,
         setFeedbackMode,
         setDifficulty,
+        setTimeLimitType,
     }
 }
 

@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test'
-import type { QuizMode, Difficulty } from '../steps/world/quiz.ts'
+import type { QuizMode, Difficulty, TimeLimitType } from '../steps/world/quiz.ts'
 
 export class QuizCreatePage {
     constructor(private page: Page) {}
@@ -11,6 +11,7 @@ export class QuizCreatePage {
     selectQuestion = async (question: string) => this.page.locator('label', { hasText: question }).click()
     selectRandomizedFunction = () => this.page.locator('#isRandomized').check()
     selectFeedbackMode = (mode: QuizMode) => this.page.locator(`#mode-${mode}`).check()
+    selectTimeLimitType = (type: TimeLimitType) => this.page.locator(`#timeLimitType-${type}`).check()
     selectDifficulty = async (difficulty: Difficulty) => {
         await this.page.locator(`#difficulty-${difficulty}`).check()
     }

@@ -98,3 +98,53 @@ Scenario: Quiz time limit formatting
       | 100M90s   | 1h 41m 30s         |
       | 90S100m   | 1h 41m 30s         |
       |           | Not valid format   |
+
+Scenario: Switching between time limit per quiz and per question
+  Given workspace "Quiz Filter" with questions
+      | question                       | answers            |
+      | 2 + 2 = ?                      | 4 (*), 5           |
+      | 3 * 3 = ?                      | 9 (*), 6           |
+      | 4 / 2 = ?                      | 2 (*), 3           |
+      | Jaký nábytek má Ikea?          | Stůl (*), Auto     |
+      | Jaké nádobí má Ikea?           | Talíř (*), Kolo    |
+      | Jaký venkovní Nábytek má Ikea? | Židle (*), Triangl |
+
+  When I start creating a new quiz
+  * I enter quiz name "Math Quiz"
+  * I select question "2 + 2 = ?"
+  * I select question "4 / 2 = ?"
+  * I select question "Jaký nábytek má Ikea?"
+  * I select question "Jaké nádobí má Ikea?"
+
+  Then form reacts correctly to all given inputs with given time limit type
+      | timeLimitType | timeLimit | formattedTimeLimit |
+      | quiz          | 10s       | 0h 0m 10s          |
+      | question      | 20s       | 0h 1m 20s          |
+      | quiz          | 1m10s     | 0h 1m 10s          |
+      | question      | 1m10s     | 0h 4m 40s          |
+      | quiz          |           | Not valid format   |
+      | question      |           | Not valid format   |
+
+Scenario: Checking formatted time limit when adding and removing questions to quiz
+  Given workspace "Quiz Filter" with questions
+      | question                       | answers            |
+      | 2 + 2 = ?                      | 4 (*), 5           |
+      | 3 * 3 = ?                      | 9 (*), 6           |
+      | 4 / 2 = ?                      | 2 (*), 3           |
+      | Jaký nábytek má Ikea?          | Stůl (*), Auto     |
+      | Jaké nádobí má Ikea?           | Talíř (*), Kolo    |
+      | Jaký venkovní Nábytek má Ikea? | Židle (*), Triangl |
+
+  When I start creating a new quiz
+  * I enter quiz name "Math Quiz"
+  When I select time limit type "question"
+  When I enter time limit "10s"
+  Then I see formatted time limit "0h 0m 0s"
+  When I select question "2 + 2 = ?"
+  Then I see formatted time limit "0h 0m 10s"
+  When I select question "4 / 2 = ?"
+  Then I see formatted time limit "0h 0m 20s"
+  When I select question "Jaký nábytek má Ikea?"
+  Then I see formatted time limit "0h 0m 30s"
+  When I select question "Jaké nádobí má Ikea?"
+  Then I see formatted time limit "0h 0m 40s"
