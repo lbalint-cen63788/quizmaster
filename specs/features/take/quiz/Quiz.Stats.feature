@@ -28,9 +28,9 @@ Feature: Show stats
     And I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts   |          |                 |                   |       |
-      | Duration   |          |                 |                   |       |
-      | 10 seconds |          |                 |                   |       |
+      | Attempts   |          |                 |                   |       |          |
+      | Duration   |          |                 |                   |       | Status   |
+      | 10 seconds |          |                 |                   |       | Finished |
 
   Scenario: Duration for half correct attempt
     Given workspace "Stats Duration Half" with questions
@@ -45,9 +45,9 @@ Feature: Show stats
     And I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts   |          |                 |                   |       |
-      | Duration   |          |                 |                   |       |
-      | 10 seconds |          |                 |                   |       |
+      | Attempts   |          |                 |                   |       |          |
+      | Duration   |          |                 |                   |       | Status   |
+      | 10 seconds |          |                 |                   |       | Finished |
 
   Scenario: Duration for zero correct attempt
     Given workspace "Stats Duration Zero" with questions
@@ -62,9 +62,9 @@ Feature: Show stats
     And I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts   |          |                 |                   |       |
-      | Duration   |          |                 |                   |       |
-      | 10 seconds |          |                 |                   |       |
+      | Attempts   |          |                 |                   |       |          |
+      | Duration   |          |                 |                   |       | Status   |
+      | 10 seconds |          |                 |                   |       | Finished |
 
   # Points (individual): full, half, zero
   Scenario: Points full 2/2
@@ -80,9 +80,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          | Points   |                 |                   |       |
-      |          | 2/2      |                 |                   |       |
+      | Attempts |          |                 |                   |       |          |
+      |          | Points   |                 |                   |       | Status   |
+      |          | 2/2      |                 |                   |       | Finished |
 
   Scenario: Points half 1/2
     Given workspace "Stats Points Half" with questions
@@ -97,9 +97,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          | Points   |                 |                   |       |
-      |          | 1/2      |                 |                   |       |
+      | Attempts |          |                 |                   |       |          |
+      |          | Points   |                 |                   |       | Status   |
+      |          | 1/2      |                 |                   |       | Finished |
 
   Scenario: Points zero 0/2
     Given workspace "Stats Points Zero" with questions
@@ -114,9 +114,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          | Points   |                 |                   |       |
-      |          | 0/2      |                 |                   |       |
+      | Attempts |          |                 |                   |       |          |
+      |          | Points   |                 |                   |       | Status   |
+      |          | 0/2      |                 |                   |       | Finished |
 
 
   # Correct Answers (individual): full, half, zero
@@ -133,9 +133,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          | Correct Answers |                   |       |
-      |          |          | 2 (100%)        |                   |       |
+      | Attempts |          |                 |                   |       |          |
+      |          |          | Correct Answers |                   |       | Status   |
+      |          |          | 2 (100%)        |                   |       | Finished |
 
   Scenario: Correct Answers half 1 (50%)
     Given workspace "Stats Correct Half" with questions
@@ -150,9 +150,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          | Correct Answers |                   |       |
-      |          |          | 1 (50%)         |                   |       |
+      | Attempts |          |                 |                   |       |          |
+      |          |          | Correct Answers |                   |       | Status   |
+      |          |          | 1 (50%)         |                   |       | Finished |
 
   Scenario: Correct Answers zero 0 (0%)
     Given workspace "Stats Correct Zero" with questions
@@ -167,9 +167,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          | Correct Answers |                   |       |
-      |          |          | 0 (0%)          |                   |       |
+      | Attempts |          |                 |                   |       |          |
+      |          |          | Correct Answers |                   |       | Status   |
+      |          |          | 0 (0%)          |                   |       | Finished |
 
 
   # Incorrect Answers (individual): full, half, zero
@@ -186,9 +186,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          |                 | Incorrect Answers |       |
-      |          |          |                 | 2 (100%)          |       |
+      | Attempts |          |                 |                   |       |          |
+      |          |          |                 | Incorrect Answers |       | Status   |
+      |          |          |                 | 2 (100%)          |       | Finished |
 
   Scenario: Incorrect Answers half 1 (50%)
     Given workspace "Stats Incorrect Half" with questions
@@ -203,9 +203,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          |                 | Incorrect Answers |       |
-      |          |          |                 | 1 (50%)           |       |
+      | Attempts |          |                 |                   |       |          |
+      |          |          |                 | Incorrect Answers |       | Status   |
+      |          |          |                 | 1 (50%)           |       | Finished |
 
   Scenario: Incorrect Answers zero 0 (0%)
     Given workspace "Stats Incorrect Zero" with questions
@@ -220,9 +220,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          |                 | Incorrect Answers |       |
-      |          |          |                 | 0 (0%)            |       |
+      | Attempts |          |                 |                   |       |          |
+      |          |          |                 | Incorrect Answers |       | Status   |
+      |          |          |                 | 0 (0%)            |       | Finished |
 
 
   # Score (individual): full, half, zero
@@ -239,9 +239,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          |                 |                   | Score |
-      |          |          |                 |                   | 100   |
+      | Attempts |          |                 |                   |       |          |
+      |          |          |                 |                   | Score | Status   |
+      |          |          |                 |                   | 100   | Finished |
 
   Scenario: Score half 50
     Given workspace "Stats Score Half" with questions
@@ -256,9 +256,9 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          |                 |                   | Score |
-      |          |          |                 |                   | 50    |
+      | Attempts |          |                 |                   |       |          |
+      |          |          |                 |                   | Score | Status   |
+      |          |          |                 |                   | 50    | Finished |
 
   Scenario: Score zero 0
     Given workspace "Stats Score Zero" with questions
@@ -273,6 +273,45 @@ Feature: Show stats
     When I open stats for quiz "Stats Quiz"
     Then I see stats page for quiz "Stats Quiz"
     And I see attempt stats table
-      | Attempts |          |                 |                   |       |
-      |          |          |                 |                   | Score |
-      |          |          |                 |                   | 0     |
+      | Attempts |          |                 |                   |       |          |
+      |          |          |                 |                   | Score | Status   |
+      |          |          |                 |                   | 0     | Finished |
+
+
+  # Status (individual): Finished, Timeout
+  Scenario: Status shows Finished for completed quiz
+    Given workspace "Stats Status Finished" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+    And I take quiz "Stats Quiz" with answers
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+      | Jaké nádobí má Ikea?  | Talíř   |
+    When I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |       |                 |                   |     |          |
+      | Duration | Points| Correct Answers | Incorrect Answers | Score| Status   |
+      |          |       |                 |                   |     | Finished |
+
+# Status should show Timeout but we are unable to simulate waiting
+  @skip
+  Scenario: Status shows Timeout for timed out quiz
+    Given workspace "Stats Status Timeout" with questions
+      | question              | answers         |
+      | Jaký nábytek má Ikea? | Stůl (*), Auto  |
+      | Jaké nádobí má Ikea?  | Talíř (*), Kolo |
+    And a quiz "Stats Quiz" with all questions
+      | time limit |
+      | 5          |
+    When I take quiz "Stats Quiz" which I do not complete in time limit
+      | question              | answers |
+      | Jaký nábytek má Ikea? | Stůl    |
+    And I open stats for quiz "Stats Quiz"
+    Then I see stats page for quiz "Stats Quiz"
+    And I see attempt stats table
+      | Attempts |       |                 |                   |     |          |
+      | Duration | Points| Correct Answers | Incorrect Answers | Score| Status   |
+      |          |       |                 |                   |     | Timeout  |
