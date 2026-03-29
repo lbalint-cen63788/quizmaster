@@ -5,8 +5,6 @@ export const HomePage = () => {
     return (
         <>
             <h1>Welcome to Quizmaster! You rock.</h1>
-            <Link to={urls.questionNew()}>Create new question</Link>
-            <br />
             <Link to={urls.workspaceNew()}>Create new workspace</Link>
         </>
     )

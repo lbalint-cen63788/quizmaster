@@ -19,9 +19,7 @@ export const App = () => (
         <Routes>
             <Route path={ROUTES.home} element={<HomePage />} />
 
-            {/* Legacy standalone question */}
-            <Route path={ROUTES.questionNew} element={<CreateQuestionPage />} />
-            <Route path={ROUTES.questionEditStandalone} element={<EditQuestionPage />} />
+            {/* Public question taking */}
             <Route path={ROUTES.questionTake} element={<QuestionTakePage />} />
 
             {/* Workspace */}

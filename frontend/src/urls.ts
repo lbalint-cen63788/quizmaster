@@ -2,9 +2,7 @@ import { useParams } from 'react-router-dom'
 
 export const ROUTES = {
     home: '/',
-    questionNew: '/question/new',
     questionTake: '/question/:id',
-    questionEditStandalone: '/question/:editId/edit',
 
     workspaceNew: '/workspace/new',
     workspace: '/workspace/:workspaceId',
@@ -21,9 +19,7 @@ export const ROUTES = {
 
 export const urls = {
     home: () => '/',
-    questionNew: () => '/question/new',
     questionTake: (id: number | string) => `/question/${id}`,
-    questionEditStandalone: (editId: string) => `/question/${editId}/edit`,
 
     workspaceNew: () => '/workspace/new',
     workspace: (workspaceId: string) => `/workspace/${workspaceId}`,
