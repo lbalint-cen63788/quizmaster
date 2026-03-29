@@ -46,8 +46,8 @@ export class QuestionEditPage {
 
     private explanationFieldsLocator = () => this.page.locator('input.explanation')
 
-    private answerRowsLocator = async () => this.page.locator('.answer-row')
-    answerRowCount = async () => (await this.answerRowsLocator()).count()
+    private answerRowsLocator = () => this.page.locator('.answer-row')
+    answerRowCount = async () => this.answerRowsLocator().count()
 
     private answerRowLocator = (index: number) => this.page.locator('.answer-row').nth(index)
     private answerTextLocator = (index: number) => this.answerRowLocator(index).locator('input.text')
@@ -123,9 +123,9 @@ export class QuestionEditPage {
     expectAiBlockNotVisible = () => expect(this.aiPromptLocator().first()).not.toBeVisible()
     expectAiPromptValue = (text: string) => expect(this.aiPromptLocator()).toContainText(text)
     expectNoExplanationFields = () => expect(this.explanationFieldsLocator()).toHaveCount(0)
-    expectAnswerRowCount = async (count: number) => expect(await this.answerRowsLocator()).toHaveCount(count)
+    expectAnswerRowCount = (count: number) => expect(this.answerRowsLocator()).toHaveCount(count)
     expectAnswerRowCountGreaterThanOrEqual = async (count: number) =>
-        expect(await (await this.answerRowsLocator()).count()).toBeGreaterThanOrEqual(count)
+        expect(await this.answerRowsLocator().count()).toBeGreaterThanOrEqual(count)
     expectAnswerText = (index: number, value: string) => expect(this.answerTextLocator(index)).toHaveValue(value)
     expectAnswerCorrect = (index: number) => expect(this.answerIsCorrectLocator(index)).toBeChecked()
     expectAnswerIncorrect = (index: number) => expect(this.answerIsCorrectLocator(index)).not.toBeChecked()
@@ -135,11 +135,11 @@ export class QuestionEditPage {
     expectAddAnswerNotVisible = () => expect(this.addAnswerButtonLocator()).not.toBeVisible()
     expectErrorCount = (n: number) => expect(this.errorsLocator()).toHaveCount(n)
 
-    private checkedAnswersLocator = async () =>
-        (await this.answerRowsLocator()).locator('input[type="checkbox"]:checked, input[type="radio"]:checked')
+    private checkedAnswersLocator = () =>
+        this.answerRowsLocator().locator('input[type="checkbox"]:checked, input[type="radio"]:checked')
 
-    expectExactlyOneCorrectAnswer = async () => expect(await this.checkedAnswersLocator()).toHaveCount(1)
+    expectExactlyOneCorrectAnswer = () => expect(this.checkedAnswersLocator()).toHaveCount(1)
 
     expectCorrectAnswerCountGreaterThanOrEqual = async (count: number) =>
-        expect(await (await this.checkedAnswersLocator()).count()).toBeGreaterThanOrEqual(count)
+        expect(await this.checkedAnswersLocator().count()).toBeGreaterThanOrEqual(count)
 }
