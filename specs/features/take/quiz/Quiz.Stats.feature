@@ -296,6 +296,39 @@ Feature: Show stats
       | Duration | Points| Correct Answers | Incorrect Answers | Score| Status   |
       |          |       |                 |                   |     | Finished |
 
+  # Summary stats
+  Scenario: Summary stats for completed quiz
+    Given workspace "Stats Summary Success" with questions
+      | bookmark | question   | answers  |
+      | Q1       | 1 + 1 = ?  | 2 (*), 3 |
+      | Q2       | 2 + 2 = ?  | 4 (*), 5 |
+    And a quiz "Stats Quiz" with all questions
+    When I start the quiz
+    And I answer 2 questions correctly
+    And I proceed to the score page
+    And I open stats for quiz "Stats Quiz"
+    Then I see summary stats table
+      | Summary |          |         |
+      | Started | Finished | Timeout |
+      |       1 |        1 |       0 |
+
+  @skip
+  Scenario: Summary stats for timed out quiz
+    Given workspace "Stats Summary Timeout" with questions
+      | bookmark | question   | answers  |
+      | Q1       | 1 + 1 = ?  | 2 (*), 3 |
+      | Q2       | 2 + 2 = ?  | 4 (*), 5 |
+    And a quiz "Stats Quiz" with all questions
+      | time limit | 5 |
+    When I take quiz "Stats Quiz" which I do not complete in time limit
+      | question  | answers |
+      | 1 + 1 = ? | 2       |
+    And I open stats for quiz "Stats Quiz"
+    Then I see summary stats table
+      | Summary |          |         |
+      | Started | Finished | Timeout |
+      |       1 |        0 |       1 |
+
 # Status should show Timeout but we are unable to simulate waiting
   @skip
   Scenario: Status shows Timeout for timed out quiz
