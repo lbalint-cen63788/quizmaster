@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import { expect, type Page } from '@playwright/test'
 import type { QuizMode, Difficulty } from '../steps/world/quiz.ts'
 
 export class QuizCreatePage {
@@ -32,4 +32,17 @@ export class QuizCreatePage {
     enterFilterString = (filter: string) => this.page.locator('#question-filter').fill(filter)
     selectedQuestionCountForQuiz = async () => this.page.locator('#selected-question-count-for-quiz').innerHTML()
     totalQuestionCountForQuiz = async () => this.page.locator('#total-question-count-for-quiz').innerHTML()
+
+    // Retrying assertions
+    private quizTitleLocator = () => this.page.locator('#quiz-title')
+    private quizDescriptionLocator = () => this.page.locator('#quiz-description')
+    private selectedQuestionCountLocator = () => this.page.locator('#selected-question-count-for-quiz')
+    private totalQuestionCountLocator = () => this.page.locator('#total-question-count-for-quiz')
+
+    expectQuizTitleValue = (value: string) => expect(this.quizTitleLocator()).toHaveValue(value)
+    expectQuizDescriptionValue = (value: string) => expect(this.quizDescriptionLocator()).toHaveValue(value)
+    expectTimeLimitValue = (value: string) => expect(this.timeLimitInput()).toHaveValue(value)
+    expectPassScoreValue = (value: string) => expect(this.passScoreInput()).toHaveValue(value)
+    expectSelectedQuestionCount = (count: number) => expect(this.selectedQuestionCountLocator()).toHaveText(String(count))
+    expectTotalQuestionCount = (count: number) => expect(this.totalQuestionCountLocator()).toHaveText(String(count))
 }

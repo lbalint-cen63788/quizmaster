@@ -1,5 +1,4 @@
 import type { DataTable } from '@cucumber/cucumber'
-import { expect } from '@playwright/test'
 
 import { Given, Then } from 'steps/fixture.ts'
 import { createQuizViaUI } from 'steps/quiz/ops.ts'
@@ -19,11 +18,9 @@ Given(
 )
 
 Then('I see selected question count {int}', async function (expectedCount: number) {
-    const actualCount = await this.quizCreatePage.selectedQuestionCountForQuiz()
-    expect(Number.parseInt(actualCount || '0')).toBe(expectedCount)
+    await this.quizCreatePage.expectSelectedQuestionCount(expectedCount)
 })
 
 Then('I see total question count {int}', async function (expectedCount: number) {
-    const actualCount = await this.quizCreatePage.totalQuestionCountForQuiz()
-    expect(Number.parseInt(actualCount || '0')).toBe(expectedCount)
+    await this.quizCreatePage.expectTotalQuestionCount(expectedCount)
 })

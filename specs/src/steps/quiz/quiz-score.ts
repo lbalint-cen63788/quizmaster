@@ -33,8 +33,7 @@ Then(
 )
 
 Then('I see the correct number of questions {int}', async function (expectedTotalQuestions: number) {
-    const totalQuestions = await this.quizScorePage.totalQuestions()
-    expect(totalQuestions).toBe(expectedTotalQuestions)
+    await this.quizScorePage.expectTotalQuestions(expectedTotalQuestions)
 })
 
 Then(
