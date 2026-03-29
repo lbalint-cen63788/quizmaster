@@ -116,7 +116,6 @@ public class WorkspaceController {
             .map(existing -> {
                 var question = request.toEntity(guid);
                 question.setId(existing.getId());
-                question.setEditId(existing.getEditId());
                 questionRepository.save(question);
                 return ResponseEntity.ok(new QuestionWriteResponse(existing.getId()));
             })
