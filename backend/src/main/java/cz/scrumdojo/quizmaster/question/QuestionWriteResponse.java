@@ -1,3 +1,3 @@
 package cz.scrumdojo.quizmaster.question;
 
-public record QuestionWriteResponse(Integer id, String editId) {}
+public record QuestionWriteResponse(Integer id) {}

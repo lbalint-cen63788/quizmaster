@@ -7,13 +7,12 @@ public record QuestionRequest(
     String[] explanations,
     String questionExplanation,
     boolean easyMode,
-    String workspaceGuid,
     String imageUrl,
     Boolean aiGenerated,
     String questionType,
     Integer tolerance
 ) {
-    public Question toEntity() {
+    public Question toEntity(String workspaceGuid) {
         return Question.builder()
             .question(question)
             .answers(answers)

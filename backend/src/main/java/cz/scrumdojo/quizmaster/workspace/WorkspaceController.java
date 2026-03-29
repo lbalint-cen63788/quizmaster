@@ -56,7 +56,7 @@ public class WorkspaceController {
         Set<Integer> questionIdsInQuizzes = quizRepository.findQuestionIdsInQuizzesByWorkspaceGuid(guid);
 
         var items = questions.stream()
-            .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), q.getEditId(), questionIdsInQuizzes.contains(q.getId()), q.getImageUrl()))
+            .map(q -> new QuestionListItem(q.getId(), q.getQuestion(), questionIdsInQuizzes.contains(q.getId()), q.getImageUrl()))
             .toList();
 
         return ResponseEntity.ok(items);
@@ -97,10 +97,8 @@ public class WorkspaceController {
         if (validationError != null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        var question = request.toEntity();
-        question.setWorkspaceGuid(guid);
-        var created = questionRepository.save(question);
-        return ResponseEntity.ok(new QuestionWriteResponse(created.getId(), created.getEditId()));
+        var created = questionRepository.save(request.toEntity(guid));
+        return ResponseEntity.ok(new QuestionWriteResponse(created.getId()));
     }
 
     @Transactional
@@ -116,12 +114,11 @@ public class WorkspaceController {
 
         return questionRepository.findByIdAndWorkspaceGuid(id, guid)
             .map(existing -> {
-                var question = request.toEntity();
+                var question = request.toEntity(guid);
                 question.setId(existing.getId());
                 question.setEditId(existing.getEditId());
-                question.setWorkspaceGuid(guid);
                 questionRepository.save(question);
-                return ResponseEntity.ok(new QuestionWriteResponse(existing.getId(), existing.getEditId()));
+                return ResponseEntity.ok(new QuestionWriteResponse(existing.getId()));
             })
             .orElse(ResponseEntity.notFound().build());
     }

@@ -58,7 +58,6 @@ public class TestFixtures {
             null,
             false,
             null,
-            null,
             false,
             "single",
             null
@@ -74,7 +73,6 @@ public class TestFixtures {
             null,
             false,
             null,
-            null,
             false,
             "multiple",
             null
@@ -89,7 +87,6 @@ public class TestFixtures {
             new String[]{"No", "Correct!", "No", "No"},
             null,
             false,
-            null,
             imageUrl,
             false,
             "single",
