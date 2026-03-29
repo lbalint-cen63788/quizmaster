@@ -17,6 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
 
 @Service
 public class AiAssistantService {
@@ -73,6 +74,7 @@ public class AiAssistantService {
             JsonNode root = objectMapper.readTree(response.body());
             String content = root.path("choices").path(0).path("message").path("content").asText("").trim();
             AssistantResponse assistantResponse = objectMapper.readValue(content, AssistantResponse.class);
+            validateResponse(assistantResponse);
 
             return new AiAssistantResponse(type, assistantResponse.question(), assistantResponse.answers(), assistantResponse.correctAnswers());
         } catch (ResponseStatusException e) {
@@ -82,11 +84,28 @@ public class AiAssistantService {
         }
     }
 
+    static void validateResponse(AssistantResponse response) {
+        if (response.question() == null || response.question().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "AI assistant returned invalid response: missing question.");
+        }
+        if (response.answers() == null || response.answers().length < 2) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "AI assistant returned invalid response: need at least 2 answers.");
+        }
+        if (response.correctAnswers() == null || response.correctAnswers().length < 1) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "AI assistant returned invalid response: need at least 1 correct answer.");
+        }
+        boolean allInBounds = Arrays.stream(response.correctAnswers())
+            .allMatch(i -> i >= 0 && i < response.answers().length);
+        if (!allInBounds) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "AI assistant returned invalid response: correctAnswers index out of bounds.");
+        }
+    }
+
     private record ChatRequest(String model, Message[] messages, @JsonProperty("response_format") ResponseFormat responseFormat) {}
 
     private record ResponseFormat(String type) {}
 
     private record Message(String role, String content) {}
 
-    private record AssistantResponse(String question, String[] answers, int[] correctAnswers) {}
+    record AssistantResponse(String question, String[] answers, int[] correctAnswers) {}
 }
