@@ -1,5 +1,6 @@
 package cz.scrumdojo.quizmaster.aiassistant;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ public class AiAssistantControllerTest {
     @Value("${ai.token:}")
     private String apiToken;
 
+    @Tag("ai")
     @Test
     public void generateReturnsQuestionShape() throws Exception {
         assumeTrue(!apiToken.isBlank(), "ai.token not configured");
@@ -45,6 +47,7 @@ public class AiAssistantControllerTest {
             .andExpect(jsonPath("$.correctAnswers[0]").value(0));
     }
 
+    @Tag("ai")
     @Test
     public void generateReturnsQuestionShape_missingType() throws Exception {
         assumeTrue(!apiToken.isBlank(), "ai.token not configured");

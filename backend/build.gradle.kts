@@ -58,8 +58,19 @@ sourceSets {
 }
 
 tasks.withType<Test> {
-    useJUnitPlatform()
     jvmArgs("-XX:+EnableDynamicAgentLoading")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform {
+        excludeTags("ai")
+    }
+}
+
+tasks.register<Test>("testAi") {
+    useJUnitPlatform {
+        includeTags("ai")
+    }
 }
 
 fun jarFile(): String {
