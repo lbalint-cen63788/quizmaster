@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test'
+import { expect, type Page } from '@playwright/test'
 
 export class HomePage {
     constructor(private page: Page) {}
@@ -13,16 +13,7 @@ export class HomePage {
     createQuestionLink = () => this.page.locator('a[href="/question/new"]')
     createWorkspaceLink = () => this.page.locator('a[href="/workspace/new"]')
 
-    // Methods to check if links exist and have correct href
-    hasCreateQuestionLink = async () => {
-        const link = this.createQuestionLink()
-        await link.waitFor({ state: 'visible' })
-        return link.isVisible()
-    }
-
-    hasCreateWorkspaceLink = async () => {
-        const link = this.createWorkspaceLink()
-        await link.waitFor({ state: 'visible' })
-        return link.isVisible()
-    }
+    // Retrying assertions
+    expectCreateQuestionLinkVisible = () => expect(this.createQuestionLink()).toBeVisible()
+    expectCreateWorkspaceLinkVisible = () => expect(this.createWorkspaceLink()).toBeVisible()
 }

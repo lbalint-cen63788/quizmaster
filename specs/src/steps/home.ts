@@ -1,4 +1,3 @@
-import { expect } from '@playwright/test'
 import { Given, Then } from 'steps/fixture.ts'
 import type { QuizmasterWorld } from 'steps/world/world.ts'
 
@@ -12,11 +11,9 @@ Then('I see the home page', async function (this: QuizmasterWorld) {
 })
 
 Then('I can create a new question', async function (this: QuizmasterWorld) {
-    const hasLink = await this.homePage.hasCreateQuestionLink()
-    expect(hasLink).toBeTruthy()
+    await this.homePage.expectCreateQuestionLinkVisible()
 })
 
 Then('I can create a new workspace', async function (this: QuizmasterWorld) {
-    const hasLink = await this.homePage.hasCreateWorkspaceLink()
-    expect(hasLink).toBeTruthy()
+    await this.homePage.expectCreateWorkspaceLinkVisible()
 })
