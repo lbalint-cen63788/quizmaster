@@ -25,11 +25,6 @@ export const emptyQuiz = (): Quiz => ({
     timeLimit: 120,
 })
 export const emptyQuizBookmark = (): QuizBookmark => ({
+    ...emptyQuiz(),
     url: '',
-    title: '',
-    description: '',
-    questionIds: [],
-    mode: 'exam',
-    passScore: 0,
-    timeLimit: 120,
 })
