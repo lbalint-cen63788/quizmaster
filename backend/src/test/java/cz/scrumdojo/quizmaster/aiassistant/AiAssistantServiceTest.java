@@ -60,32 +60,32 @@ public class AiAssistantServiceTest {
 
     @Tag("ai")
     @Test
-    void generateQuestionWithSpecificAnswerCount() {
+    void generateMultipleCorrectAnswersWithSpecificCount() {
         assumeTrue(!apiToken.isBlank(), "ai.token not configured");
 
         var response = aiAssistantService.generateQuestion(
             AiAssistantQuestionType.SINGLE,
-            "Create a multiple-choice question on exoplanets with exactly 2 correct answers out of 5 total answers"
+            "Create a question on exoplanets. There must be exactly 2 correct answers and exactly 2 incorrect answers. Total: 4 answers."
         );
 
         assertFalse(response.question().isBlank());
-        assertEquals(5, response.answers().length);
-        assertEquals(2, response.correctAnswers().length);
+        assertEquals(4, response.answers().length, "Expected exactly 4 answers");
+        assertEquals(2, response.correctAnswers().length, "Expected exactly 2 correct answers");
     }
 
     @Tag("ai")
     @Test
-    void generateQuestionWithAnswerRange() {
+    void generateSingleCorrectAnswerWithExactCount() {
         assumeTrue(!apiToken.isBlank(), "ai.token not configured");
 
         var response = aiAssistantService.generateQuestion(
             AiAssistantQuestionType.SINGLE,
-            "Create a single-choice question about European capitals with exactly 3 answers and 1 correct answer"
+            "Create a question about European capitals. There must be exactly 1 correct answer and exactly 2 incorrect answers. Total: 3 answers."
         );
 
         assertFalse(response.question().isBlank());
-        assertEquals(3, response.answers().length);
-        assertEquals(1, response.correctAnswers().length);
+        assertEquals(3, response.answers().length, "Expected exactly 3 answers");
+        assertEquals(1, response.correctAnswers().length, "Expected exactly 1 correct answer");
     }
 
     @Test

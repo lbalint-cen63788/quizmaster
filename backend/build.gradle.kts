@@ -62,6 +62,10 @@ tasks.withType<Test> {
 }
 
 tasks.named<Test>("test") {
+    useJUnitPlatform()
+}
+
+tasks.register<Test>("testLocal") {
     useJUnitPlatform {
         excludeTags("ai")
     }
