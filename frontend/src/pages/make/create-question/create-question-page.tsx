@@ -11,15 +11,13 @@ export function CreateQuestionPage() {
     const navigate = useNavigate()
 
     const handleSubmit = (questionData: QuestionApiData) => {
-        const apiData = { ...questionData, workspaceGuid: workspaceId || null }
-        saveQuestion(apiData).then(response => {
-            const url = workspaceId ? urls.workspace(workspaceId) : urls.questionEditStandalone(response.editId)
-            navigate(url)
+        saveQuestion(workspaceId, questionData).then(() => {
+            navigate(urls.workspace(workspaceId))
         })
     }
 
     const handleBack = () => {
-        navigate(workspaceId ? urls.workspace(workspaceId) : urls.home())
+        navigate(urls.workspace(workspaceId))
     }
 
     return (

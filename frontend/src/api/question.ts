@@ -3,22 +3,26 @@ import { fetchJson, postJson, patchJson, callDelete } from './helpers.ts'
 
 export const fetchQuestion = async (questionId: string) => await fetchJson<Question>(`/api/question/${questionId}`)
 
-export const deleteQuestion = async (questionId: string) => await callDelete(`/api/question/${questionId}`)
+export const fetchWorkspaceQuestion = async (workspaceGuid: string, questionId: string) =>
+    await fetchJson<Question>(`/api/workspaces/${workspaceGuid}/questions/${questionId}`)
 
-export const fetchQuestionByEditId = async (editId: string) => await fetchJson<Question>(`/api/question/${editId}/edit`)
-
-export type QuestionApiData = Omit<Question, 'id' | 'aiPrompt'> & {
+export type QuestionApiData = Omit<Question, 'id' | 'aiPrompt' | 'editId' | 'workspaceGuid'> & {
     readonly aiGenerated?: boolean
     readonly questionType?: 'single' | 'multiple' | 'numerical'
 }
 
 export interface QuestionWriteResponse {
     readonly id: number
-    readonly editId: string
 }
 
-export const saveQuestion = async (question: QuestionApiData) =>
-    await postJson<QuestionApiData, QuestionWriteResponse>('/api/question', question)
+export const saveQuestion = async (workspaceGuid: string, question: QuestionApiData) =>
+    await postJson<QuestionApiData, QuestionWriteResponse>(`/api/workspaces/${workspaceGuid}/questions`, question)
 
-export const updateQuestion = async (question: QuestionApiData, editId: string) =>
-    await patchJson<QuestionApiData, QuestionWriteResponse>(`/api/question/${editId}`, question)
+export const updateQuestion = async (workspaceGuid: string, questionId: number, question: QuestionApiData) =>
+    await patchJson<QuestionApiData, QuestionWriteResponse>(
+        `/api/workspaces/${workspaceGuid}/questions/${questionId}`,
+        question,
+    )
+
+export const deleteQuestion = async (workspaceGuid: string, questionId: string) =>
+    await callDelete(`/api/workspaces/${workspaceGuid}/questions/${questionId}`)

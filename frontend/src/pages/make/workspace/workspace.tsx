@@ -26,7 +26,7 @@ export function WorkspacePage() {
     useApi(workspaceId, fetchWorkspaceQuizzes, setQuizzes)
 
     const onDeleteQuestion = async (id: number) => {
-        await deleteQuestion(`${id}`)
+        await deleteQuestion(workspaceId, `${id}`)
         setQuestions(await fetchWorkspaceQuestions(workspaceId))
     }
 

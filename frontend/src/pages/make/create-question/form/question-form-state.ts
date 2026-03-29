@@ -26,7 +26,6 @@ export interface QuestionFormState {
     readonly isMultipleChoice: boolean
     readonly easyMode: boolean
     readonly questionExplanation: string
-    readonly workspaceGuid: string
     readonly showExplanations: boolean
     readonly imageUrl: string
 }
@@ -61,7 +60,6 @@ export const useQuestionFormState = (question?: Question) => {
     const [correctAnswers, setCorrectAnswers] = useState<readonly number[]>(question?.correctAnswers || [])
 
     const [questionExplanation, setQuestionExplanation] = useState(question?.questionExplanation || '')
-    const [workspaceGuid, setWorkspaceGuid] = useState(question?.workspaceGuid || '')
     const [imageUrl, setImageUrl] = useState(question?.imageUrl || '')
 
     const isMultipleChoice = questionType === 'multiple'
@@ -147,7 +145,6 @@ export const useQuestionFormState = (question?: Question) => {
         questionExplanation,
         isMultipleChoice,
         easyMode,
-        workspaceGuid,
         showExplanations,
         imageUrl,
         setQuestionText,
@@ -159,7 +156,6 @@ export const useQuestionFormState = (question?: Question) => {
         setNumericalAnswer,
         setTolerance,
         setEasyMode,
-        setWorkspaceGuid,
         setShowExplanations,
         setImageUrl,
         applyAiResponse,
@@ -172,8 +168,6 @@ export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiDat
         const parsedTolerance = normalizedTolerance === '' ? undefined : Number.parseInt(normalizedTolerance, 10)
         return {
             question: state.questionText,
-            editId: '',
-            workspaceGuid: state.workspaceGuid,
             answers: [state.numericalAnswer.trim()],
             correctAnswers: [0],
             explanations: [''],
@@ -185,8 +179,6 @@ export const stateToQuestionApiData = (state: QuestionFormState): QuestionApiDat
 
     return {
         question: state.questionText,
-        editId: '',
-        workspaceGuid: state.workspaceGuid,
         answers: Array.from(state.answers),
         correctAnswers: Array.from(state.correctAnswers),
         explanations: Array.from(state.explanations),
