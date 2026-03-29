@@ -58,6 +58,36 @@ public class AiAssistantServiceTest {
         assertThrows(ResponseStatusException.class, () -> aiAssistantService.generateQuestion(AiAssistantQuestionType.SINGLE, "   "));
     }
 
+    @Tag("ai")
+    @Test
+    void generateQuestionWithSpecificAnswerCount() {
+        assumeTrue(!apiToken.isBlank(), "ai.token not configured");
+
+        var response = aiAssistantService.generateQuestion(
+            AiAssistantQuestionType.SINGLE,
+            "Create a multiple-choice question on exoplanets with exactly 2 correct answers out of 5 total answers"
+        );
+
+        assertFalse(response.question().isBlank());
+        assertEquals(5, response.answers().length);
+        assertEquals(2, response.correctAnswers().length);
+    }
+
+    @Tag("ai")
+    @Test
+    void generateQuestionWithAnswerRange() {
+        assumeTrue(!apiToken.isBlank(), "ai.token not configured");
+
+        var response = aiAssistantService.generateQuestion(
+            AiAssistantQuestionType.SINGLE,
+            "Create a single-choice question about European capitals with exactly 3 answers and 1 correct answer"
+        );
+
+        assertFalse(response.question().isBlank());
+        assertEquals(3, response.answers().length);
+        assertEquals(1, response.correctAnswers().length);
+    }
+
     @Test
     void validateResponse_valid() {
         assertDoesNotThrow(() -> AiAssistantService.validateResponse(
