@@ -4,8 +4,8 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     java
-    id("org.springframework.boot") version "3.3.3"
-    id("io.spring.dependency-management") version "1.1.6"
+    id("org.springframework.boot") version "3.5.12"
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "cz.scrumdojo"
@@ -36,7 +36,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.apache.commons:commons-lang3")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.16")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.projectlombok:lombok")
