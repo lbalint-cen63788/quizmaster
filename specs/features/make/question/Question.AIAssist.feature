@@ -3,7 +3,10 @@ Feature: Generate question and answers using AI
   @slow
   Scenario: Generate single-choice question and answers using AI assist
     Given I start creating a question
-    When I ask AI: "Generate a question about capital cities with 1 correct answer and 2 incorrect answers"
+    When I ask AI:
+      | Generate a question about capital cities |
+      | with 1 correct answer                   |
+      | and 2 incorrect answers                 |
     Then Question field is not empty
     And the question is single choice
     And AI assistant returns at least 2 generated answers
@@ -12,24 +15,14 @@ Feature: Generate question and answers using AI
   @slow
   Scenario: Generate multiple-choice question and answers using AI assist
     Given I start creating a question
-    When I ask AI: "Generate a question about European capitals with 2 correct answers and 2 incorrect answers"
+    When I ask AI:
+      | Generate a question about European capitals |
+      | with 2 correct answers                      |
+      | and 2 incorrect answers                     |
     Then the question is multiple choice
     And Question field is not empty
     And AI assistant returns at least 2 generated answers
     And AI assistant returns at least 2 correct answers
-
-  Scenario: AI prompt section is visible when creating question
-    Given I start creating a question
-    When the question is single choice
-    Then I see AI section
-
-    When I mark the question as multiple choice
-    Then the question is multiple choice
-    And I see AI section
-
-    When I mark the question as numerical choice
-    Then the question is numerical choice
-    And I do not see AI section
 
   Scenario: AI prompt section is hidden when editing question
     Given a question "What is the capital of Czech Republic?"

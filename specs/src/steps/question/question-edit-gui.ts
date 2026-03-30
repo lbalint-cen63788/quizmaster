@@ -1,7 +1,7 @@
 import type { DataTable } from '@cucumber/cucumber'
 import { expect } from '@playwright/test'
 
-import type { TableOf } from 'steps/common.ts'
+import { type TableOf, toText } from 'steps/common.ts'
 import { Given, Then, When } from 'steps/fixture.ts'
 import {
     addAnswers,
@@ -196,33 +196,6 @@ Then('I see question explanation {string}', async function (explanation: string)
     await this.questionEditPage.expectQuestionExplanation(explanation)
 })
 
-Then('I see prefilled valid AI question', async function () {
-    await expect.poll(() => this.questionEditPage.questionValue().then(v => v.trim().length > 0)).toBe(true)
-
-    const isNumerical = await this.questionEditPage.isNumericalChoice()
-    if (isNumerical) {
-        await expect
-            .poll(() => this.questionEditPage.numericalCorrectAnswerValue().then(v => /^-?\d+$/.test(v.trim())))
-            .toBe(true)
-        return
-    }
-
-    const answerCount = await this.questionEditPage.answerRowCount()
-    expect(answerCount).toBeGreaterThanOrEqual(2)
-
-    let correctAnswerCount = 0
-    for (let i = 0; i < answerCount; i++) {
-        const answerText = await this.questionEditPage.answerText(i)
-        expect(answerText.trim().length).toBeGreaterThan(0)
-
-        if (await this.questionEditPage.isAnswerCorrect(i)) {
-            correctAnswerCount++
-        }
-    }
-
-    expect(correctAnswerCount).toBeGreaterThanOrEqual(1)
-})
-
 Then('request to AI assistant contains question {string}', async function (expectedPrompt: string) {
     await this.questionEditPage.expectAiPromptValue(expectedPrompt)
 })
@@ -249,8 +222,8 @@ When('I enter question {string}', async function (question: string) {
     await enterQuestion(this, question)
 })
 
-When('I ask AI: {string}', async function (instructions: string) {
-    await enterAIPrompt(this, instructions)
+When('I ask AI:', async function (dataTable: DataTable) {
+    await enterAIPrompt(this, toText(dataTable))
     await this.questionEditPage.clickAiAssist()
 })
 
