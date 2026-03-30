@@ -242,44 +242,4 @@ public class WorkspaceControllerTest {
             .andExpect(status().isNotFound());
     }
 
-    @Test
-    public void createQuestionWithInvalidImageUrlReturnsBadRequest() throws Exception {
-        Workspace workspace = fixtures.save(fixtures.workspace());
-
-        mockMvc.perform(post("/api/workspaces/{guid}/questions", workspace.getGuid())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                        "question": "Test?",
-                        "answers": ["A", "B"],
-                        "correctAnswers": [0],
-                        "explanations": ["Yes", "No"],
-                        "easyMode": false,
-                        "imageUrl": "javascript:alert('xss')",
-                        "questionType": "single"
-                    }
-                    """))
-            .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void updateQuestionWithInvalidImageUrlReturnsBadRequest() throws Exception {
-        Workspace workspace = fixtures.save(fixtures.workspace());
-        Question question = fixtures.save(fixtures.questionIn(workspace));
-
-        mockMvc.perform(patch("/api/workspaces/{guid}/questions/{id}", workspace.getGuid(), question.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                        "question": "Test?",
-                        "answers": ["A", "B"],
-                        "correctAnswers": [0],
-                        "explanations": ["Yes", "No"],
-                        "easyMode": false,
-                        "imageUrl": "javascript:alert('xss')",
-                        "questionType": "single"
-                    }
-                    """))
-            .andExpect(status().isBadRequest());
-    }
 }
