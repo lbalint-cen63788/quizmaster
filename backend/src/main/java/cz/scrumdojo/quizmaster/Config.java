@@ -13,7 +13,7 @@ public class Config implements WebMvcConfigurer {
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         registry
             .addResourceHandler("/**")
-            .addResourceLocations("classpath:/static/**")
+            .addResourceLocations("classpath:/static/")
             .resourceChain(true)
             .addResolver(new ResourceResolver());
     }
