@@ -6,6 +6,7 @@
 - [Running Vite dev server](#running-vite-development-server)
 - [Running end-to-end tests](#🧪-running-end-to-end-tests)
 - [Feature flag](#🚩-feature-flag)
+- [AI Assistant](#🤖-ai-assistant)
 
 ## First-time setup
 
@@ -152,3 +153,31 @@ To enable the feature flag, set the `FEATURE_FLAG` environment variable to `true
     ```
 
 Note: on Windows set the feature flag with `$env:FEATURE_FLAG="true"` command.
+
+## 🤖 AI Assistant
+
+Question generation uses [OpenRouter](https://openrouter.ai/) to call an LLM. Configure it with these environment variables:
+
+| Variable | Required | Description |
+|---|---|---|
+| `OPENROUTER_API_KEY` | Yes | Your OpenRouter API key |
+| `OPENROUTER_MODEL` | No | Model to use (default: `openai/gpt-4o-mini`) |
+
+### Recommended models
+
+| Model | Notes |
+|---|---|
+| `openai/gpt-4o-mini` | Default — fast and cheap, but lower quality |
+| `anthropic/claude-sonnet-4` | Strong reasoning, good at nuanced distractors |
+| `openai/gpt-4o` | Well-rounded, reliable structured output |
+| `google/gemini-2.5-flash` | Fast, good quality-to-cost ratio |
+| `deepseek/deepseek-v3-0324` | Capable and cost-effective |
+
+### Example
+
+```bash
+cd backend
+export OPENROUTER_API_KEY=sk-or-...
+export OPENROUTER_MODEL=anthropic/claude-sonnet-4
+./gradlew bootRun
+```

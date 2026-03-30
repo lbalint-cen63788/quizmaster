@@ -146,6 +146,18 @@ if (FeatureFlag.isEnabled()) { /* ... */ }
 Scenario: New feature
 ```
 
+## AI Assistant
+
+Question generation uses OpenRouter. Configure via environment variables:
+- `OPENROUTER_API_KEY` - API key (required)
+- `OPENROUTER_MODEL` - Model to use (default: `openai/gpt-4o-mini`)
+
+Recommended models for quality quiz generation:
+- `anthropic/claude-sonnet-4` - Strong reasoning, good at nuanced distractors
+- `openai/gpt-4o` - Well-rounded, reliable structured output
+- `google/gemini-2.5-flash` - Fast, good quality-to-cost ratio
+- `deepseek/deepseek-v3-0324` - Capable and cost-effective
+
 ## Development Practices
 
 Training repository emphasizing:
