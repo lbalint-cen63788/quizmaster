@@ -3,6 +3,7 @@ package cz.scrumdojo.quizmaster.question;
 import cz.scrumdojo.quizmaster.IdResponse;
 import cz.scrumdojo.quizmaster.ResponseHelper;
 import cz.scrumdojo.quizmaster.workspace.WorkspaceRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class QuestionMakeController {
     @Transactional
     @PostMapping
     public ResponseEntity<IdResponse> createWorkspaceQuestion(
-            @PathVariable String guid, @RequestBody QuestionRequest request) {
+            @PathVariable String guid, @Valid @RequestBody QuestionRequest request) {
         if (!workspaceRepository.existsById(guid))
             return ResponseEntity.notFound().build();
 
@@ -42,7 +43,7 @@ public class QuestionMakeController {
     @Transactional
     @PatchMapping("/{id}")
     public ResponseEntity<IdResponse> updateWorkspaceQuestion(
-            @PathVariable String guid, @PathVariable Integer id, @RequestBody QuestionRequest request) {
+            @PathVariable String guid, @PathVariable Integer id, @Valid @RequestBody QuestionRequest request) {
         if (!workspaceRepository.existsById(guid))
             return ResponseEntity.notFound().build();
 

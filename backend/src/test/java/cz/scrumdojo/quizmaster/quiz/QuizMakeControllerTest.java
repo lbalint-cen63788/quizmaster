@@ -96,6 +96,25 @@ public class QuizMakeControllerTest {
     }
 
     @Test
+    public void createQuizBlankTitleReturnsBadRequest() throws Exception {
+        Workspace workspace = fixtures.save(fixtures.workspace());
+
+        mockMvc.perform(post("/api/workspaces/{guid}/quizzes", workspace.getGuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "title": "  ",
+                        "description": "A quiz",
+                        "questionIds": [],
+                        "mode": "learn",
+                        "passScore": 80,
+                        "randomQuestionCount": 0
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void createQuizInNonExistentWorkspaceReturns404() throws Exception {
         mockMvc.perform(post("/api/workspaces/{guid}/quizzes", "non-existent-guid")
                 .contentType(MediaType.APPLICATION_JSON)

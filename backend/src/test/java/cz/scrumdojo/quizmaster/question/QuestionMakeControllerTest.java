@@ -132,6 +132,25 @@ public class QuestionMakeControllerTest {
     }
 
     @Test
+    public void createQuestionBlankTextReturnsBadRequest() throws Exception {
+        Workspace workspace = fixtures.save(fixtures.workspace());
+
+        mockMvc.perform(post("/api/workspaces/{guid}/questions", workspace.getGuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "question": "  ",
+                        "answers": ["A", "B"],
+                        "correctAnswers": [0],
+                        "explanations": ["Yes", "No"],
+                        "easyMode": false,
+                        "questionType": "single"
+                    }
+                    """))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void createQuestionInNonExistentWorkspaceReturns404() throws Exception {
         mockMvc.perform(post("/api/workspaces/{guid}/questions", "non-existent-guid")
                 .contentType(MediaType.APPLICATION_JSON)

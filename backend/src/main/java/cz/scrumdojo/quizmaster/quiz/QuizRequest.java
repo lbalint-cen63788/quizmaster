@@ -1,7 +1,9 @@
 package cz.scrumdojo.quizmaster.quiz;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record QuizRequest(
-    String title,
+    @NotBlank String title,
     String description,
     int[] questionIds,
     QuizMode mode,
