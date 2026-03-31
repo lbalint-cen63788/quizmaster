@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/attempt")
@@ -24,7 +23,7 @@ public class AttemptController {
         List<AttemptResponse> attempts = attemptRepository.findByQuizIdOrderByStartedAtDesc(quizId)
                 .stream()
                 .map(AttemptResponse::fromEntity)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(attempts);
     }
 
