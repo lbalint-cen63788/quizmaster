@@ -9,7 +9,8 @@ export interface QuizStatsProps {
 
 interface SummaryStats {
     readonly started: number
-    readonly finished: number
+    readonly success: number
+    readonly failed: number
     readonly timedOut: number
 }
 
@@ -44,12 +45,11 @@ const formatDuration = (durationSeconds: number): string => {
 }
 
 export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
-    const timedOutCount = stats.filter(stat => stat.status === 'TIMEOUT').length
-
     const summary: SummaryStats = {
         started: stats.length,
-        finished: stats.filter(stat => stat.status === 'FINISHED').length,
-        timedOut: timedOutCount,
+        success: stats.filter(stat => stat.status === 'SUCCESS').length,
+        failed: stats.filter(stat => stat.status === 'FAILED').length,
+        timedOut: stats.filter(stat => stat.status === 'TIMEOUT').length,
     }
 
     return (
@@ -60,14 +60,16 @@ export const QuizStats = ({ quiz, stats }: QuizStatsProps) => {
                 <thead>
                     <tr>
                         <th>Started</th>
-                        <th>Finished</th>
+                        <th>Success</th>
+                        <th>Failed</th>
                         <th>Timeout</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{summary.started}</td>
-                        <td>{summary.finished}</td>
+                        <td>{summary.success}</td>
+                        <td>{summary.failed}</td>
                         <td>{summary.timedOut}</td>
                     </tr>
                 </tbody>

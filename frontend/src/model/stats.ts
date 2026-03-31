@@ -2,6 +2,8 @@ export enum AttemptStatus {
     FINISHED = 'FINISHED',
     IN_PROGRESS = 'IN_PROGRESS',
     TIMEOUT = 'TIMEOUT',
+    SUCCESS = 'SUCCESS',
+    FAILED = 'FAILED',
 }
 
 export interface StatsRecord {

@@ -3,13 +3,13 @@ import { QuestionFeedback } from './components/question'
 import type { QuizAnswers } from './quiz-answers-state.ts'
 import { evaluate } from './quiz-score.ts'
 
-export const QuizScorePage = ({ quiz, quizAnswers }: { quiz: Quiz; quizAnswers: QuizAnswers }) => {
+export const QuizScorePage = ({ quiz, quizAnswers, timedOut }: { quiz: Quiz; quizAnswers: QuizAnswers; timedOut: boolean }) => {
     const evaluation = evaluate(quiz, quizAnswers)
     const { total, score } = evaluation
 
     const percentage = (score / total) * 100
     const passed = percentage >= quiz.passScore
-    const result = passed ? 'passed' : 'failed'
+    const result = timedOut ? 'timeout' : passed ? 'success' : 'failed'
 
     return (
         <>

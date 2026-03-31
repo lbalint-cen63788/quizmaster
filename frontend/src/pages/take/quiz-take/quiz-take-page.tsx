@@ -14,6 +14,7 @@ import { AttemptStatus } from 'model/stats.ts'
 export const QuizTakePage = () => {
     const quiz = useQuizApi()
     const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null)
+    const [timedOut, setTimedOut] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -31,10 +32,11 @@ export const QuizTakePage = () => {
         }
     }
 
-    async function handleEvaluate(answers: QuizAnswers | null, timedOut = false) {
+    async function handleEvaluate(answers: QuizAnswers | null, isTimedOut = false) {
         navigate(`/quiz/${quiz?.id}/questions`)
         updateSessionStorage(answers)
         setQuizAnswers(answers)
+        setTimedOut(isTimedOut)
 
         if (!quiz || !answers) return
 
@@ -51,12 +53,22 @@ export const QuizTakePage = () => {
         if (startTimeMs) {
             const durationSeconds = Math.round((endTime.getTime() - Number.parseInt(startTimeMs)) / 1000)
 
+            // Determine status based on timeout and pass score
+            let status: AttemptStatus
+            if (isTimedOut) {
+                status = AttemptStatus.TIMEOUT
+            } else if (score >= quiz.passScore) {
+                status = AttemptStatus.SUCCESS
+            } else {
+                status = AttemptStatus.FAILED
+            }
+
             await updateAttempt(attemptId, {
                 quizId: quiz.id,
                 durationSeconds,
                 points,
                 score,
-                status: timedOut ? AttemptStatus.TIMEOUT : AttemptStatus.FINISHED,
+                status,
                 maxScore,
                 startedAt: new Date(Number.parseInt(startTimeMs)).toISOString(),
                 finishedAt: endTime.toISOString(),
@@ -69,7 +81,7 @@ export const QuizTakePage = () => {
 
     if (quiz) {
         return quizAnswers ? (
-            <QuizScorePage quiz={quiz} quizAnswers={quizAnswers} />
+            <QuizScorePage quiz={quiz} quizAnswers={quizAnswers} timedOut={timedOut} />
         ) : (
             <QuestionForm quiz={quiz} onEvaluate={handleEvaluate} />
         )
