@@ -73,6 +73,29 @@ public class QuizMakeControllerTest {
     }
 
     @Test
+    public void updateQuizInWrongWorkspaceReturns404() throws Exception {
+        Workspace workspace1 = fixtures.save(fixtures.workspace());
+        Workspace workspace2 = fixtures.save(fixtures.workspace());
+        Question question = fixtures.save(fixtures.questionIn(workspace1));
+        Quiz quiz = fixtures.save(fixtures.quiz(question).workspaceGuid(workspace1.getGuid()).build());
+
+        mockMvc.perform(put("/api/workspaces/{guid}/quizzes/{id}", workspace2.getGuid(), quiz.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "title": "Updated Quiz",
+                        "description": "Updated",
+                        "questionIds": [%d],
+                        "mode": "exam",
+                        "passScore": 90,
+                        "workspaceGuid": "%s",
+                        "randomQuestionCount": 1
+                    }
+                    """.formatted(question.getId(), workspace2.getGuid())))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void createQuizInNonExistentWorkspaceReturns404() throws Exception {
         mockMvc.perform(post("/api/workspaces/{guid}/quizzes", "non-existent-guid")
                 .contentType(MediaType.APPLICATION_JSON)

@@ -4,11 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface QuizRepository extends JpaRepository<Quiz, Integer> {
 
     List<Quiz> findByWorkspaceGuid(String workspaceGuid);
+
+    Optional<Quiz> findByIdAndWorkspaceGuid(Integer id, String workspaceGuid);
 
     @Query(value = "SELECT COUNT(*) > 0 FROM quiz WHERE ? = ANY(questions)", nativeQuery = true)
     boolean existsQuizWithQuestionId(int questionId);
