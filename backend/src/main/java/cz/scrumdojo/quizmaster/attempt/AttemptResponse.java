@@ -14,7 +14,7 @@ public record AttemptResponse(
         LocalDateTime startedAt,
         LocalDateTime finishedAt
 ) {
-    public static AttemptResponse fromEntity(Attempt attempt) {
+    public static AttemptResponse from(Attempt attempt) {
         return new AttemptResponse(
                 attempt.getId(),
                 attempt.getQuizId(),

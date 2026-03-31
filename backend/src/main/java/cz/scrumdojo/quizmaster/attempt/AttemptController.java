@@ -22,7 +22,7 @@ public class AttemptController {
     public ResponseEntity<List<AttemptResponse>> getAttemptsByQuiz(@PathVariable Integer quizId) {
         List<AttemptResponse> attempts = attemptRepository.findByQuizIdOrderByStartedAtDesc(quizId)
                 .stream()
-                .map(AttemptResponse::fromEntity)
+                .map(AttemptResponse::from)
                 .toList();
         return ResponseEntity.ok(attempts);
     }
@@ -31,7 +31,7 @@ public class AttemptController {
     @GetMapping("/{id}")
     public ResponseEntity<AttemptResponse> getAttempt(@PathVariable Integer id) {
         return ResponseHelper.okOrNotFound(
-                attemptRepository.findById(id).map(AttemptResponse::fromEntity)
+                attemptRepository.findById(id).map(AttemptResponse::from)
         );
     }
 
@@ -39,7 +39,7 @@ public class AttemptController {
     @PostMapping
     public ResponseEntity<AttemptResponse> createAttempt(@RequestBody AttemptRequest request) {
         Attempt attempt = attemptRepository.save(request.toEntity());
-        return ResponseEntity.ok(AttemptResponse.fromEntity(attempt));
+        return ResponseEntity.ok(AttemptResponse.from(attempt));
     }
 
     @Transactional
@@ -48,7 +48,7 @@ public class AttemptController {
         Attempt attempt = request.toEntity();
         attempt.setId(id);
         Attempt saved = attemptRepository.save(attempt);
-        return ResponseEntity.ok(AttemptResponse.fromEntity(saved));
+        return ResponseEntity.ok(AttemptResponse.from(saved));
     }
 
     @Transactional
